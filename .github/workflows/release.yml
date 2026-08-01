@@ -149,20 +149,25 @@ jobs:
 
           if ([string]::IsNullOrWhiteSpace($prev)) {
             Write-Host "No previous tag — listing all commits reachable from $tag"
-            $commits = git log --pretty=format:"- %s (%h)" $tag
+            $lines = @(git log --pretty=tformat:"- %s (%h)" $tag)
           }
           else {
             Write-Host "Commits: $prev..$tag"
-            $commits = git log --pretty=format:"- %s (%h)" "$prev..$tag"
+            $lines = @(git log --pretty=tformat:"- %s (%h)" "$prev..$tag")
           }
 
-          if ([string]::IsNullOrWhiteSpace($commits)) {
-            $commits = "- No commits listed for this range."
+          if ($lines.Count -eq 0 -or ($lines.Count -eq 1 -and [string]::IsNullOrWhiteSpace($lines[0]))) {
+            $lines = @("- No commits listed for this range.")
           }
 
+          # git log as string[] must be joined explicitly — "$array" uses spaces, not newlines.
+          $commits = ($lines | ForEach-Object { $_.TrimEnd() }) -join "`n"
           $body = "## Changes`n`n$commits`n"
-          Set-Content -Path release-notes.md -Value $body -Encoding utf8
-          Get-Content release-notes.md
+          [System.IO.File]::WriteAllText(
+            (Join-Path (Get-Location) "release-notes.md"),
+            $body,
+            [System.Text.UTF8Encoding]::new($false))
+          Get-Content release-notes.md -Raw
 
       - name: Create draft release
         env:
