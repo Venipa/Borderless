@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AppTitle" xml:space="preserve"><value>Borderless</value></data>
+  <data name="ProcessRulesTitle" xml:space="preserve"><value>Process rules</value></data>
+  <data name="ProcessRulesSubtitle" xml:space="preserve"><value>Match games by exact window title and/or executable, then apply borderless, always-on-top, and mute-in-background.</value></data>
+  <data name="LabelTitle" xml:space="preserve"><value>Title:</value></data>
+  <data name="LabelExe" xml:space="preserve"><value>Exe:</value></data>
+  <data name="BadgeBorderless" xml:space="preserve"><value>Borderless</value></data>
+  <data name="BadgeAlwaysOnTop" xml:space="preserve"><value>Always on top</value></data>
+  <data name="BadgeExpandToScreen" xml:space="preserve"><value>Max size</value></data>
+  <data name="BadgeMuteBackground" xml:space="preserve"><value>Mute bg</value></data>
+  <data name="EnabledFormat" xml:space="preserve"><value>Enabled: {0}</value></data>
+  <data name="DeleteRuleTooltip" xml:space="preserve"><value>Delete rule</value></data>
+  <data name="EmptyTitle" xml:space="preserve"><value>No rules yet</value></data>
+  <data name="EmptySubtitle" xml:space="preserve"><value>Tap + to add your first game rule.</value></data>
+  <data name="SearchRulesPlaceholder" xml:space="preserve"><value>Search rules</value></data>
+  <data name="SearchEmptyTitle" xml:space="preserve"><value>No matching rules</value></data>
+  <data name="SearchEmptySubtitle" xml:space="preserve"><value>Try a different title or executable name.</value></data>
+  <data name="AddRuleTooltip" xml:space="preserve"><value>Add app rule</value></data>
+  <data name="AddRuleTitle" xml:space="preserve"><value>Add app rule</value></data>
+  <data name="EditRuleTitle" xml:space="preserve"><value>Edit app rule</value></data>
+  <data name="Save" xml:space="preserve"><value>Save</value></data>
+  <data name="Cancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="WindowTitleLabel" xml:space="preserve"><value>Exact window title</value></data>
+  <data name="WindowTitlePlaceholder" xml:space="preserve"><value>e.g. Counter-Strike 2</value></data>
+  <data name="ExecutableNameLabel" xml:space="preserve"><value>Executable name</value></data>
+  <data name="ExecutableNamePlaceholder" xml:space="preserve"><value>e.g. cs2.exe</value></data>
+  <data name="ToggleBorderless" xml:space="preserve"><value>Borderless window</value></data>
+  <data name="ToggleAlwaysOnTop" xml:space="preserve"><value>Always on top</value></data>
+  <data name="ToggleExpandToScreen" xml:space="preserve"><value>Max size / expand to screen</value></data>
+  <data name="ToggleCustomDimension" xml:space="preserve"><value>Custom dimension</value></data>
+  <data name="ToggleMuteBackground" xml:space="preserve"><value>Mute in background</value></data>
+  <data name="ToggleRuleEnabled" xml:space="preserve"><value>Rule enabled</value></data>
+  <data name="GroupVideo" xml:space="preserve"><value>Video</value></data>
+  <data name="GroupAudio" xml:space="preserve"><value>Audio</value></data>
+  <data name="GroupGeneral" xml:space="preserve"><value>General</value></data>
+  <data name="EditDimensions" xml:space="preserve"><value>Edit</value></data>
+  <data name="CustomDimensionDialogTitle" xml:space="preserve"><value>Custom dimension</value></data>
+  <data name="CustomDimensionDialogSubtitle" xml:space="preserve"><value>Defaults are X=0, Y=0 and full screen size. Width/height 0 uses the monitor size.</value></data>
+  <data name="CustomDimensionSummaryFormat" xml:space="preserve"><value>X={0}, Y={1}, {2}×{3}</value></data>
+  <data name="DimensionX" xml:space="preserve"><value>X</value></data>
+  <data name="DimensionY" xml:space="preserve"><value>Y</value></data>
+  <data name="DimensionWidth" xml:space="preserve"><value>Width</value></data>
+  <data name="DimensionHeight" xml:space="preserve"><value>Height</value></data>
+  <data name="ValidationMatchRequired" xml:space="preserve"><value>Set exact window title or executable name.</value></data>
+  <data name="UntitledRule" xml:space="preserve"><value>Untitled rule</value></data>
+  <data name="NavRules" xml:space="preserve"><value>Rules</value></data>
+  <data name="NavDefaults" xml:space="preserve"><value>Defaults</value></data>
+  <data name="NavSettings" xml:space="preserve"><value>Settings</value></data>
+  <data name="DefaultsTitle" xml:space="preserve"><value>Defaults</value></data>
+  <data name="DefaultsSubtitle" xml:space="preserve"><value>These options are applied automatically when you create a new rule.</value></data>
+  <data name="SettingsTitle" xml:space="preserve"><value>Settings</value></data>
+  <data name="SettingsSubtitle" xml:space="preserve"><value>Application behavior and update preferences.</value></data>
+  <data name="SettingsGeneralGroup" xml:space="preserve"><value>General</value></data>
+  <data name="SettingsStartOnStartup" xml:space="preserve"><value>Start on startup</value></data>
+  <data name="SettingsCloseToTray" xml:space="preserve"><value>Close to tray</value></data>
+  <data name="SettingsUpdaterGroup" xml:space="preserve"><value>Updater</value></data>
+  <data name="SettingsEnableUpdater" xml:space="preserve"><value>Enable updater</value></data>
+  <data name="SettingsAutoUpdate" xml:space="preserve"><value>Update as soon as a new update is found (without user confirmation)</value></data>
+  <data name="SettingsCheckUpdates" xml:space="preserve"><value>Check for updates</value></data>
+  <data name="SettingsCheckUpdatesButton" xml:space="preserve"><value>Check now</value></data>
+  <data name="SettingsAboutGroup" xml:space="preserve"><value>About</value></data>
+  <data name="AboutVersionFormat" xml:space="preserve"><value>Version {0}</value></data>
+  <data name="AboutAuthorFormat" xml:space="preserve"><value>Author: {0}</value></data>
+  <data name="UpdateStatusIdle" xml:space="preserve"><value>No update check yet.</value></data>
+  <data name="UpdateChecking" xml:space="preserve"><value>Checking GitHub releases…</value></data>
+  <data name="UpdateNoneAvailable" xml:space="preserve"><value>You are up to date.</value></data>
+  <data name="UpdateAvailableFormat" xml:space="preserve"><value>Update {0} available (current {1}).</value></data>
+  <data name="UpdateConfirmFormat" xml:space="preserve"><value>Version {0} is available (you have {1}). Download and install now?</value></data>
+  <data name="UpdateDownloading" xml:space="preserve"><value>Downloading update…</value></data>
+  <data name="UpdateCheckFailed" xml:space="preserve"><value>Could not read the latest release.</value></data>
+  <data name="UpdateCheckErrorFormat" xml:space="preserve"><value>Update check failed: {0}</value></data>
+  <data name="UpdateApplyErrorFormat" xml:space="preserve"><value>Update install failed: {0}</value></data>
+  <data name="UpdateNoAsset" xml:space="preserve"><value>No downloadable setup/zip asset found on the release.</value></data>
+  <data name="TrayOpen" xml:space="preserve"><value>Open</value></data>
+  <data name="TrayExit" xml:space="preserve"><value>Exit</value></data>
+</root>

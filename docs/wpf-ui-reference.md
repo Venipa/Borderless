@@ -1,0 +1,525 @@
+# WPF UI (WPF-UI) reference
+
+Project uses **WPF-UI 4.3.0** (`lepoco/wpfui`) — Fluent Design controls for classic WPF.
+
+- Docs: https://wpfui.lepo.co/
+- Getting started: https://wpfui.lepo.co/documentation/getting-started
+- API: https://wpfui.lepo.co/api/
+- Gallery app (Microsoft Store / winget): `winget install "WPF UI"`
+- GitHub: https://github.com/lepoco/wpfui
+- NuGet: `WPF-UI`
+
+XAML namespace used everywhere:
+
+```xml
+xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+```
+
+Code namespace examples: `Wpf.Ui.Controls`, `Wpf.Ui.Appearance`.
+
+---
+
+## Setup
+
+### Package
+
+```xml
+<PackageReference Include="WPF-UI" Version="4.3.0" />
+```
+
+### App.xaml dictionaries (required)
+
+```xml
+<Application xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml" ...>
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ui:ThemesDictionary Theme="Dark" />
+        <!-- or Theme="Light" -->
+        <ui:ControlsDictionary />
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </Application.Resources>
+</Application>
+```
+
+### Theme from code
+
+```csharp
+using Wpf.Ui.Appearance;
+
+ApplicationThemeManager.Apply(ApplicationTheme.Dark);
+// ApplicationTheme.Light / ApplicationTheme.System
+```
+
+---
+
+## Window shell
+
+### `FluentWindow`
+
+Main window base. Prefer this over stock `Window`.
+
+| Property | Notes |
+|---|---|
+| `ExtendsContentIntoTitleBar` | Draw content under custom title bar |
+| `WindowBackdropType` | `None`, `Auto`, `Mica`, `Acrylic`, `Tabbed` |
+| `WindowCornerPreference` | Rounded corners preference |
+
+```xml
+<ui:FluentWindow
+    ExtendsContentIntoTitleBar="True"
+    WindowBackdropType="Mica"
+    WindowCornerPreference="Round">
+  ...
+</ui:FluentWindow>
+```
+
+Code-behind must inherit `FluentWindow`:
+
+```csharp
+public partial class MainWindow : FluentWindow { }
+```
+
+### `TitleBar`
+
+Custom chrome used with `FluentWindow`.
+
+```xml
+<ui:TitleBar Title="Borderless"
+             ShowMinimize="True"
+             ShowMaximize="True"
+             ShowClose="True" />
+```
+
+Useful props: `Icon`, `Header`, `TrailingContent`, `ShowHelp`, `CanMaximize`.
+
+---
+
+## Buttons & actions
+
+### `Button`
+
+| Property | Values / notes |
+|---|---|
+| `Appearance` | `Primary`, `Secondary`, `Info`, `Dark`, `Light`, `Danger`, `Success`, `Caution`, `Transparent` |
+| `Icon` | Usually `{ui:SymbolIcon Add24}` |
+| `CornerRadius` | e.g. FAB `CornerRadius="28"` |
+| `Content` | Label text |
+
+```xml
+<ui:Button Content="Save"
+           Appearance="Primary"
+           Icon="{ui:SymbolIcon Save24}"
+           Command="{Binding SaveCommand}" />
+
+<ui:Button Appearance="Transparent"
+           Icon="{ui:SymbolIcon Dismiss24}" />
+```
+
+### `DropDownButton` / `SplitButton`
+
+Button + `Flyout` menu.
+
+```xml
+<ui:DropDownButton Content="More" Appearance="Secondary">
+  <ui:DropDownButton.Flyout>
+    <ui:Flyout>
+      <!-- menu content -->
+    </ui:Flyout>
+  </ui:DropDownButton.Flyout>
+</ui:DropDownButton>
+```
+
+### `HyperlinkButton`
+
+```xml
+<ui:HyperlinkButton Content="Docs"
+                    NavigateUri="https://wpfui.lepo.co/" />
+```
+
+### `CardAction`
+
+Clickable card row (list item pattern). Has `Click`, `Command`, `Icon`, `IsChevronVisible`.
+
+```xml
+<ui:CardAction Padding="16" Click="OnItemClick" Tag="{Binding}">
+  <TextBlock Text="{Binding DisplayName}" />
+</ui:CardAction>
+```
+
+---
+
+## Cards & layout surfaces
+
+| Control | Use |
+|---|---|
+| `Card` | Surface / section container (`Content`, optional `Footer`) |
+| `CardControl` | Card with `Header` + `Icon` |
+| `CardExpander` | Expandable card |
+| `CardAction` | Interactive card row |
+| `CardColor` | Color swatch card |
+
+```xml
+<ui:Card Padding="16">
+  <StackPanel>
+    <TextBlock Text="Section" FontWeight="SemiBold" />
+    <ui:ToggleSwitch Content="Enabled" IsChecked="{Binding IsEnabled}" />
+  </StackPanel>
+</ui:Card>
+
+<ui:CardControl Header="Audio" Icon="{ui:SymbolIcon Speaker224}">
+  <ui:ToggleSwitch Content="Mute in background" />
+</ui:CardControl>
+```
+
+Common theme brushes:
+
+```xml
+Background="{DynamicResource ApplicationBackgroundBrush}"
+BorderBrush="{DynamicResource ControlElevationBorderBrush}"
+```
+
+---
+
+## Inputs
+
+### `TextBox`
+
+```xml
+<ui:TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+            PlaceholderText="Type here"
+            Icon="{ui:SymbolIcon Search24}"
+            ClearButtonEnabled="True" />
+```
+
+Props: `PlaceholderText`, `Icon`, `IconPlacement`, `ClearButtonEnabled`, `ShowClearButton`.
+
+### `PasswordBox`
+
+```xml
+<ui:PasswordBox Password="{Binding Password}"
+                PlaceholderText="Password"
+                RevealButtonEnabled="True" />
+```
+
+### `NumberBox`
+
+```xml
+<ui:NumberBox Value="{Binding Port}"
+              Minimum="1"
+              Maximum="65535"
+              PlaceholderText="Port" />
+```
+
+Props: `Value`, `Minimum`, `Maximum`, `SmallChange`, `LargeChange`, `SpinButtonPlacementMode`, `ValidationMode`, `AcceptsExpression`.
+
+### `ToggleSwitch`
+
+```xml
+<ui:ToggleSwitch Content="Always on top"
+                 IsChecked="{Binding IsAlwaysOnTop}"
+                 OnContent="On"
+                 OffContent="Off" />
+```
+
+### `AutoSuggestBox`
+
+Search / suggest field.
+
+```xml
+<ui:AutoSuggestBox PlaceholderText="Search"
+                   Icon="{ui:SymbolIcon Search24}"
+                   OriginalItemsSource="{Binding Suggestions}"
+                   Text="{Binding Query}" />
+```
+
+### `RichTextBox`
+
+Fluent-styled rich text editor.
+
+### Pickers
+
+| Control | Notes |
+|---|---|
+| `TimePicker` | `SelectedTime`, `MinuteIncrement`, `ClockIdentifier` |
+| `CalendarDatePicker` | `Date`, `IsCalendarOpen`, `FirstDayOfWeek` |
+| `RatingControl` | `Value`, `MaxRating`, `HalfStarEnabled` |
+| `ThumbRate` | Like / dislike (`State`) |
+
+---
+
+## Icons
+
+### `SymbolIcon` (preferred)
+
+Fluent System Icons via `SymbolRegular` / filled.
+
+```xml
+<!-- As element -->
+<ui:SymbolIcon Symbol="Settings24" FontSize="20" />
+
+<!-- As Button.Icon markup extension -->
+<ui:Button Icon="{ui:SymbolIcon Add24}" />
+```
+
+Props: `Symbol`, `Filled`, `FontSize`, `Foreground`.
+
+Common symbols: `Add24`, `Delete24`, `Dismiss24`, `Save24`, `Settings24`, `Home24`, `Search24`, `Fluent24`, `DesktopPulse24`.
+
+Browse full enum: `Wpf.Ui.Controls.SymbolRegular` (or Gallery app).
+
+### Other icon types
+
+- `FontIcon` / `FontIconSource`
+- `ImageIcon`
+- `IconSourceElement`
+
+---
+
+## Feedback & status
+
+### `InfoBadge`
+
+Compact status chip. Uses **`Value`** (not `Content`).
+
+```xml
+<ui:InfoBadge Value="Borderless"
+              Severity="Informational" />
+```
+
+`Severity`: `Attention`, `Informational`, `Success`, `Caution`, `Critical`.
+
+### `InfoBar`
+
+Inline banner.
+
+```xml
+<ui:InfoBar Title="Saved"
+            Message="Rule updated."
+            Severity="Success"
+            IsOpen="True"
+            IsClosable="True" />
+```
+
+`Severity`: `Informational`, `Success`, `Warning`, `Error`.
+
+### `Badge`
+
+```xml
+<ui:Badge Content="New" Appearance="Primary" />
+```
+
+### `ProgressRing`
+
+```xml
+<ui:ProgressRing IsIndeterminate="True" />
+<!-- or -->
+<ui:ProgressRing IsIndeterminate="False" Progress="42" />
+```
+
+### `LoadingScreen`
+
+Full-area loading placeholder.
+
+### `Snackbar` + `SnackbarPresenter`
+
+Toast-like notification host in window.
+
+```xml
+<!-- In window chrome -->
+<ui:SnackbarPresenter x:Name="RootSnackbar" />
+```
+
+```csharp
+var snackbar = new Snackbar(RootSnackbar)
+{
+    Title = "Saved",
+    Content = "Rule written to disk.",
+    Appearance = ControlAppearance.Success,
+    Timeout = TimeSpan.FromSeconds(3)
+};
+await snackbar.ShowAsync();
+// or use ISnackbarService in DI setups
+```
+
+---
+
+## Dialogs
+
+### `ContentDialog` + `ContentDialogHost`
+
+In-app modal. Prefer `ContentDialogHost` (not obsolete `ContentPresenter` host).
+
+```xml
+<ui:ContentDialogHost x:Name="RootContentDialogHost" />
+```
+
+```csharp
+var dialog = new ContentDialog(RootContentDialogHost)
+{
+    Title = "Confirm",
+    Content = "Delete this rule?",
+    PrimaryButtonText = "Delete",
+    CloseButtonText = "Cancel",
+    PrimaryButtonAppearance = ControlAppearance.Danger
+};
+
+var result = await dialog.ShowAsync();
+if (result == ContentDialogResult.Primary) { /* ... */ }
+```
+
+Also: `IContentDialogService` / `ContentDialogService` for MVVM.
+
+**Note in this app:** ContentDialog styling/hosting was unreliable, so Borderless uses a custom right sidebar instead. Prefer Sidebar/Flyout patterns when dialog chrome fails.
+
+### `MessageBox`
+
+Fluent message box (standalone window style API).
+
+```csharp
+var box = new Wpf.Ui.Controls.MessageBox
+{
+    Title = "Quit",
+    Content = "Exit Borderless?",
+    PrimaryButtonText = "Exit",
+    CloseButtonText = "Stay"
+};
+var result = await box.ShowDialogAsync();
+```
+
+### `Flyout`
+
+Lightweight popup content (`IsOpen`, `Placement`, `Content`).
+
+---
+
+## Navigation
+
+### `NavigationView`
+
+App shell with pane + frame.
+
+`PaneDisplayMode`: `Left`, `LeftMinimal`, `LeftFluent`, `Top`, `Bottom`.
+
+```xml
+<ui:NavigationView PaneDisplayMode="Left"
+                   IsBackButtonVisible="Collapsed"
+                   PaneTitle="Borderless">
+  <ui:NavigationView.MenuItems>
+    <ui:NavigationViewItem Content="Rules"
+                           Icon="{ui:SymbolIcon DesktopPulse24}"
+                           TargetPageType="{x:Type pages:RulesPage}" />
+    <ui:NavigationViewItem Content="Settings"
+                           Icon="{ui:SymbolIcon Settings24}"
+                           TargetPageType="{x:Type pages:SettingsPage}" />
+  </ui:NavigationView.MenuItems>
+</ui:NavigationView>
+```
+
+Related: `NavigationViewItem`, `NavigationViewItemHeader`, `NavigationViewItemSeparator`, `BreadcrumbBar`, `NavigationViewContentPresenter`.
+
+Wire with `INavigationService` in larger MVVM/DI apps.
+
+---
+
+## Lists & data
+
+| Control | Notes |
+|---|---|
+| `ListView` / `ListViewItem` | Fluent list |
+| `DataGrid` | Styled grid + column element styles |
+| `GridView` / `GridViewColumn` | View mode helpers |
+| `TreeViewItem` | Fluent tree item |
+| `TreeGrid` / `TreeGridItem` / `TreeGridHeader` | Hierarchical grid |
+| `TabView` / `TabViewItem` | Tabbed pages |
+| `VirtualizingWrapPanel` | Virtualized wrap layout |
+| `VirtualizingGridView` / `VirtualizingItemsControl` | Virtualization helpers |
+| `DynamicScrollViewer` / `DynamicScrollBar` | Fluent scroll |
+
+---
+
+## Misc controls
+
+| Control | Notes |
+|---|---|
+| `TextBlock` | Fluent typography helper (`FontTypography`, `TextColor` related APIs) |
+| `Image` | Fluent image control |
+| `Anchor` | Anchor/link-like control |
+| `Arc` | Arc shape / progress visual |
+| `ClockIdentifier` | Enum for time clocks |
+| `ClientAreaBorder` | Client area chrome helper |
+| `PassiveScrollViewer` | Non-focus-stealing scroll host |
+
+---
+
+## Appearance enums cheat sheet
+
+```text
+ControlAppearance: Primary, Secondary, Info, Dark, Light, Danger, Success, Caution, Transparent
+WindowBackdropType: None, Auto, Mica, Acrylic, Tabbed
+InfoBadgeSeverity: Attention, Informational, Success, Caution, Critical
+InfoBarSeverity: Informational, Success, Warning, Error
+NavigationViewPaneDisplayMode: Left, LeftMinimal, LeftFluent, Top, Bottom
+```
+
+---
+
+## Patterns used in Borderless
+
+| Need | Choice |
+|---|---|
+| Main window | `FluentWindow` + `TitleBar` + Mica |
+| Primary action FAB | `Button` `Appearance="Primary"` + `SymbolIcon Add24` + `CornerRadius` |
+| Rule rows | `Card` + `CardAction` |
+| Option toggles | `ToggleSwitch` inside `Card` |
+| Status chips | `InfoBadge` (`Value` + `Severity`) |
+| Add/edit UI | Custom right sidebar (not `ContentDialog`) |
+| Form fields | `ui:TextBox` with `PlaceholderText` |
+
+Example FAB:
+
+```xml
+<ui:Button Width="56" Height="56"
+           Appearance="Primary"
+           CornerRadius="28"
+           Icon="{ui:SymbolIcon Add24}"
+           ToolTip="Add"
+           Click="OnAddClick" />
+```
+
+---
+
+## Dynamic resources (theme-aware)
+
+Prefer these over hard-coded brushes when possible:
+
+```xml
+{DynamicResource ApplicationBackgroundBrush}
+{DynamicResource TextFillColorPrimaryBrush}
+{DynamicResource ControlElevationBorderBrush}
+{DynamicResource CardBackgroundFillColorDefaultBrush}
+{DynamicResource AccentTextFillColorPrimaryBrush}
+```
+
+Exact keys depend on active theme dictionaries — inspect live resources or Gallery if a key is missing.
+
+---
+
+## Tips / pitfalls
+
+1. Always merge `ThemesDictionary` + `ControlsDictionary` in `App.xaml` or Fluent controls look unstyled / broken.
+2. `InfoBadge` text goes in **`Value`**, not `Content`.
+3. Icons on buttons: `Icon="{ui:SymbolIcon Name24}"` markup extension.
+4. `ContentDialog` needs a live `ContentDialogHost` in the visual tree; host must cover the window area.
+5. Code-behind window class must match XAML root (`FluentWindow` ↔ `FluentWindow`).
+6. For MVVM apps, WPF-UI offers services: `INavigationService`, `ISnackbarService`, `IContentDialogService`.
+7. Explore controls visually with the **WPF UI Gallery** store app.
+
+---
+
+## Full control list (WPF-UI 4.3 public UI types)
+
+`Anchor`, `Arc`, `AutoSuggestBox`, `Badge`, `BreadcrumbBar`, `BreadcrumbBarItem`, `Button`, `CalendarDatePicker`, `Card`, `CardAction`, `CardColor`, `CardControl`, `CardExpander`, `ClientAreaBorder`, `ContentDialog`, `ContentDialogHost`, `DataGrid`, `DropDownButton`, `DynamicScrollBar`, `DynamicScrollViewer`, `FluentWindow`, `Flyout`, `FontIcon`, `GridView`, `HyperlinkButton`, `Image`, `ImageIcon`, `InfoBadge`, `InfoBar`, `ListView`, `ListViewItem`, `LoadingScreen`, `MenuItem`, `MessageBox`, `NavigationView`, `NavigationViewItem`, `NavigationViewItemHeader`, `NavigationViewItemSeparator`, `NumberBox`, `PasswordBox`, `ProgressRing`, `RatingControl`, `RichTextBox`, `Snackbar`, `SnackbarPresenter`, `SplitButton`, `SymbolIcon`, `TabView`, `TabViewItem`, `TextBlock`, `TextBox`, `ThumbRate`, `TimePicker`, `TitleBar`, `ToggleSwitch`, `TreeGrid`, `TreeGridHeader`, `TreeGridItem`, `TreeViewItem`, `VirtualizingGridView`, `VirtualizingItemsControl`, `VirtualizingWrapPanel`
+
+Enums / helpers also live under `Wpf.Ui.Controls` (appearance, severity, symbol sets, navigation modes, etc.).

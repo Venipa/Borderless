@@ -1,0 +1,108 @@
+<Page x:Class="Borderless.App.Views.SettingsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:loc="clr-namespace:Borderless.App.Localization"
+      xmlns:converters="clr-namespace:Borderless.App.Converters"
+      ScrollViewer.CanContentScroll="False"
+      HorizontalAlignment="Stretch"
+      VerticalAlignment="Stretch">
+    <Page.Resources>
+        <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+    </Page.Resources>
+    <ScrollViewer x:Name="SettingsScrollViewer"
+                  Padding="24,16,24,24"
+                  HorizontalScrollBarVisibility="Disabled"
+                  VerticalScrollBarVisibility="Auto"
+                  HorizontalContentAlignment="Stretch"
+                  CanContentScroll="False">
+        <StackPanel HorizontalAlignment="Stretch">
+            <ui:TextBlock Text="{loc:Loc SettingsTitle}"
+                          FontTypography="Title"
+                          Appearance="Primary" />
+            <ui:TextBlock Text="{loc:Loc SettingsSubtitle}"
+                          FontTypography="Caption"
+                          Appearance="Secondary"
+                          TextWrapping="Wrap"
+                          Margin="0,6,0,14" />
+
+            <Border Height="1"
+                    Margin="0,0,0,16"
+                    HorizontalAlignment="Stretch"
+                    Background="{DynamicResource DividerStrokeColorDefaultBrush}"
+                    SnapsToDevicePixels="True" />
+
+            <ui:TextBlock Text="{loc:Loc SettingsGeneralGroup}"
+                          FontTypography="BodyStrong"
+                          Appearance="Primary"
+                          Margin="0,0,0,10" />
+
+            <ui:Card Padding="16" Margin="0,0,0,10" HorizontalAlignment="Stretch">
+                <ui:ToggleSwitch Content="{loc:Loc SettingsStartOnStartup}"
+                                 IsChecked="{Binding Settings.StartOnStartup}" />
+            </ui:Card>
+            <ui:Card Padding="16" Margin="0,0,0,20" HorizontalAlignment="Stretch">
+                <ui:ToggleSwitch Content="{loc:Loc SettingsCloseToTray}"
+                                 IsChecked="{Binding Settings.CloseToTray}" />
+            </ui:Card>
+
+            <ui:TextBlock Text="{loc:Loc SettingsUpdaterGroup}"
+                          FontTypography="BodyStrong"
+                          Appearance="Primary"
+                          Margin="0,0,0,10" />
+
+            <ui:Card Padding="16" Margin="0,0,0,10" HorizontalAlignment="Stretch">
+                <ui:ToggleSwitch Content="{loc:Loc SettingsEnableUpdater}"
+                                 IsChecked="{Binding Settings.UpdaterEnabled}" />
+            </ui:Card>
+            <ui:Card Padding="16" Margin="0,0,0,10" HorizontalAlignment="Stretch">
+                <ui:ToggleSwitch Content="{loc:Loc SettingsAutoUpdate}"
+                                 IsChecked="{Binding Settings.AutoUpdateWithoutConfirmation}"
+                                 IsEnabled="{Binding Settings.UpdaterEnabled}" />
+            </ui:Card>
+            <ui:Card Padding="16" Margin="0,0,0,20" HorizontalAlignment="Stretch">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+                        <ui:TextBlock Text="{loc:Loc SettingsCheckUpdates}"
+                                      FontTypography="Body"
+                                      Appearance="Primary" />
+                        <ui:TextBlock Text="{Binding Settings.UpdateStatusMessage}"
+                                      FontTypography="Caption"
+                                      Appearance="Secondary"
+                                      TextWrapping="Wrap"
+                                      Margin="0,4,0,0" />
+                    </StackPanel>
+                    <ui:Button Grid.Column="1"
+                               Content="{loc:Loc SettingsCheckUpdatesButton}"
+                               Appearance="Secondary"
+                               Command="{Binding Settings.CheckForUpdatesCommand}"
+                               IsEnabled="{Binding Settings.IsCheckingForUpdates, Converter={StaticResource InverseBooleanConverter}}"
+                               VerticalAlignment="Center" />
+                </Grid>
+            </ui:Card>
+
+            <ui:TextBlock Text="{loc:Loc SettingsAboutGroup}"
+                          FontTypography="BodyStrong"
+                          Appearance="Primary"
+                          Margin="0,0,0,10" />
+
+            <ui:Card Padding="16" HorizontalAlignment="Stretch">
+                <StackPanel>
+                    <ui:TextBlock Text="{Binding Settings.AppVersionText}"
+                                  FontTypography="Body"
+                                  Appearance="Primary" />
+                    <ui:TextBlock Text="{Binding Settings.AppAuthorText}"
+                                  FontTypography="Caption"
+                                  Appearance="Secondary"
+                                  Margin="0,4,0,10" />
+                    <ui:HyperlinkButton Content="{Binding Settings.RepositoryUrl}"
+                                        Command="{Binding Settings.OpenRepositoryCommand}" />
+                </StackPanel>
+            </ui:Card>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

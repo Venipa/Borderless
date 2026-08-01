@@ -1,0 +1,167 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Parse version from tag
+        id: version
+        shell: pwsh
+        run: |
+          $tag = "${{ github.ref_name }}"
+          if ($tag -notmatch '^v(?<version>\d+\.\d+\.\d+\.\d+)$') {
+            throw "Tag must match vMAJOR.MINOR.PATCH.BUILD (e.g. v1.0.0.0). Got: $tag"
+          }
+
+          $version = $Matches.version
+          Write-Host "Tag=$tag Version=$version"
+          "tag=$tag" >> $env:GITHUB_OUTPUT
+          "version=$version" >> $env:GITHUB_OUTPUT
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "9.0.x"
+
+      - name: Publish
+        shell: pwsh
+        run: |
+          $v = "${{ steps.version.outputs.version }}"
+          $repo = "${{ github.repository }}"
+          $repoUrl = "https://github.com/$repo"
+          $releasesApi = "https://api.github.com/repos/$repo/releases/latest"
+          $releasesPage = "https://github.com/$repo/releases"
+
+          Write-Host "GitHubRepository=$repo"
+          Write-Host "UpdateReleasesApiUrl=$releasesApi"
+
+          dotnet publish Borderless.App/Borderless.App.csproj `
+            -c Release `
+            -r win-x64 `
+            --self-contained true `
+            -o publish `
+            -p:Version=$v `
+            -p:AssemblyVersion=$v `
+            -p:FileVersion=$v `
+            -p:InformationalVersion=$v `
+            -p:GitHubRepository=$repo `
+            -p:RepositoryUrl=$repoUrl `
+            -p:UpdateReleasesApiUrl=$releasesApi `
+            -p:UpdateReleasesPageUrl=$releasesPage
+
+      - name: Ensure VERSION + update.json
+        shell: pwsh
+        run: |
+          $v = "${{ steps.version.outputs.version }}"
+          $repo = "${{ github.repository }}"
+          $repoUrl = "https://github.com/$repo"
+          $releasesApi = "https://api.github.com/repos/$repo/releases/latest"
+          $releasesPage = "https://github.com/$repo/releases"
+          $updateJson = @{
+            repository = $repo
+            releasesApiUrl = $releasesApi
+            releasesPageUrl = $releasesPage
+            repositoryUrl = $repoUrl
+          } | ConvertTo-Json -Compress
+
+          Set-Content -Path publish/VERSION -Value $v -NoNewline -Encoding utf8
+          Set-Content -Path VERSION -Value $v -NoNewline -Encoding utf8
+          Set-Content -Path publish/update.json -Value $updateJson -Encoding utf8
+          Copy-Item publish/update.json update.json -Force
+          Get-Content publish/VERSION
+          Get-Content publish/update.json
+
+      - name: Package zip
+        shell: pwsh
+        run: |
+          $zip = "Borderless-${{ steps.version.outputs.version }}-win-x64.zip"
+          if (Test-Path $zip) { Remove-Item $zip -Force }
+          Compress-Archive -Path publish\* -DestinationPath $zip -CompressionLevel Optimal
+          Get-Item $zip | Format-List Name, Length
+
+      - name: Install Inno Setup
+        shell: pwsh
+        run: |
+          $iscc = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
+          if (Test-Path $iscc) {
+            Write-Host "Inno Setup already installed: $iscc"
+            exit 0
+          }
+          choco install innosetup -y --no-progress
+          if (-not (Test-Path $iscc)) {
+            throw "ISCC.exe not found after install: $iscc"
+          }
+
+      - name: Build Inno Setup installer
+        shell: pwsh
+        run: |
+          $v = "${{ steps.version.outputs.version }}"
+          $iscc = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
+          $src = (Resolve-Path "publish").Path
+          $setup = "Borderless-$v-win-x64-setup.exe"
+          if (Test-Path $setup) { Remove-Item $setup -Force }
+
+          & $iscc /Q `
+            "/DMyAppVersion=$v" `
+            "/DMyAppSourceDir=$src" `
+            "installer\Borderless.iss"
+
+          if ($LASTEXITCODE -ne 0) { throw "ISCC failed with exit code $LASTEXITCODE" }
+          if (-not (Test-Path $setup)) { throw "Missing setup: $setup" }
+          Get-Item $setup | Format-List Name, Length
+
+      - name: Build release notes from commits
+        shell: pwsh
+        run: |
+          $tag = "${{ steps.version.outputs.tag }}"
+          $prev = (git describe --tags --abbrev=0 "$($tag)^" 2>$null | Out-String).Trim()
+          if ($LASTEXITCODE -ne 0) { $prev = "" }
+
+          if ([string]::IsNullOrWhiteSpace($prev)) {
+            Write-Host "No previous tag — listing all commits reachable from $tag"
+            $commits = git log --pretty=format:"- %s (%h)" $tag
+          }
+          else {
+            Write-Host "Commits: $prev..$tag"
+            $commits = git log --pretty=format:"- %s (%h)" "$prev..$tag"
+          }
+
+          if ([string]::IsNullOrWhiteSpace($commits)) {
+            $commits = "- No commits listed for this range."
+          }
+
+          $body = "## Changes`n`n$commits`n"
+          Set-Content -Path release-notes.md -Value $body -Encoding utf8
+          Get-Content release-notes.md
+
+      - name: Create draft release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: pwsh
+        run: |
+          $tag = "${{ steps.version.outputs.tag }}"
+          $version = "${{ steps.version.outputs.version }}"
+          $zip = "Borderless-$version-win-x64.zip"
+          $setup = "Borderless-$version-win-x64-setup.exe"
+
+          gh release create $tag `
+            --draft `
+            --title "Borderless $version" `
+            --notes-file release-notes.md `
+            $zip `
+            $setup `
+            VERSION `
+            update.json

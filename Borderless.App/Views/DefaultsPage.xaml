@@ -1,0 +1,70 @@
+<Page x:Class="Borderless.App.Views.DefaultsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:loc="clr-namespace:Borderless.App.Localization"
+      ScrollViewer.CanContentScroll="False"
+      HorizontalAlignment="Stretch"
+      VerticalAlignment="Stretch">
+    <ScrollViewer x:Name="DefaultsScrollViewer"
+                  Padding="24,16,24,24"
+                  HorizontalScrollBarVisibility="Disabled"
+                  VerticalScrollBarVisibility="Auto"
+                  HorizontalContentAlignment="Stretch"
+                  CanContentScroll="False">
+        <StackPanel HorizontalAlignment="Stretch">
+            <ui:TextBlock Text="{loc:Loc DefaultsTitle}"
+                          FontTypography="Title"
+                          Appearance="Primary" />
+            <ui:TextBlock Text="{loc:Loc DefaultsSubtitle}"
+                          FontTypography="Caption"
+                          Appearance="Secondary"
+                          TextWrapping="Wrap"
+                          Margin="0,6,0,14" />
+
+            <Border Height="1"
+                    Margin="0,0,0,16"
+                    HorizontalAlignment="Stretch"
+                    Background="{DynamicResource DividerStrokeColorDefaultBrush}"
+                    SnapsToDevicePixels="True" />
+
+            <ui:TextBlock Text="{loc:Loc GroupVideo}"
+                          FontTypography="BodyStrong"
+                          Appearance="Primary"
+                          Margin="0,0,0,10" />
+
+            <ui:Card Padding="16" Margin="0,0,0,10" HorizontalAlignment="Stretch">
+                <StackPanel>
+                    <ui:ToggleSwitch Content="{loc:Loc ToggleBorderless}"
+                                     IsChecked="{Binding Settings.DefaultIsBorderless}"
+                                     Margin="0,0,0,12" />
+                    <ui:ToggleSwitch Content="{loc:Loc ToggleAlwaysOnTop}"
+                                     IsChecked="{Binding Settings.DefaultIsAlwaysOnTop}"
+                                     Margin="0,0,0,12" />
+                    <ui:ToggleSwitch Content="{loc:Loc ToggleExpandToScreen}"
+                                     IsChecked="{Binding Settings.DefaultIsExpandToScreen}" />
+                </StackPanel>
+            </ui:Card>
+
+            <ui:TextBlock Text="{loc:Loc GroupAudio}"
+                          FontTypography="BodyStrong"
+                          Appearance="Primary"
+                          Margin="0,10,0,10" />
+
+            <ui:Card Padding="16" Margin="0,0,0,10" HorizontalAlignment="Stretch">
+                <ui:ToggleSwitch Content="{loc:Loc ToggleMuteBackground}"
+                                 IsChecked="{Binding Settings.DefaultMuteInBackground}" />
+            </ui:Card>
+
+            <ui:TextBlock Text="{loc:Loc GroupGeneral}"
+                          FontTypography="BodyStrong"
+                          Appearance="Primary"
+                          Margin="0,10,0,10" />
+
+            <ui:Card Padding="16" HorizontalAlignment="Stretch">
+                <ui:ToggleSwitch Content="{loc:Loc ToggleRuleEnabled}"
+                                 IsChecked="{Binding Settings.DefaultIsEnabled}" />
+            </ui:Card>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

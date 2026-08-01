@@ -1,0 +1,247 @@
+<Page x:Class="Borderless.App.Views.RulesPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:models="clr-namespace:Borderless.App.Models"
+             xmlns:converters="clr-namespace:Borderless.App.Converters"
+             xmlns:loc="clr-namespace:Borderless.App.Localization"
+             ScrollViewer.CanContentScroll="False"
+             HorizontalAlignment="Stretch"
+             VerticalAlignment="Stretch">
+    <Page.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter" />
+
+        <Style x:Key="RuleFeatureIconStyle" TargetType="ui:SymbolIcon">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Margin" Value="0,0,8,0" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+        </Style>
+
+        <Style x:Key="RuleListItemStyle" TargetType="ui:ListViewItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="VerticalContentAlignment" Value="Stretch" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Margin" Value="0,0,0,4" />
+            <Setter Property="Height" Value="48" />
+            <Setter Property="MinHeight" Value="48" />
+            <Setter Property="MaxHeight" Value="48" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ui:ListViewItem">
+                        <Border x:Name="RowBorder"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                CornerRadius="6"
+                                Padding="0"
+                                SnapsToDevicePixels="True">
+                            <ContentPresenter VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="RowBorder"
+                                        Property="Background"
+                                        Value="{DynamicResource SubtleFillColorSecondaryBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="RowBorder"
+                                        Property="Background"
+                                        Value="{DynamicResource SubtleFillColorTertiaryBrush}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+
+    <Grid Margin="24,16,24,24"
+          HorizontalAlignment="Stretch"
+          VerticalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0"
+                    Margin="0,0,0,12"
+                    HorizontalAlignment="Stretch">
+            <ui:TextBlock Text="{loc:Loc ProcessRulesTitle}"
+                          FontTypography="Title"
+                          Appearance="Primary" />
+            <ui:TextBlock Text="{loc:Loc ProcessRulesSubtitle}"
+                          FontTypography="Caption"
+                          Appearance="Secondary"
+                          TextWrapping="Wrap"
+                          Margin="0,4,0,0" />
+        </StackPanel>
+
+        <ui:TextBox Grid.Row="1"
+                    Text="{Binding RulesSearchText, UpdateSourceTrigger=PropertyChanged}"
+                    PlaceholderText="{loc:Loc SearchRulesPlaceholder}"
+                    Icon="{ui:SymbolIcon Search24}"
+                    ClearButtonEnabled="True"
+                    Margin="0,0,0,12"
+                    Visibility="{Binding HasRules, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+        <Border Grid.Row="2"
+                Height="1"
+                Margin="0,0,0,8"
+                HorizontalAlignment="Stretch"
+                Background="{DynamicResource DividerStrokeColorDefaultBrush}"
+                SnapsToDevicePixels="True"
+                Visibility="{Binding HasRules, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+        <Grid Grid.Row="3" HorizontalAlignment="Stretch">
+            <ui:ListView x:Name="RulesList"
+                         ItemsSource="{Binding FilteredRules}"
+                         SelectedItem="{Binding SelectedRule}"
+                         BorderThickness="0"
+                         Background="Transparent"
+                         HorizontalAlignment="Stretch"
+                         HorizontalContentAlignment="Stretch"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         VerticalAlignment="Stretch"
+                         Visibility="{Binding HasVisibleRules, Converter={StaticResource BooleanToVisibilityConverter}}"
+                         ItemContainerStyle="{StaticResource RuleListItemStyle}">
+                <ui:ListView.ItemTemplate>
+                    <DataTemplate DataType="{x:Type models:ProcessRule}">
+                        <Grid Height="48"
+                              Cursor="Hand"
+                              Background="Transparent"
+                              MouseLeftButtonUp="OnEditRuleClick"
+                              Tag="{Binding}">
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsEnabled}" Value="False">
+                                            <Setter Property="Opacity" Value="0.45" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Column="0"
+                                    Width="3"
+                                    Height="22"
+                                    CornerRadius="1.5"
+                                    VerticalAlignment="Center"
+                                    Margin="6,0,0,0"
+                                    Background="{DynamicResource AccentFillColorDefaultBrush}"
+                                    Visibility="{Binding IsEnabled, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+                            <Grid Grid.Column="1"
+                                  VerticalAlignment="Center"
+                                  Margin="12,0,12,0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <ui:TextBlock Grid.Row="0"
+                                              Text="{Binding DisplayName}"
+                                              FontTypography="Body"
+                                              Appearance="Primary"
+                                              TextTrimming="CharacterEllipsis" />
+                                <TextBlock Grid.Row="1"
+                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                           FontSize="11"
+                                           Margin="0,1,0,0"
+                                           TextTrimming="CharacterEllipsis">
+                                    <Run Text="{Binding ExecutableName, Mode=OneWay, TargetNullValue=—}" />
+                                    <Run Text="  ·  " />
+                                    <Run Text="{Binding WindowTitle, Mode=OneWay, TargetNullValue=—}" />
+                                </TextBlock>
+                            </Grid>
+
+                            <StackPanel Grid.Column="2"
+                                        Orientation="Horizontal"
+                                        VerticalAlignment="Center"
+                                        Margin="0,0,4,0">
+                                <ui:SymbolIcon Symbol="DesktopPulse24"
+                                               Style="{StaticResource RuleFeatureIconStyle}"
+                                               ToolTip="{loc:Loc BadgeBorderless}"
+                                               Visibility="{Binding IsBorderless, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                <ui:SymbolIcon Symbol="Pin24"
+                                               Style="{StaticResource RuleFeatureIconStyle}"
+                                               ToolTip="{loc:Loc BadgeAlwaysOnTop}"
+                                               Visibility="{Binding IsAlwaysOnTop, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                <ui:SymbolIcon Symbol="FullScreenMaximize24"
+                                               Style="{StaticResource RuleFeatureIconStyle}"
+                                               ToolTip="{loc:Loc BadgeExpandToScreen}"
+                                               Visibility="{Binding IsExpandToScreen, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                <ui:SymbolIcon Symbol="SpeakerMute24"
+                                               Style="{StaticResource RuleFeatureIconStyle}"
+                                               ToolTip="{loc:Loc BadgeMuteBackground}"
+                                               Visibility="{Binding MuteInBackground, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                            </StackPanel>
+
+                            <ui:Button Grid.Column="3"
+                                       Width="28"
+                                       Height="28"
+                                       Margin="0,0,6,0"
+                                       Padding="0"
+                                       Appearance="Transparent"
+                                       Icon="{ui:SymbolIcon Delete24}"
+                                       ToolTip="{loc:Loc DeleteRuleTooltip}"
+                                       Click="OnDeleteRuleClick"
+                                       Tag="{Binding}"
+                                       VerticalAlignment="Center" />
+                        </Grid>
+                    </DataTemplate>
+                </ui:ListView.ItemTemplate>
+            </ui:ListView>
+
+            <StackPanel VerticalAlignment="Top"
+                        HorizontalAlignment="Left"
+                        Margin="4,16,0,0"
+                        Visibility="{Binding ShowRulesEmpty, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <ui:TextBlock Text="{loc:Loc EmptyTitle}"
+                              FontTypography="BodyStrong"
+                              Appearance="Primary" />
+                <ui:TextBlock Text="{loc:Loc EmptySubtitle}"
+                              FontTypography="Caption"
+                              Appearance="Secondary"
+                              Margin="0,4,0,0" />
+            </StackPanel>
+
+            <StackPanel VerticalAlignment="Top"
+                        HorizontalAlignment="Left"
+                        Margin="4,16,0,0"
+                        Visibility="{Binding ShowSearchEmpty, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <ui:TextBlock Text="{loc:Loc SearchEmptyTitle}"
+                              FontTypography="BodyStrong"
+                              Appearance="Primary" />
+                <ui:TextBlock Text="{loc:Loc SearchEmptySubtitle}"
+                              FontTypography="Caption"
+                              Appearance="Secondary"
+                              Margin="0,4,0,0" />
+            </StackPanel>
+
+            <ui:Button x:Name="AddRuleButton"
+                       Width="52"
+                       Height="52"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Bottom"
+                       Margin="0,0,4,4"
+                       Appearance="Primary"
+                       CornerRadius="26"
+                       ToolTip="{loc:Loc AddRuleTooltip}"
+                       Click="OnAddRuleClick"
+                       Icon="{ui:SymbolIcon Add24}"
+                       Visibility="{Binding ShowAddButton, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        </Grid>
+    </Grid>
+</Page>

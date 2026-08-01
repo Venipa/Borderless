@@ -1,0 +1,63 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net9.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UseWPF>true</UseWPF>
+        <UseWindowsForms>true</UseWindowsForms>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
+        <ApplicationIcon>Resources\app.ico</ApplicationIcon>
+        <NeutralLanguage>en</NeutralLanguage>
+        <AssemblyName>Borderless</AssemblyName>
+        <RootNamespace>Borderless.App</RootNamespace>
+        <Product>Borderless</Product>
+        <Authors>Venipa</Authors>
+        <Company>Venipa</Company>
+        <Copyright>Copyright (c) Venipa</Copyright>
+        <!-- Overridden by CI from github.repository -->
+        <GitHubRepository Condition="'$(GitHubRepository)' == ''">Venipa/Borderless</GitHubRepository>
+        <RepositoryUrl Condition="'$(RepositoryUrl)' == ''">https://github.com/$(GitHubRepository)</RepositoryUrl>
+        <UpdateReleasesApiUrl Condition="'$(UpdateReleasesApiUrl)' == ''">https://api.github.com/repos/$(GitHubRepository)/releases/latest</UpdateReleasesApiUrl>
+        <UpdateReleasesPageUrl Condition="'$(UpdateReleasesPageUrl)' == ''">https://github.com/$(GitHubRepository)/releases</UpdateReleasesPageUrl>
+        <!-- Overridden by CI: -p:Version=1.0.0.0 from tag v1.0.0.0 -->
+        <Version>0.0.0.0</Version>
+        <AssemblyVersion>$(Version)</AssemblyVersion>
+        <FileVersion>$(Version)</FileVersion>
+        <InformationalVersion>$(Version)</InformationalVersion>
+    </PropertyGroup>
+
+    <Target Name="WriteVersionFile" AfterTargets="Build">
+        <WriteLinesToFile File="$(TargetDir)VERSION"
+                          Lines="$(Version)"
+                          Overwrite="true"
+                          WriteOnlyWhenDifferent="true" />
+        <WriteLinesToFile File="$(TargetDir)update.json"
+                          Lines="{&quot;repository&quot;:&quot;$(GitHubRepository)&quot;,&quot;releasesApiUrl&quot;:&quot;$(UpdateReleasesApiUrl)&quot;,&quot;releasesPageUrl&quot;:&quot;$(UpdateReleasesPageUrl)&quot;,&quot;repositoryUrl&quot;:&quot;$(RepositoryUrl)&quot;}"
+                          Overwrite="true"
+                          WriteOnlyWhenDifferent="true" />
+    </Target>
+
+    <Target Name="WriteVersionFileOnPublish" AfterTargets="Publish">
+        <WriteLinesToFile File="$(PublishDir)VERSION"
+                          Lines="$(Version)"
+                          Overwrite="true"
+                          WriteOnlyWhenDifferent="true" />
+        <WriteLinesToFile File="$(PublishDir)update.json"
+                          Lines="{&quot;repository&quot;:&quot;$(GitHubRepository)&quot;,&quot;releasesApiUrl&quot;:&quot;$(UpdateReleasesApiUrl)&quot;,&quot;releasesPageUrl&quot;:&quot;$(UpdateReleasesPageUrl)&quot;,&quot;repositoryUrl&quot;:&quot;$(RepositoryUrl)&quot;}"
+                          Overwrite="true"
+                          WriteOnlyWhenDifferent="true" />
+    </Target>
+
+    <ItemGroup>
+      <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+      <PackageReference Include="WPF-UI" Version="4.3.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Resource Include="Resources\Iconx*.png" />
+      <Resource Include="Resources\app.ico" />
+    </ItemGroup>
+
+</Project>
