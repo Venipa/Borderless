@@ -58,10 +58,75 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 [Files]
 Source: "{#MyAppSourceDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
+[InstallDelete]
+; Wipe previous payload so old self-contained runtime DLLs cannot mix with framework-dependent builds.
+Type: filesandordirs; Name: "{app}\*"
+
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
 [Run]
-Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#MyAppName}}"; Flags: nowait postinstall skipifsilent
+; Always elevate post-install launch. Default Inno de-elevates to the original user,
+; which breaks highestAvailable (no UAC) and causes runtime errors.
+Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#MyAppName}}"; Verb: runas; Flags: nowait postinstall skipifsilent shellexec
+
+[Code]
+// WPF needs Microsoft.WindowsDesktop.App — plain ".NET Runtime" is not enough.
+function IsDotNetDesktop9Installed: Boolean;
+var
+  FindRec: TFindRec;
+  SharedDir: String;
+begin
+  Result := False;
+  SharedDir := ExpandConstant('{commonpf64}\dotnet\shared\Microsoft.WindowsDesktop.App');
+  if not DirExists(SharedDir) then
+    SharedDir := ExpandConstant('{pf}\dotnet\shared\Microsoft.WindowsDesktop.App');
+  if not DirExists(SharedDir) then
+    Exit;
+  if FindFirst(SharedDir + '\9.*', FindRec) then
+  begin
+    try
+      Result := True;
+    finally
+      FindClose(FindRec);
+    end;
+  end;
+end;
+
+function InitializeSetup: Boolean;
+var
+  ErrorCode: Integer;
+begin
+  Result := True;
+  if IsDotNetDesktop9Installed then
+    Exit;
+
+  if MsgBox(
+       '{#MyAppName} needs the .NET 9 Desktop Runtime (x64).' + #13#10 +
+       'The normal ".NET Runtime" package is not enough for this WPF app.' + #13#10#13#10 +
+       'Open the Desktop Runtime download now?',
+       mbConfirmation, MB_YESNO) = IDYES then
+  begin
+    ShellExec(
+      'open',
+      'https://aka.ms/dotnet/9.0/windowsdesktop-runtime-win-x64.exe',
+      '', '', SW_SHOWNORMAL, ewNoWait, ErrorCode);
+  end;
+
+  Result := MsgBox(
+    'Install .NET 9 Desktop Runtime (x64), then continue.' + #13#10#13#10 +
+    'Continue Borderless setup anyway?',
+    mbConfirmation, MB_YESNO) = IDYES;
+end;
+
+procedure CurStepChanged(CurStep: TSetupStep);
+begin
+  // Belt-and-suspenders: clear {app} before file copy on upgrade.
+  if CurStep = ssInstall then
+  begin
+    if DirExists(ExpandConstant('{app}')) then
+      DelTree(ExpandConstant('{app}'), False, True, True);
+  end;
+end;
