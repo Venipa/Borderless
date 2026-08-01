@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel;
-using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
@@ -11,7 +9,6 @@ using Borderless.App.Models;
 using Borderless.App.ViewModels;
 using Borderless.App.Views;
 using Wpf.Ui.Controls;
-using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
 using Button = Wpf.Ui.Controls.Button;
 using Image = System.Windows.Controls.Image;
 using TextBlock = System.Windows.Controls.TextBlock;
@@ -27,7 +24,6 @@ public partial class MainWindow : FluentWindow
 
     private static readonly Uri AppIconUri = new("pack://application:,,,/Resources/Iconx24.png");
 
-    private NotifyIcon? _trayIcon;
     private bool _forceClose;
     private BitmapImage? _toggleBrandIcon;
 
@@ -38,6 +34,8 @@ public partial class MainWindow : FluentWindow
         ViewModel.PropertyChanged += OnViewModelPropertyChanged;
         Loaded += OnLoaded;
         Closed += OnClosed;
+        IsVisibleChanged += OnIsVisibleChanged;
+        Loc.Source.PropertyChanged += OnLocChanged;
     }
 
     private MainViewModel ViewModel => (MainViewModel)DataContext;
@@ -45,7 +43,7 @@ public partial class MainWindow : FluentWindow
     private void OnLoaded(object sender, RoutedEventArgs e)
     {
         RootNavigation.Navigate(typeof(RulesPage));
-        EnsureTrayIcon();
+        RefreshTrayToggleHeader();
         Dispatcher.BeginInvoke(ApplyToggleBrandContent, System.Windows.Threading.DispatcherPriority.Loaded);
         _ = ViewModel.Settings.CheckForUpdatesOnStartupAsync();
     }
@@ -154,12 +152,13 @@ public partial class MainWindow : FluentWindow
 
     private void OnClosed(object? sender, EventArgs e)
     {
-        if (_trayIcon is not null)
-        {
-            _trayIcon.Visible = false;
-            _trayIcon.Dispose();
-            _trayIcon = null;
-        }
+        Loc.Source.PropertyChanged -= OnLocChanged;
+        AppTrayIcon.Dispose();
+    }
+
+    private void OnLocChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        RefreshTrayToggleHeader();
     }
 
     private void OnNavigated(NavigationView sender, NavigatedEventArgs args)
@@ -211,88 +210,56 @@ public partial class MainWindow : FluentWindow
         {
             e.Cancel = true;
             Hide();
-            EnsureTrayIcon();
         }
     }
 
-    private void EnsureTrayIcon()
+    private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
     {
-        if (_trayIcon is not null)
-        {
-            _trayIcon.Visible = true;
-            return;
-        }
-
-        _trayIcon = new NotifyIcon
-        {
-            Text = Loc.Get("AppTitle"),
-            Icon = LoadAppIcon(),
-            Visible = true
-        };
-        _trayIcon.MouseClick += OnTrayMouseClick;
-
-        var menu = new ContextMenuStrip();
-        menu.Items.Add(Loc.Get("TrayShow"), null, (_, _) => RestoreFromTray());
-        menu.Items.Add(Loc.Get("TrayQuit"), null, (_, _) => ExitFromTray());
-        _trayIcon.ContextMenuStrip = menu;
+        RefreshTrayToggleHeader();
     }
 
-    private static System.Drawing.Icon LoadAppIcon()
+    private void OnTrayMenuOpened(object sender, RoutedEventArgs e)
     {
-        try
-        {
-            var exePath = Environment.ProcessPath;
-            if (!string.IsNullOrWhiteSpace(exePath))
-            {
-                var associated = System.Drawing.Icon.ExtractAssociatedIcon(exePath);
-                if (associated is not null)
-                {
-                    return associated;
-                }
-            }
-        }
-        catch
-        {
-            // Fall through to embedded resource.
-        }
-
-        try
-        {
-            var uri = new Uri("pack://application:,,,/Resources/app.ico");
-            var streamInfo = Application.GetResourceStream(uri);
-            if (streamInfo?.Stream is not null)
-            {
-                return new System.Drawing.Icon(streamInfo.Stream);
-            }
-        }
-        catch
-        {
-            // Fall through to default.
-        }
-
-        return SystemIcons.Application;
+        RefreshTrayToggleHeader();
     }
 
-    private void OnTrayMouseClick(object? sender, MouseEventArgs e)
+    private void OnTrayLeftClick(object sender, RoutedEventArgs e)
     {
-        if (e.Button == MouseButtons.Left)
-        {
-            RestoreFromTray();
-        }
+        ToggleWindowVisibility();
     }
 
-    private void RestoreFromTray()
+    private void OnTrayToggleClick(object sender, RoutedEventArgs e)
     {
-        Show();
-        WindowState = WindowState.Normal;
-        Activate();
-        EnsureTrayIcon();
+        ToggleWindowVisibility();
     }
 
-    private void ExitFromTray()
+    private void OnTrayQuitClick(object sender, RoutedEventArgs e)
     {
         _forceClose = true;
         Application.Current.Shutdown();
+    }
+
+    private void ToggleWindowVisibility()
+    {
+        if (IsVisible)
+        {
+            Hide();
+            return;
+        }
+
+        Show();
+        WindowState = WindowState.Normal;
+        Activate();
+    }
+
+    private void RefreshTrayToggleHeader()
+    {
+        if (TrayToggleMenuItem is null)
+        {
+            return;
+        }
+
+        TrayToggleMenuItem.Header = IsVisible ? Loc.Get("TrayHide") : Loc.Get("TrayShow");
     }
 
     private void OpenSidebar()

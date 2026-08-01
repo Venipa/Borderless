@@ -17,7 +17,7 @@ Windows utility that forces apps into borderless windowed mode. Match by window 
 - Mute process audio when the window is in the background
 - Rule defaults, search, Fluent UI (WPF-UI)
 - System tray, start with Windows, optional updates from GitHub Releases
-- English and German UI
+- English, German, Spanish, French, Italian, Portuguese, Japanese, Korean, Polish, Ukrainian, Simplified Chinese, Traditional Chinese
 
 ## Install
 

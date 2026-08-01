@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AppTitle" xml:space="preserve"><value>Borderless</value></data>
+  <data name="ProcessRulesTitle" xml:space="preserve"><value>规则</value></data>
+  <data name="ProcessRulesSubtitle" xml:space="preserve"><value>按标题和/或 exe 匹配，应用无边框、置顶与后台静音。</value></data>
+  <data name="LabelTitle" xml:space="preserve"><value>标题:</value></data>
+  <data name="LabelExe" xml:space="preserve"><value>Exe:</value></data>
+  <data name="BadgeBorderless" xml:space="preserve"><value>无边框</value></data>
+  <data name="BadgeAlwaysOnTop" xml:space="preserve"><value>置顶</value></data>
+  <data name="BadgeExpandToScreen" xml:space="preserve"><value>最大尺寸</value></data>
+  <data name="BadgeMuteBackground" xml:space="preserve"><value>后台静音</value></data>
+  <data name="EnabledFormat" xml:space="preserve"><value>已启用: {0}</value></data>
+  <data name="DeleteRuleTooltip" xml:space="preserve"><value>删除规则</value></data>
+  <data name="EmptyTitle" xml:space="preserve"><value>暂无规则</value></data>
+  <data name="EmptySubtitle" xml:space="preserve"><value>点 + 添加第一条规则。</value></data>
+  <data name="SearchRulesPlaceholder" xml:space="preserve"><value>搜索规则</value></data>
+  <data name="SearchEmptyTitle" xml:space="preserve"><value>无匹配</value></data>
+  <data name="SearchEmptySubtitle" xml:space="preserve"><value>换个标题或 exe 试试。</value></data>
+  <data name="AddRuleTooltip" xml:space="preserve"><value>添加规则</value></data>
+  <data name="AddRuleTitle" xml:space="preserve"><value>添加规则</value></data>
+  <data name="EditRuleTitle" xml:space="preserve"><value>编辑规则</value></data>
+  <data name="Save" xml:space="preserve"><value>保存</value></data>
+  <data name="Cancel" xml:space="preserve"><value>取消</value></data>
+  <data name="WindowTitleLabel" xml:space="preserve"><value>精确窗口标题</value></data>
+  <data name="WindowTitlePlaceholder" xml:space="preserve"><value>例如 Counter-Strike 2</value></data>
+  <data name="ExecutableNameLabel" xml:space="preserve"><value>可执行文件名</value></data>
+  <data name="ExecutableNamePlaceholder" xml:space="preserve"><value>例如 cs2.exe</value></data>
+  <data name="ToggleBorderless" xml:space="preserve"><value>无边框窗口</value></data>
+  <data name="ToggleAlwaysOnTop" xml:space="preserve"><value>始终置顶</value></data>
+  <data name="ToggleExpandToScreen" xml:space="preserve"><value>最大 / 铺满屏幕</value></data>
+  <data name="ToggleCustomDimension" xml:space="preserve"><value>自定义尺寸</value></data>
+  <data name="ToggleMuteBackground" xml:space="preserve"><value>后台静音</value></data>
+  <data name="ToggleRuleEnabled" xml:space="preserve"><value>启用规则</value></data>
+  <data name="GroupVideo" xml:space="preserve"><value>画面</value></data>
+  <data name="GroupAudio" xml:space="preserve"><value>音频</value></data>
+  <data name="GroupGeneral" xml:space="preserve"><value>常规</value></data>
+  <data name="EditDimensions" xml:space="preserve"><value>编辑</value></data>
+  <data name="CustomDimensionDialogTitle" xml:space="preserve"><value>自定义尺寸</value></data>
+  <data name="CustomDimensionDialogSubtitle" xml:space="preserve"><value>默认 X=0, Y=0 与全屏。宽/高为 0 时用显示器尺寸。</value></data>
+  <data name="CustomDimensionSummaryFormat" xml:space="preserve"><value>X={0}, Y={1}, {2}×{3}</value></data>
+  <data name="DimensionX" xml:space="preserve"><value>X</value></data>
+  <data name="DimensionY" xml:space="preserve"><value>Y</value></data>
+  <data name="DimensionWidth" xml:space="preserve"><value>宽度</value></data>
+  <data name="DimensionHeight" xml:space="preserve"><value>高度</value></data>
+  <data name="ValidationMatchRequired" xml:space="preserve"><value>请填写精确标题或 exe 名。</value></data>
+  <data name="ValidationDuplicateRule" xml:space="preserve"><value>已有相同标题和 exe 的规则。</value></data>
+  <data name="RuleStatusIdle" xml:space="preserve"><value>无匹配进程</value></data>
+  <data name="RuleStatusActive" xml:space="preserve"><value>进程已匹配</value></data>
+  <data name="RuleStatusError" xml:space="preserve"><value>应用出错</value></data>
+  <data name="RuleStatusDisabled" xml:space="preserve"><value>规则已禁用</value></data>
+  <data name="UntitledRule" xml:space="preserve"><value>未命名规则</value></data>
+  <data name="NavRules" xml:space="preserve"><value>规则</value></data>
+  <data name="NavDefaults" xml:space="preserve"><value>默认</value></data>
+  <data name="NavSettings" xml:space="preserve"><value>设置</value></data>
+  <data name="DefaultsTitle" xml:space="preserve"><value>默认值</value></data>
+  <data name="DefaultsSubtitle" xml:space="preserve"><value>新建规则时自动套用。</value></data>
+  <data name="SettingsTitle" xml:space="preserve"><value>设置</value></data>
+  <data name="SettingsSubtitle" xml:space="preserve"><value>应用行为与更新偏好。</value></data>
+  <data name="SettingsGeneralGroup" xml:space="preserve"><value>常规</value></data>
+  <data name="SettingsLanguageGroup" xml:space="preserve"><value>语言</value></data>
+  <data name="SettingsLanguageLabel" xml:space="preserve"><value>显示语言</value></data>
+  <data name="SettingsLanguageSystem" xml:space="preserve"><value>系统</value></data>
+  <data name="SettingsStartOnStartup" xml:space="preserve"><value>开机启动</value></data>
+  <data name="SettingsCloseToTray" xml:space="preserve"><value>关闭到托盘</value></data>
+  <data name="SettingsUpdaterGroup" xml:space="preserve"><value>更新</value></data>
+  <data name="SettingsEnableUpdater" xml:space="preserve"><value>启用更新器</value></data>
+  <data name="SettingsAutoUpdate" xml:space="preserve"><value>发现更新立即安装（不询问）</value></data>
+  <data name="SettingsCheckUpdates" xml:space="preserve"><value>检查更新</value></data>
+  <data name="SettingsCheckUpdatesButton" xml:space="preserve"><value>立即检查</value></data>
+  <data name="SettingsAboutGroup" xml:space="preserve"><value>关于</value></data>
+  <data name="AboutVersionFormat" xml:space="preserve"><value>版本 {0}</value></data>
+  <data name="AboutAuthorFormat" xml:space="preserve"><value>作者: {0}</value></data>
+  <data name="UpdateStatusIdle" xml:space="preserve"><value>尚未检查。</value></data>
+  <data name="UpdateChecking" xml:space="preserve"><value>正在查询 GitHub…</value></data>
+  <data name="UpdateNoneAvailable" xml:space="preserve"><value>已是最新。</value></data>
+  <data name="UpdateAvailableFormat" xml:space="preserve"><value>有更新 {0}（当前 {1}）。</value></data>
+  <data name="UpdateConfirmFormat" xml:space="preserve"><value>可用 {0}（当前 {1}）。立即下载安装？</value></data>
+  <data name="UpdateDownloading" xml:space="preserve"><value>正在下载…</value></data>
+  <data name="UpdateCheckFailed" xml:space="preserve"><value>无法读取发布信息。</value></data>
+  <data name="UpdateCheckErrorFormat" xml:space="preserve"><value>检查更新失败: {0}</value></data>
+  <data name="UpdateApplyErrorFormat" xml:space="preserve"><value>安装更新失败: {0}</value></data>
+  <data name="UpdateNoAsset" xml:space="preserve"><value>发布中无 setup/zip。</value></data>
+  <data name="TrayShow" xml:space="preserve"><value>显示</value></data>
+  <data name="TrayHide" xml:space="preserve"><value>隐藏</value></data>
+  <data name="TrayQuit" xml:space="preserve"><value>退出</value></data>
+</root>

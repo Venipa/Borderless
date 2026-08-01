@@ -46,8 +46,33 @@
                                  IsChecked="{Binding Settings.CloseToTray}" />
             </ui:Card>
 
-            <ui:TextBlock Text="{loc:Loc SettingsUpdaterGroup}"
+            <ui:TextBlock Text="{loc:Loc SettingsLanguageGroup}"
                           FontTypography="BodyStrong"
+                          Appearance="Primary"
+                          Margin="0,0,0,10" />
+
+            <ui:Card Padding="16" Margin="0,0,0,20" HorizontalAlignment="Stretch">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="220" />
+                    </Grid.ColumnDefinitions>
+                    <ui:TextBlock Text="{loc:Loc SettingsLanguageLabel}"
+                                  FontTypography="Body"
+                                  Appearance="Primary"
+                                  VerticalAlignment="Center"
+                                  Margin="0,0,12,0"
+                                  TextWrapping="Wrap" />
+                    <ComboBox Grid.Column="1"
+                              ItemsSource="{Binding Settings.LanguageOptions}"
+                              SelectedItem="{Binding Settings.SelectedLanguage}"
+                              DisplayMemberPath="DisplayName"
+                              MinHeight="32"
+                              VerticalAlignment="Center" />
+                </Grid>
+            </ui:Card>
+
+            <ui:TextBlock Text="{loc:Loc SettingsUpdaterGroup}"                          FontTypography="BodyStrong"
                           Appearance="Primary"
                           Margin="0,0,0,10" />
 

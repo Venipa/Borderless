@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        xmlns:tray="http://schemas.lepo.co/wpfui/2022/xaml/tray"
         xmlns:loc="clr-namespace:Borderless.App.Localization"
         xmlns:views="clr-namespace:Borderless.App.Views"
         mc:Ignorable="d"
@@ -19,6 +20,23 @@
         Closing="OnWindowClosing">
 
     <Grid>
+        <tray:NotifyIcon x:Name="AppTrayIcon"
+                         TooltipText="{loc:Loc AppTitle}"
+                         Icon="pack://application:,,,/Resources/Iconx24.png"
+                         FocusOnLeftClick="False"
+                         MenuOnRightClick="True"
+                         LeftClick="OnTrayLeftClick">
+            <tray:NotifyIcon.Menu>
+                <ContextMenu Opened="OnTrayMenuOpened">
+                    <MenuItem x:Name="TrayToggleMenuItem"
+                              Click="OnTrayToggleClick" />
+                    <Separator />
+                    <MenuItem Header="{loc:Loc TrayQuit}"
+                              Click="OnTrayQuitClick" />
+                </ContextMenu>
+            </tray:NotifyIcon.Menu>
+        </tray:NotifyIcon>
+
         <ui:NavigationView x:Name="RootNavigation"
                            PaneDisplayMode="Left"
                            IsBackButtonVisible="Collapsed"

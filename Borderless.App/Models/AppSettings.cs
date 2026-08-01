@@ -31,6 +31,11 @@ public sealed class AppSettings
 
     public bool CloseToTray { get; set; }
 
+    /// <summary>
+    /// UI language culture name (e.g. de, es-ES). Empty = system / OS default.
+    /// </summary>
+    public string UiLanguage { get; set; } = string.Empty;
+
     public bool UpdaterEnabled { get; set; }
 
     /// <summary>When true, apply updates immediately without asking.</summary>

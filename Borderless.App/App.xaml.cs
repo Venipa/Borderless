@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Windows;
+using Borderless.App.Localization;
 using Borderless.App.Services;
 using Borderless.App.ViewModels;
 using Wpf.Ui.Appearance;
@@ -16,11 +17,11 @@ public partial class App : Application
 
     protected override void OnStartup(StartupEventArgs e)
     {
-        ApplyUiCulture();
+        var settingsStore = new SettingsStore();
+        LanguageManager.Apply(settingsStore.Load().UiLanguage);
 
         ProcessCatalog = new ProcessCatalogService();
         var ruleStore = new RuleStore();
-        var settingsStore = new SettingsStore();
         var startupService = new StartupRegistrationService();
         var updateService = new UpdateService();
         var settings = new AppSettingsViewModel(settingsStore, startupService, updateService);
@@ -40,14 +41,5 @@ public partial class App : Application
         MainViewModel.Settings.Dispose();
         _ruleEngine?.Dispose();
         base.OnExit(e);
-    }
-
-    private static void ApplyUiCulture()
-    {
-        var culture = CultureInfo.CurrentUICulture;
-        CultureInfo.DefaultThreadCurrentCulture = culture;
-        CultureInfo.DefaultThreadCurrentUICulture = culture;
-        CultureInfo.CurrentCulture = culture;
-        CultureInfo.CurrentUICulture = culture;
     }
 }

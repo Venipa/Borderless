@@ -6,7 +6,6 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <UseWPF>true</UseWPF>
-        <UseWindowsForms>true</UseWindowsForms>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <ApplicationIcon>Resources\app.ico</ApplicationIcon>
         <NeutralLanguage>en</NeutralLanguage>
@@ -29,30 +28,19 @@
     </PropertyGroup>
 
     <Target Name="WriteVersionFile" AfterTargets="Build">
-        <WriteLinesToFile File="$(TargetDir)VERSION"
-                          Lines="$(Version)"
-                          Overwrite="true"
-                          WriteOnlyWhenDifferent="true" />
-        <WriteLinesToFile File="$(TargetDir)update.json"
-                          Lines="{&quot;repository&quot;:&quot;$(GitHubRepository)&quot;,&quot;releasesApiUrl&quot;:&quot;$(UpdateReleasesApiUrl)&quot;,&quot;releasesPageUrl&quot;:&quot;$(UpdateReleasesPageUrl)&quot;,&quot;repositoryUrl&quot;:&quot;$(RepositoryUrl)&quot;}"
-                          Overwrite="true"
-                          WriteOnlyWhenDifferent="true" />
+        <WriteLinesToFile File="$(TargetDir)VERSION" Lines="$(Version)" Overwrite="true" WriteOnlyWhenDifferent="true" />
+        <WriteLinesToFile File="$(TargetDir)update.json" Lines="{&quot;repository&quot;:&quot;$(GitHubRepository)&quot;,&quot;releasesApiUrl&quot;:&quot;$(UpdateReleasesApiUrl)&quot;,&quot;releasesPageUrl&quot;:&quot;$(UpdateReleasesPageUrl)&quot;,&quot;repositoryUrl&quot;:&quot;$(RepositoryUrl)&quot;}" Overwrite="true" WriteOnlyWhenDifferent="true" />
     </Target>
 
     <Target Name="WriteVersionFileOnPublish" AfterTargets="Publish">
-        <WriteLinesToFile File="$(PublishDir)VERSION"
-                          Lines="$(Version)"
-                          Overwrite="true"
-                          WriteOnlyWhenDifferent="true" />
-        <WriteLinesToFile File="$(PublishDir)update.json"
-                          Lines="{&quot;repository&quot;:&quot;$(GitHubRepository)&quot;,&quot;releasesApiUrl&quot;:&quot;$(UpdateReleasesApiUrl)&quot;,&quot;releasesPageUrl&quot;:&quot;$(UpdateReleasesPageUrl)&quot;,&quot;repositoryUrl&quot;:&quot;$(RepositoryUrl)&quot;}"
-                          Overwrite="true"
-                          WriteOnlyWhenDifferent="true" />
+        <WriteLinesToFile File="$(PublishDir)VERSION" Lines="$(Version)" Overwrite="true" WriteOnlyWhenDifferent="true" />
+        <WriteLinesToFile File="$(PublishDir)update.json" Lines="{&quot;repository&quot;:&quot;$(GitHubRepository)&quot;,&quot;releasesApiUrl&quot;:&quot;$(UpdateReleasesApiUrl)&quot;,&quot;releasesPageUrl&quot;:&quot;$(UpdateReleasesPageUrl)&quot;,&quot;repositoryUrl&quot;:&quot;$(RepositoryUrl)&quot;}" Overwrite="true" WriteOnlyWhenDifferent="true" />
     </Target>
 
     <ItemGroup>
       <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
       <PackageReference Include="WPF-UI" Version="4.3.0" />
+      <PackageReference Include="WPF-UI.Tray" Version="4.3.0" />
     </ItemGroup>
 
     <ItemGroup>

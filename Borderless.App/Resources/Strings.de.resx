@@ -85,6 +85,9 @@
   <data name="SettingsTitle" xml:space="preserve"><value>Einstellungen</value></data>
   <data name="SettingsSubtitle" xml:space="preserve"><value>App-Verhalten und Update-Einstellungen.</value></data>
   <data name="SettingsGeneralGroup" xml:space="preserve"><value>Allgemein</value></data>
+  <data name="SettingsLanguageGroup" xml:space="preserve"><value>Sprache</value></data>
+  <data name="SettingsLanguageLabel" xml:space="preserve"><value>Anzeigesprache</value></data>
+  <data name="SettingsLanguageSystem" xml:space="preserve"><value>System</value></data>
   <data name="SettingsStartOnStartup" xml:space="preserve"><value>Beim Start ausführen</value></data>
   <data name="SettingsCloseToTray" xml:space="preserve"><value>In den Infobereich schließen</value></data>
   <data name="SettingsUpdaterGroup" xml:space="preserve"><value>Updater</value></data>
@@ -106,5 +109,6 @@
   <data name="UpdateApplyErrorFormat" xml:space="preserve"><value>Update-Installation fehlgeschlagen: {0}</value></data>
   <data name="UpdateNoAsset" xml:space="preserve"><value>Kein Setup/Zip-Asset in der Release gefunden.</value></data>
   <data name="TrayShow" xml:space="preserve"><value>Anzeigen</value></data>
+  <data name="TrayHide" xml:space="preserve"><value>Ausblenden</value></data>
   <data name="TrayQuit" xml:space="preserve"><value>Beenden</value></data>
 </root>

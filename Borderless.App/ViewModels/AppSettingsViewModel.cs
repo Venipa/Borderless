@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
 using Borderless.App.Helpers;
@@ -48,6 +49,9 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
     private bool _closeToTray;
 
     [ObservableProperty]
+    private LanguageOption _selectedLanguage = LanguageManager.Options[0];
+
+    [ObservableProperty]
     private bool _updaterEnabled;
 
     [ObservableProperty]
@@ -59,13 +63,15 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
     [ObservableProperty]
     private string _updateStatusMessage = string.Empty;
 
-    public string AppVersionText { get; } =
+    public string AppVersionText =>
         string.Format(Loc.Get("AboutVersionFormat"), AppMetadata.GetLocalVersionString());
 
-    public string AppAuthorText { get; } =
+    public string AppAuthorText =>
         string.Format(Loc.Get("AboutAuthorFormat"), AppMetadata.Author);
 
     public string RepositoryUrl => AppMetadata.RepositoryUrl;
+
+    public IReadOnlyList<LanguageOption> LanguageOptions => LanguageManager.Options;
 
     public AppSettingsViewModel(
         SettingsStore store,
@@ -85,12 +91,14 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
         DefaultIsEnabled = settings.Defaults.IsEnabled;
         StartOnStartup = settings.StartOnStartup;
         CloseToTray = settings.CloseToTray;
+        SelectedLanguage = LanguageManager.FindOption(settings.UiLanguage);
         UpdaterEnabled = settings.UpdaterEnabled;
         AutoUpdateWithoutConfirmation = settings.AutoUpdateWithoutConfirmation;
         _suppressSave = false;
 
         _startup.Apply(StartOnStartup);
         UpdateStatusMessage = Loc.Get("UpdateStatusIdle");
+        Loc.Source.PropertyChanged += OnLocChanged;
     }
 
     public RuleDefaults CreateRuleDefaults() => new()
@@ -110,11 +118,22 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
         }
 
         _disposed = true;
+        Loc.Source.PropertyChanged -= OnLocChanged;
         FlushSave();
         _saveCts?.Dispose();
         _updateCts?.Cancel();
         _updateCts?.Dispose();
         _updater.Dispose();
+    }
+
+    private void OnLocChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        OnPropertyChanged(nameof(AppVersionText));
+        OnPropertyChanged(nameof(AppAuthorText));
+        if (!IsCheckingForUpdates)
+        {
+            UpdateStatusMessage = Loc.Get("UpdateStatusIdle");
+        }
     }
 
     /// <summary>Writes pending settings immediately (e.g. app exit).</summary>
@@ -279,6 +298,17 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
 
     partial void OnCloseToTrayChanged(bool value) => ScheduleSave();
 
+    partial void OnSelectedLanguageChanged(LanguageOption value)
+    {
+        if (value is null)
+        {
+            return;
+        }
+
+        LanguageManager.Apply(value.Code);
+        ScheduleSave();
+    }
+
     partial void OnUpdaterEnabledChanged(bool value)
     {
         if (!value && AutoUpdateWithoutConfirmation)
@@ -357,6 +387,7 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
         Defaults = CreateRuleDefaults(),
         StartOnStartup = StartOnStartup,
         CloseToTray = CloseToTray,
+        UiLanguage = SelectedLanguage?.Code ?? LanguageManager.SystemCode,
         UpdaterEnabled = UpdaterEnabled,
         AutoUpdateWithoutConfirmation = AutoUpdateWithoutConfirmation
     };

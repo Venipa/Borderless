@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AppTitle" xml:space="preserve"><value>Borderless</value></data>
+  <data name="ProcessRulesTitle" xml:space="preserve"><value>규칙</value></data>
+  <data name="ProcessRulesSubtitle" xml:space="preserve"><value>제목/실행 파일로 맞추고 테두리 없음·항상 위·백그라운드 음소거를 적용합니다.</value></data>
+  <data name="LabelTitle" xml:space="preserve"><value>제목:</value></data>
+  <data name="LabelExe" xml:space="preserve"><value>Exe:</value></data>
+  <data name="BadgeBorderless" xml:space="preserve"><value>테두리 없음</value></data>
+  <data name="BadgeAlwaysOnTop" xml:space="preserve"><value>항상 위</value></data>
+  <data name="BadgeExpandToScreen" xml:space="preserve"><value>최대 크기</value></data>
+  <data name="BadgeMuteBackground" xml:space="preserve"><value>BG 음소거</value></data>
+  <data name="EnabledFormat" xml:space="preserve"><value>사용: {0}</value></data>
+  <data name="DeleteRuleTooltip" xml:space="preserve"><value>규칙 삭제</value></data>
+  <data name="EmptyTitle" xml:space="preserve"><value>규칙 없음</value></data>
+  <data name="EmptySubtitle" xml:space="preserve"><value>+ 로 첫 규칙을 추가하세요.</value></data>
+  <data name="SearchRulesPlaceholder" xml:space="preserve"><value>규칙 검색</value></data>
+  <data name="SearchEmptyTitle" xml:space="preserve"><value>일치 없음</value></data>
+  <data name="SearchEmptySubtitle" xml:space="preserve"><value>다른 제목이나 exe를 시도하세요.</value></data>
+  <data name="AddRuleTooltip" xml:space="preserve"><value>규칙 추가</value></data>
+  <data name="AddRuleTitle" xml:space="preserve"><value>규칙 추가</value></data>
+  <data name="EditRuleTitle" xml:space="preserve"><value>규칙 편집</value></data>
+  <data name="Save" xml:space="preserve"><value>저장</value></data>
+  <data name="Cancel" xml:space="preserve"><value>취소</value></data>
+  <data name="WindowTitleLabel" xml:space="preserve"><value>정확한 창 제목</value></data>
+  <data name="WindowTitlePlaceholder" xml:space="preserve"><value>예: Counter-Strike 2</value></data>
+  <data name="ExecutableNameLabel" xml:space="preserve"><value>실행 파일 이름</value></data>
+  <data name="ExecutableNamePlaceholder" xml:space="preserve"><value>예: cs2.exe</value></data>
+  <data name="ToggleBorderless" xml:space="preserve"><value>테두리 없는 창</value></data>
+  <data name="ToggleAlwaysOnTop" xml:space="preserve"><value>항상 위</value></data>
+  <data name="ToggleExpandToScreen" xml:space="preserve"><value>최대 / 화면 맞춤</value></data>
+  <data name="ToggleCustomDimension" xml:space="preserve"><value>사용자 크기</value></data>
+  <data name="ToggleMuteBackground" xml:space="preserve"><value>백그라운드 음소거</value></data>
+  <data name="ToggleRuleEnabled" xml:space="preserve"><value>규칙 사용</value></data>
+  <data name="GroupVideo" xml:space="preserve"><value>비디오</value></data>
+  <data name="GroupAudio" xml:space="preserve"><value>오디오</value></data>
+  <data name="GroupGeneral" xml:space="preserve"><value>일반</value></data>
+  <data name="EditDimensions" xml:space="preserve"><value>편집</value></data>
+  <data name="CustomDimensionDialogTitle" xml:space="preserve"><value>사용자 크기</value></data>
+  <data name="CustomDimensionDialogSubtitle" xml:space="preserve"><value>기본 X=0, Y=0 및 전체 화면. 너비/높이 0은 모니터 크기.</value></data>
+  <data name="CustomDimensionSummaryFormat" xml:space="preserve"><value>X={0}, Y={1}, {2}×{3}</value></data>
+  <data name="DimensionX" xml:space="preserve"><value>X</value></data>
+  <data name="DimensionY" xml:space="preserve"><value>Y</value></data>
+  <data name="DimensionWidth" xml:space="preserve"><value>너비</value></data>
+  <data name="DimensionHeight" xml:space="preserve"><value>높이</value></data>
+  <data name="ValidationMatchRequired" xml:space="preserve"><value>정확한 제목 또는 exe를 입력하세요.</value></data>
+  <data name="ValidationDuplicateRule" xml:space="preserve"><value>같은 제목과 exe 규칙이 이미 있습니다.</value></data>
+  <data name="RuleStatusIdle" xml:space="preserve"><value>일치 프로세스 없음</value></data>
+  <data name="RuleStatusActive" xml:space="preserve"><value>프로세스 활성</value></data>
+  <data name="RuleStatusError" xml:space="preserve"><value>적용 오류</value></data>
+  <data name="RuleStatusDisabled" xml:space="preserve"><value>규칙 사용 안 함</value></data>
+  <data name="UntitledRule" xml:space="preserve"><value>이름 없는 규칙</value></data>
+  <data name="NavRules" xml:space="preserve"><value>규칙</value></data>
+  <data name="NavDefaults" xml:space="preserve"><value>기본값</value></data>
+  <data name="NavSettings" xml:space="preserve"><value>설정</value></data>
+  <data name="DefaultsTitle" xml:space="preserve"><value>기본값</value></data>
+  <data name="DefaultsSubtitle" xml:space="preserve"><value>새 규칙 만들 때 사용됩니다.</value></data>
+  <data name="SettingsTitle" xml:space="preserve"><value>설정</value></data>
+  <data name="SettingsSubtitle" xml:space="preserve"><value>앱 동작과 업데이트.</value></data>
+  <data name="SettingsGeneralGroup" xml:space="preserve"><value>일반</value></data>
+  <data name="SettingsLanguageGroup" xml:space="preserve"><value>언어</value></data>
+  <data name="SettingsLanguageLabel" xml:space="preserve"><value>표시 언어</value></data>
+  <data name="SettingsLanguageSystem" xml:space="preserve"><value>시스템</value></data>
+  <data name="SettingsStartOnStartup" xml:space="preserve"><value>시작 시 실행</value></data>
+  <data name="SettingsCloseToTray" xml:space="preserve"><value>트레이로 닫기</value></data>
+  <data name="SettingsUpdaterGroup" xml:space="preserve"><value>업데이터</value></data>
+  <data name="SettingsEnableUpdater" xml:space="preserve"><value>업데이터 사용</value></data>
+  <data name="SettingsAutoUpdate" xml:space="preserve"><value>발견 즉시 설치 (확인 없음)</value></data>
+  <data name="SettingsCheckUpdates" xml:space="preserve"><value>업데이트 확인</value></data>
+  <data name="SettingsCheckUpdatesButton" xml:space="preserve"><value>지금 확인</value></data>
+  <data name="SettingsAboutGroup" xml:space="preserve"><value>정보</value></data>
+  <data name="AboutVersionFormat" xml:space="preserve"><value>버전 {0}</value></data>
+  <data name="AboutAuthorFormat" xml:space="preserve"><value>제작자: {0}</value></data>
+  <data name="UpdateStatusIdle" xml:space="preserve"><value>아직 확인 안 함.</value></data>
+  <data name="UpdateChecking" xml:space="preserve"><value>GitHub 확인 중…</value></data>
+  <data name="UpdateNoneAvailable" xml:space="preserve"><value>최신입니다.</value></data>
+  <data name="UpdateAvailableFormat" xml:space="preserve"><value>업데이트 {0} 있음 (현재 {1}).</value></data>
+  <data name="UpdateConfirmFormat" xml:space="preserve"><value>{0} 사용 가능 (현재 {1}). 설치할까요?</value></data>
+  <data name="UpdateDownloading" xml:space="preserve"><value>다운로드 중…</value></data>
+  <data name="UpdateCheckFailed" xml:space="preserve"><value>릴리스를 읽을 수 없음.</value></data>
+  <data name="UpdateCheckErrorFormat" xml:space="preserve"><value>업데이트 확인 실패: {0}</value></data>
+  <data name="UpdateApplyErrorFormat" xml:space="preserve"><value>업데이트 설치 실패: {0}</value></data>
+  <data name="UpdateNoAsset" xml:space="preserve"><value>setup/zip 없음.</value></data>
+  <data name="TrayShow" xml:space="preserve"><value>표시</value></data>
+  <data name="TrayHide" xml:space="preserve"><value>숨기기</value></data>
+  <data name="TrayQuit" xml:space="preserve"><value>종료</value></data>
+</root>
