@@ -163,17 +163,34 @@ public partial class MainWindow : FluentWindow
 
     private void OnNavigated(NavigationView sender, NavigatedEventArgs args)
     {
-        if (args.Page is FrameworkElement page)
-        {
-            page.DataContext = ViewModel;
-        }
+        // Navigated fires before UpdateContent. Steal page after presenter claims it
+        // so our ContentOverlay host owns the visual tree (no DynamicScrollViewer).
+        var page = args.Page;
+        Dispatcher.BeginInvoke(
+            () => AdoptPageIntoContentHost(page),
+            System.Windows.Threading.DispatcherPriority.Loaded);
 
-        ViewModel.Navigate(args.Page switch
+        ViewModel.Navigate(page switch
         {
             DefaultsPage => AppSection.Defaults,
             SettingsPage => AppSection.Settings,
             _ => AppSection.Rules
         });
+    }
+
+    private void AdoptPageIntoContentHost(object? page)
+    {
+        if (page is not FrameworkElement element)
+        {
+            return;
+        }
+
+        element.DataContext = ViewModel;
+
+        if (!ReferenceEquals(ContentHost.Content, element))
+        {
+            ContentHost.Content = element;
+        }
     }
 
     private void OnEditorScrimClick(object sender, MouseButtonEventArgs e)

@@ -108,6 +108,15 @@
   <data name="UpdateCheckErrorFormat" xml:space="preserve"><value>Помилка перевірки: {0}</value></data>
   <data name="UpdateApplyErrorFormat" xml:space="preserve"><value>Помилка встановлення: {0}</value></data>
   <data name="UpdateNoAsset" xml:space="preserve"><value>Немає setup/zip у release.</value></data>
+  <data name="UpdateWindowTitle" xml:space="preserve"><value>Доступне оновлення</value></data>
+  <data name="UpdateWindowHeadline" xml:space="preserve"><value>Нова версія готова</value></data>
+  <data name="UpdateWindowVersionFormat" xml:space="preserve"><value>Версія {0} · у вас {1}</value></data>
+  <data name="UpdateWindowNotesHeader" xml:space="preserve"><value>Нотатки до випуску</value></data>
+  <data name="UpdateWindowNoNotes" xml:space="preserve"><value>Немає нотаток до випуску для цієї версії.</value></data>
+  <data name="UpdateWindowDownload" xml:space="preserve"><value>Завантажити</value></data>
+  <data name="UpdateWindowInstallAfterExit" xml:space="preserve"><value>Встановити після виходу</value></data>
+  <data name="UpdateWindowCancel" xml:space="preserve"><value>Скасувати</value></data>
+  <data name="UpdateQueuedForExit" xml:space="preserve"><value>Оновлення завантажено. Інсталятор запуститься після виходу.</value></data>
   <data name="TrayShow" xml:space="preserve"><value>Показати</value></data>
   <data name="TrayHide" xml:space="preserve"><value>Сховати</value></data>
   <data name="TrayQuit" xml:space="preserve"><value>Вийти</value></data>

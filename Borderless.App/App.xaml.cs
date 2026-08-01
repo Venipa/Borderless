@@ -38,6 +38,15 @@ public partial class App : Application
     protected override void OnExit(ExitEventArgs e)
     {
         MainViewModel.Settings.FlushSave();
+        try
+        {
+            MainViewModel.Settings.LaunchPendingUpdateInstaller();
+        }
+        catch
+        {
+            // Never block process exit on installer launch failure.
+        }
+
         MainViewModel.Settings.Dispose();
         _ruleEngine?.Dispose();
         base.OnExit(e);

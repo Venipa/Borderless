@@ -1,0 +1,157 @@
+<ui:FluentWindow x:Class="Borderless.App.Views.UpdateAvailableWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        Title="Update"
+        Width="580"
+        Height="640"
+        MinWidth="480"
+        MinHeight="480"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="CanResizeWithGrip"
+        ShowInTaskbar="False"
+        ExtendsContentIntoTitleBar="True"
+        WindowBackdropType="Mica"
+        WindowCornerPreference="Round">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <ui:TitleBar Grid.Row="0"
+                     Title="{Binding ElementName=HeadlineText, Path=Text}"
+                     ShowMaximize="False"
+                     ShowMinimize="False"
+                     ShowClose="True"
+                     CloseClicked="OnTitleBarCloseClicked" />
+
+        <Grid Grid.Row="1" Margin="24,8,24,16">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!-- Header: icon | text rows -->
+            <Grid Grid.Row="0" Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0"
+                        Width="56"
+                        Height="56"
+                        CornerRadius="14"
+                        VerticalAlignment="Top"
+                        Margin="0,0,16,0"
+                        ClipToBounds="True">
+                    <Border.Background>
+                        <ImageBrush ImageSource="pack://application:,,,/Resources/Iconx256.png"
+                                    Stretch="UniformToFill"
+                                    AlignmentX="Center"
+                                    AlignmentY="Center" />
+                    </Border.Background>
+                </Border>
+
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <ui:TextBlock x:Name="HeadlineText"
+                                  FontTypography="Title"
+                                  TextWrapping="Wrap" />
+
+                    <ui:TextBlock x:Name="VersionText"
+                                  Margin="0,6,0,0"
+                                  FontTypography="Body"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  TextWrapping="Wrap" />
+
+                    <ui:TextBlock x:Name="ReleaseTitleText"
+                                  Margin="0,4,0,0"
+                                  FontTypography="BodyStrong"
+                                  TextWrapping="Wrap" />
+                </StackPanel>
+            </Grid>
+
+            <ui:TextBlock x:Name="NotesHeader"
+                          Grid.Row="1"
+                          Margin="0,0,0,8"
+                          FontTypography="BodyStrong" />
+
+            <!-- Raw markdown notes — chrome-less readonly text -->
+            <Border Grid.Row="2"
+                    CornerRadius="8"
+                    BorderBrush="{DynamicResource ControlElevationBorderBrush}"
+                    BorderThickness="1"
+                    Background="{DynamicResource ControlFillColorDefaultBrush}"
+                    Padding="0"
+                    ClipToBounds="True">
+                <TextBox x:Name="NotesText"
+                         IsReadOnly="True"
+                         IsTabStop="False"
+                         BorderThickness="0"
+                         Padding="12"
+                         Background="Transparent"
+                         TextWrapping="Wrap"
+                         AcceptsReturn="True"
+                         VerticalScrollBarVisibility="Auto"
+                         HorizontalScrollBarVisibility="Disabled"
+                         FontFamily="Cascadia Mono, Consolas, Courier New"
+                         FontSize="12.5"
+                         Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                         CaretBrush="{DynamicResource TextFillColorPrimaryBrush}"
+                         SelectionBrush="{DynamicResource AccentFillColorDefaultBrush}"
+                         FocusVisualStyle="{x:Null}">
+                    <TextBox.Style>
+                        <Style TargetType="TextBox">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="TextBox">
+                                        <ScrollViewer x:Name="PART_ContentHost"
+                                                      Focusable="False"
+                                                      HorizontalScrollBarVisibility="{TemplateBinding HorizontalScrollBarVisibility}"
+                                                      VerticalScrollBarVisibility="{TemplateBinding VerticalScrollBarVisibility}" />
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+            </Border>
+        </Grid>
+
+        <!-- Actions -->
+        <Border Grid.Row="2"
+                Padding="24,16"
+                BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+                BorderThickness="0,1,0,0"
+                Background="{DynamicResource SolidBackgroundFillColorBaseBrush}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <ui:Button x:Name="CancelButton"
+                           Grid.Column="0"
+                           HorizontalAlignment="Left"
+                           Appearance="Secondary"
+                           Click="OnCancelClick" />
+
+                <ui:Button x:Name="InstallAfterExitButton"
+                           Grid.Column="1"
+                           Margin="0,0,8,0"
+                           Appearance="Secondary"
+                           Click="OnInstallAfterExitClick" />
+
+                <ui:Button x:Name="DownloadButton"
+                           Grid.Column="2"
+                           Appearance="Primary"
+                           Click="OnDownloadClick" />
+            </Grid>
+        </Border>
+    </Grid>
+</ui:FluentWindow>

@@ -108,6 +108,15 @@
   <data name="UpdateCheckErrorFormat" xml:space="preserve"><value>更新確認失敗: {0}</value></data>
   <data name="UpdateApplyErrorFormat" xml:space="preserve"><value>更新インストール失敗: {0}</value></data>
   <data name="UpdateNoAsset" xml:space="preserve"><value>setup/zip が見つかりません。</value></data>
+  <data name="UpdateWindowTitle" xml:space="preserve"><value>アップデートがあります</value></data>
+  <data name="UpdateWindowHeadline" xml:space="preserve"><value>新しいバージョンの準備ができました</value></data>
+  <data name="UpdateWindowVersionFormat" xml:space="preserve"><value>バージョン {0} · 現在 {1}</value></data>
+  <data name="UpdateWindowNotesHeader" xml:space="preserve"><value>リリースノート</value></data>
+  <data name="UpdateWindowNoNotes" xml:space="preserve"><value>このバージョンのリリースノートはありません。</value></data>
+  <data name="UpdateWindowDownload" xml:space="preserve"><value>ダウンロード</value></data>
+  <data name="UpdateWindowInstallAfterExit" xml:space="preserve"><value>終了後にインストール</value></data>
+  <data name="UpdateWindowCancel" xml:space="preserve"><value>キャンセル</value></data>
+  <data name="UpdateQueuedForExit" xml:space="preserve"><value>アップデートをダウンロードしました。終了時にインストーラーが起動します。</value></data>
   <data name="TrayShow" xml:space="preserve"><value>表示</value></data>
   <data name="TrayHide" xml:space="preserve"><value>非表示</value></data>
   <data name="TrayQuit" xml:space="preserve"><value>終了</value></data>

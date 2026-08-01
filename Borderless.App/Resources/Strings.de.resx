@@ -108,6 +108,15 @@
   <data name="UpdateCheckErrorFormat" xml:space="preserve"><value>Update-Prüfung fehlgeschlagen: {0}</value></data>
   <data name="UpdateApplyErrorFormat" xml:space="preserve"><value>Update-Installation fehlgeschlagen: {0}</value></data>
   <data name="UpdateNoAsset" xml:space="preserve"><value>Kein Setup/Zip-Asset in der Release gefunden.</value></data>
+  <data name="UpdateWindowTitle" xml:space="preserve"><value>Update verfügbar</value></data>
+  <data name="UpdateWindowHeadline" xml:space="preserve"><value>Eine neue Version ist bereit</value></data>
+  <data name="UpdateWindowVersionFormat" xml:space="preserve"><value>Version {0} · installiert {1}</value></data>
+  <data name="UpdateWindowNotesHeader" xml:space="preserve"><value>Release Notes</value></data>
+  <data name="UpdateWindowNoNotes" xml:space="preserve"><value>Keine Release Notes für diese Version.</value></data>
+  <data name="UpdateWindowDownload" xml:space="preserve"><value>Download</value></data>
+  <data name="UpdateWindowInstallAfterExit" xml:space="preserve"><value>Nach Beenden installieren</value></data>
+  <data name="UpdateWindowCancel" xml:space="preserve"><value>Abbrechen</value></data>
+  <data name="UpdateQueuedForExit" xml:space="preserve"><value>Update heruntergeladen. Installation startet beim Beenden.</value></data>
   <data name="TrayShow" xml:space="preserve"><value>Anzeigen</value></data>
   <data name="TrayHide" xml:space="preserve"><value>Ausblenden</value></data>
   <data name="TrayQuit" xml:space="preserve"><value>Beenden</value></data>

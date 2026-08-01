@@ -1,7 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Borderless.App.Helpers;
 using Borderless.App.Models;
 using Borderless.App.ViewModels;
 
@@ -12,16 +11,9 @@ public partial class RulesPage : Page
     public RulesPage()
     {
         InitializeComponent();
-        Loaded += OnLoaded;
     }
 
     private MainViewModel? ViewModel => DataContext as MainViewModel;
-
-    private void OnLoaded(object sender, RoutedEventArgs e)
-    {
-        ScrollViewerWheel.Attach(this);
-        ScrollViewerWheel.Attach(RulesList);
-    }
 
     private void OnEditRuleClick(object sender, MouseButtonEventArgs e)
     {

@@ -108,6 +108,15 @@
   <data name="UpdateCheckErrorFormat" xml:space="preserve"><value>업데이트 확인 실패: {0}</value></data>
   <data name="UpdateApplyErrorFormat" xml:space="preserve"><value>업데이트 설치 실패: {0}</value></data>
   <data name="UpdateNoAsset" xml:space="preserve"><value>setup/zip 없음.</value></data>
+  <data name="UpdateWindowTitle" xml:space="preserve"><value>업데이트 있음</value></data>
+  <data name="UpdateWindowHeadline" xml:space="preserve"><value>새 버전을 사용할 수 있습니다</value></data>
+  <data name="UpdateWindowVersionFormat" xml:space="preserve"><value>버전 {0} · 현재 {1}</value></data>
+  <data name="UpdateWindowNotesHeader" xml:space="preserve"><value>릴리스 노트</value></data>
+  <data name="UpdateWindowNoNotes" xml:space="preserve"><value>이 버전에 대한 릴리스 노트가 없습니다.</value></data>
+  <data name="UpdateWindowDownload" xml:space="preserve"><value>다운로드</value></data>
+  <data name="UpdateWindowInstallAfterExit" xml:space="preserve"><value>종료 후 설치</value></data>
+  <data name="UpdateWindowCancel" xml:space="preserve"><value>취소</value></data>
+  <data name="UpdateQueuedForExit" xml:space="preserve"><value>업데이트 다운로드됨. 종료 시 설치 프로그램이 실행됩니다.</value></data>
   <data name="TrayShow" xml:space="preserve"><value>표시</value></data>
   <data name="TrayHide" xml:space="preserve"><value>숨기기</value></data>
   <data name="TrayQuit" xml:space="preserve"><value>종료</value></data>

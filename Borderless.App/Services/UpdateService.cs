@@ -19,6 +19,11 @@ public sealed class UpdateCheckResult
 
     public string? TagName { get; init; }
 
+    public string? ReleaseName { get; init; }
+
+    /// <summary>Raw GitHub release body (markdown, not rendered).</summary>
+    public string? ReleaseBody { get; init; }
+
     public string? SetupDownloadUrl { get; init; }
 
     public string? ZipDownloadUrl { get; init; }
@@ -42,6 +47,8 @@ public sealed class UpdateService : IDisposable
 
     private readonly HttpClient _http;
     private readonly SemaphoreSlim _gate = new(1, 1);
+    private readonly object _pendingGate = new();
+    private string? _pendingInstallerPath;
     private bool _disposed;
 
     public UpdateService()
@@ -53,6 +60,17 @@ public sealed class UpdateService : IDisposable
         _http.DefaultRequestHeaders.UserAgent.ParseAdd(
             $"{AppMetadata.Product}/{AppMetadata.GetLocalVersionString()} (+{AppMetadata.RepositoryUrl})");
         _http.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github+json"));
+    }
+
+    public string? PendingInstallerPath
+    {
+        get
+        {
+            lock (_pendingGate)
+            {
+                return _pendingInstallerPath;
+            }
+        }
     }
 
     public async Task<UpdateCheckResult> CheckForUpdatesAsync(CancellationToken cancellationToken = default)
@@ -109,6 +127,8 @@ public sealed class UpdateService : IDisposable
                 LocalVersion = local,
                 RemoteVersion = remote,
                 TagName = release.TagName,
+                ReleaseName = release.Name,
+                ReleaseBody = release.Body,
                 SetupDownloadUrl = setupUrl,
                 ZipDownloadUrl = zipUrl,
                 ReleaseHtmlUrl = release.HtmlUrl ?? AppMetadata.UpdateReleasesPageUrl,
@@ -132,6 +152,14 @@ public sealed class UpdateService : IDisposable
     }
 
     public async Task ApplyUpdateAsync(UpdateCheckResult update, CancellationToken cancellationToken = default)
+    {
+        var path = await DownloadUpdateAsync(update, cancellationToken).ConfigureAwait(false);
+        LaunchInstaller(path, shutdownApp: true);
+    }
+
+    public async Task<string> DownloadUpdateAsync(
+        UpdateCheckResult update,
+        CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(update);
 
@@ -159,32 +187,69 @@ public sealed class UpdateService : IDisposable
                 await remote.CopyToAsync(local, cancellationToken).ConfigureAwait(false);
             }
 
-            if (fileName.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
-            {
-                // Silent install; Inno [Run] Verb=runas starts the app elevated.
-                // NORESTARTAPPLICATIONS avoids a non-elevated auto-restart of the closed process.
-                Process.Start(new ProcessStartInfo
-                {
-                    FileName = targetPath,
-                    Arguments = "/SILENT /CLOSEAPPLICATIONS /NORESTARTAPPLICATIONS",
-                    UseShellExecute = true,
-                    Verb = "runas"
-                });
-            }
-            else
-            {
-                Process.Start(new ProcessStartInfo
-                {
-                    FileName = targetPath,
-                    UseShellExecute = true
-                });
-            }
-
-            await UiDispatch.InvokeAsync(() => Application.Current.Shutdown()).ConfigureAwait(false);
+            return targetPath;
         }
         finally
         {
             _gate.Release();
+        }
+    }
+
+    public void ScheduleInstallOnExit(string installerPath)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(installerPath);
+
+        lock (_pendingGate)
+        {
+            _pendingInstallerPath = installerPath;
+        }
+    }
+
+    public void TryLaunchPendingInstaller()
+    {
+        string? path;
+        lock (_pendingGate)
+        {
+            path = _pendingInstallerPath;
+            _pendingInstallerPath = null;
+        }
+
+        if (string.IsNullOrWhiteSpace(path) || !File.Exists(path))
+        {
+            return;
+        }
+
+        LaunchInstaller(path, shutdownApp: false);
+    }
+
+    public void LaunchInstaller(string installerPath, bool shutdownApp)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(installerPath);
+
+        if (installerPath.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
+        {
+            // Silent install; Inno [Run] Verb=runas starts the app elevated.
+            // NORESTARTAPPLICATIONS avoids a non-elevated auto-restart of the closed process.
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = installerPath,
+                Arguments = "/SILENT /CLOSEAPPLICATIONS /NORESTARTAPPLICATIONS",
+                UseShellExecute = true,
+                Verb = "runas"
+            });
+        }
+        else
+        {
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = installerPath,
+                UseShellExecute = true
+            });
+        }
+
+        if (shutdownApp)
+        {
+            _ = UiDispatch.InvokeAsync(() => Application.Current.Shutdown());
         }
     }
 
@@ -214,6 +279,12 @@ public sealed class UpdateService : IDisposable
     {
         [JsonPropertyName("tag_name")]
         public string? TagName { get; set; }
+
+        [JsonPropertyName("name")]
+        public string? Name { get; set; }
+
+        [JsonPropertyName("body")]
+        public string? Body { get; set; }
 
         [JsonPropertyName("html_url")]
         public string? HtmlUrl { get; set; }

@@ -108,6 +108,15 @@
   <data name="UpdateCheckErrorFormat" xml:space="preserve"><value>Fallo al buscar update: {0}</value></data>
   <data name="UpdateApplyErrorFormat" xml:space="preserve"><value>Fallo al instalar update: {0}</value></data>
   <data name="UpdateNoAsset" xml:space="preserve"><value>No hay setup/zip en el release.</value></data>
+  <data name="UpdateWindowTitle" xml:space="preserve"><value>Actualización disponible</value></data>
+  <data name="UpdateWindowHeadline" xml:space="preserve"><value>Hay una nueva versión lista</value></data>
+  <data name="UpdateWindowVersionFormat" xml:space="preserve"><value>Versión {0} · tienes {1}</value></data>
+  <data name="UpdateWindowNotesHeader" xml:space="preserve"><value>Notas de la versión</value></data>
+  <data name="UpdateWindowNoNotes" xml:space="preserve"><value>No hay notas de versión para esta versión.</value></data>
+  <data name="UpdateWindowDownload" xml:space="preserve"><value>Descargar</value></data>
+  <data name="UpdateWindowInstallAfterExit" xml:space="preserve"><value>Instalar al salir</value></data>
+  <data name="UpdateWindowCancel" xml:space="preserve"><value>Cancelar</value></data>
+  <data name="UpdateQueuedForExit" xml:space="preserve"><value>Update descargado. El instalador se ejecutará al salir.</value></data>
   <data name="TrayShow" xml:space="preserve"><value>Mostrar</value></data>
   <data name="TrayHide" xml:space="preserve"><value>Ocultar</value></data>
   <data name="TrayQuit" xml:space="preserve"><value>Salir</value></data>

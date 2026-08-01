@@ -108,6 +108,15 @@
   <data name="UpdateCheckErrorFormat" xml:space="preserve"><value>检查更新失败: {0}</value></data>
   <data name="UpdateApplyErrorFormat" xml:space="preserve"><value>安装更新失败: {0}</value></data>
   <data name="UpdateNoAsset" xml:space="preserve"><value>发布中无 setup/zip。</value></data>
+  <data name="UpdateWindowTitle" xml:space="preserve"><value>有可用更新</value></data>
+  <data name="UpdateWindowHeadline" xml:space="preserve"><value>新版本已就绪</value></data>
+  <data name="UpdateWindowVersionFormat" xml:space="preserve"><value>版本 {0} · 当前 {1}</value></data>
+  <data name="UpdateWindowNotesHeader" xml:space="preserve"><value>发行说明</value></data>
+  <data name="UpdateWindowNoNotes" xml:space="preserve"><value>此版本没有发行说明。</value></data>
+  <data name="UpdateWindowDownload" xml:space="preserve"><value>下载</value></data>
+  <data name="UpdateWindowInstallAfterExit" xml:space="preserve"><value>退出后安装</value></data>
+  <data name="UpdateWindowCancel" xml:space="preserve"><value>取消</value></data>
+  <data name="UpdateQueuedForExit" xml:space="preserve"><value>更新已下载。退出时将运行安装程序。</value></data>
   <data name="TrayShow" xml:space="preserve"><value>显示</value></data>
   <data name="TrayHide" xml:space="preserve"><value>隐藏</value></data>
   <data name="TrayQuit" xml:space="preserve"><value>退出</value></data>

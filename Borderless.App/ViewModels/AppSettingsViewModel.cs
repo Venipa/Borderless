@@ -5,12 +5,12 @@ using Borderless.App.Helpers;
 using Borderless.App.Localization;
 using Borderless.App.Models;
 using Borderless.App.Services;
+using Borderless.App.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MessageBox = System.Windows.MessageBox;
 using MessageBoxButton = System.Windows.MessageBoxButton;
 using MessageBoxImage = System.Windows.MessageBoxImage;
-using MessageBoxResult = System.Windows.MessageBoxResult;
 
 namespace Borderless.App.ViewModels;
 
@@ -151,6 +151,16 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
         SaveNow();
     }
 
+    public void LaunchPendingUpdateInstaller()
+    {
+        if (_disposed)
+        {
+            return;
+        }
+
+        _updater.TryLaunchPendingInstaller();
+    }
+
     public Task CheckForUpdatesOnStartupAsync()
     {
         if (!UpdaterEnabled)
@@ -231,35 +241,29 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
         }
 
         var shouldApply = AutoUpdateWithoutConfirmation;
-        if (!shouldApply && interactive)
+        var promptResult = UpdatePromptResult.Cancel;
+
+        if (shouldApply)
         {
-            var answer = await UiDispatch.InvokeAsync(() =>
-                MessageBox.Show(
-                    string.Format(
-                        Loc.Get("UpdateConfirmFormat"),
-                        result.RemoteVersion,
-                        result.LocalVersion),
-                    AppMetadata.Product,
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Question)).ConfigureAwait(false);
-            shouldApply = answer == MessageBoxResult.Yes;
+            promptResult = UpdatePromptResult.DownloadNow;
         }
-        else if (!shouldApply && !interactive)
+        else
         {
-            // Startup check with confirmation required — show prompt.
-            var answer = await UiDispatch.InvokeAsync(() =>
-                MessageBox.Show(
-                    string.Format(
-                        Loc.Get("UpdateConfirmFormat"),
-                        result.RemoteVersion,
-                        result.LocalVersion),
-                    AppMetadata.Product,
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Question)).ConfigureAwait(false);
-            shouldApply = answer == MessageBoxResult.Yes;
+            promptResult = await UiDispatch.InvokeAsync(() =>
+            {
+                var owner = Application.Current.MainWindow;
+                var window = new UpdateAvailableWindow(result);
+                if (owner is { IsLoaded: true })
+                {
+                    window.Owner = owner;
+                }
+
+                _ = window.ShowDialog();
+                return window.Result;
+            }).ConfigureAwait(false);
         }
 
-        if (!shouldApply)
+        if (promptResult == UpdatePromptResult.Cancel)
         {
             return;
         }
@@ -268,7 +272,17 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
         {
             await UiDispatch.InvokeAsync(() =>
                 UpdateStatusMessage = Loc.Get("UpdateDownloading")).ConfigureAwait(false);
-            await _updater.ApplyUpdateAsync(result, token).ConfigureAwait(false);
+
+            if (promptResult == UpdatePromptResult.DownloadNow)
+            {
+                await _updater.ApplyUpdateAsync(result, token).ConfigureAwait(false);
+                return;
+            }
+
+            var path = await _updater.DownloadUpdateAsync(result, token).ConfigureAwait(false);
+            _updater.ScheduleInstallOnExit(path);
+            await UiDispatch.InvokeAsync(() =>
+                UpdateStatusMessage = Loc.Get("UpdateQueuedForExit")).ConfigureAwait(false);
         }
         catch (Exception ex)
         {

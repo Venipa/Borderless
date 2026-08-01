@@ -48,6 +48,7 @@
                            PaneTitle=""
                            TitleBar="{Binding ElementName=TitleBar}"
                            FrameMargin="0"
+                           TransitionDuration="0"
                            Navigated="OnNavigated"
                            PaneOpened="OnPaneOpened"
                            PaneClosed="OnPaneClosed"
@@ -72,6 +73,19 @@
                     </Setter>
                 </Style>
             </ui:NavigationView.Resources>
+
+            <!--
+              Own content host over NavigationView's built-in presenter.
+              Pages are moved here after Navigate so DynamicScrollViewer never owns them.
+            -->
+            <ui:NavigationView.ContentOverlay>
+                <ContentControl x:Name="ContentHost"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                HorizontalContentAlignment="Stretch"
+                                VerticalContentAlignment="Stretch"
+                                Background="{DynamicResource NavigationViewContentBackground}" />
+            </ui:NavigationView.ContentOverlay>
 
             <ui:NavigationView.MenuItems>
                 <ui:NavigationViewItem Content="{loc:Loc NavRules}"
