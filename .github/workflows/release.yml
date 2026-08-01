@@ -45,22 +45,33 @@ jobs:
           $releasesApi = "https://api.github.com/repos/$repo/releases/latest"
           $releasesPage = "https://github.com/$repo/releases"
 
+          $common = @(
+            "-c", "Release",
+            "-r", "win-x64",
+            "-p:Version=$v",
+            "-p:AssemblyVersion=$v",
+            "-p:FileVersion=$v",
+            "-p:InformationalVersion=$v",
+            "-p:GitHubRepository=$repo",
+            "-p:RepositoryUrl=$repoUrl",
+            "-p:UpdateReleasesApiUrl=$releasesApi",
+            "-p:UpdateReleasesPageUrl=$releasesPage"
+          )
+
           Write-Host "GitHubRepository=$repo"
           Write-Host "UpdateReleasesApiUrl=$releasesApi"
 
+          # Framework-dependent (needs .NET 9 Desktop Runtime) — setup + standard zip
           dotnet publish Borderless.App/Borderless.App.csproj `
-            -c Release `
-            -r win-x64 `
+            @common `
+            --self-contained false `
+            -o publish
+
+          # Self-contained — bundled zip only
+          dotnet publish Borderless.App/Borderless.App.csproj `
+            @common `
             --self-contained true `
-            -o publish `
-            -p:Version=$v `
-            -p:AssemblyVersion=$v `
-            -p:FileVersion=$v `
-            -p:InformationalVersion=$v `
-            -p:GitHubRepository=$repo `
-            -p:RepositoryUrl=$repoUrl `
-            -p:UpdateReleasesApiUrl=$releasesApi `
-            -p:UpdateReleasesPageUrl=$releasesPage
+            -o publish-bundled
 
       - name: Ensure VERSION + update.json
         shell: pwsh
@@ -77,21 +88,27 @@ jobs:
             repositoryUrl = $repoUrl
           } | ConvertTo-Json -Compress
 
-          Set-Content -Path publish/VERSION -Value $v -NoNewline -Encoding utf8
+          foreach ($dir in @("publish", "publish-bundled")) {
+            Set-Content -Path "$dir/VERSION" -Value $v -NoNewline -Encoding utf8
+            Set-Content -Path "$dir/update.json" -Value $updateJson -Encoding utf8
+          }
           Set-Content -Path VERSION -Value $v -NoNewline -Encoding utf8
-          Set-Content -Path publish/update.json -Value $updateJson -Encoding utf8
           Copy-Item publish/update.json update.json -Force
           Get-Content publish/VERSION
           Get-Content publish/update.json
 
-      - name: Package zip
+      - name: Package zips
         shell: pwsh
         run: |
-          $zip = "Borderless-${{ steps.version.outputs.version }}-win-x64.zip"
-          if (Test-Path $zip) { Remove-Item $zip -Force }
+          $v = "${{ steps.version.outputs.version }}"
+          $zip = "Borderless-$v-win-x64.zip"
+          $zipBundled = "Borderless-$v-win-x64-bundled.zip"
+          foreach ($f in @($zip, $zipBundled)) {
+            if (Test-Path $f) { Remove-Item $f -Force }
+          }
           Compress-Archive -Path publish\* -DestinationPath $zip -CompressionLevel Optimal
-          Get-Item $zip | Format-List Name, Length
-
+          Compress-Archive -Path publish-bundled\* -DestinationPath $zipBundled -CompressionLevel Optimal
+          Get-Item $zip, $zipBundled | Format-List Name, Length
       - name: Install Inno Setup
         shell: pwsh
         run: |
@@ -155,6 +172,7 @@ jobs:
           $tag = "${{ steps.version.outputs.tag }}"
           $version = "${{ steps.version.outputs.version }}"
           $zip = "Borderless-$version-win-x64.zip"
+          $zipBundled = "Borderless-$version-win-x64-bundled.zip"
           $setup = "Borderless-$version-win-x64-setup.exe"
 
           gh release create $tag `
@@ -162,6 +180,7 @@ jobs:
             --title "Borderless $version" `
             --notes-file release-notes.md `
             $zip `
+            $zipBundled `
             $setup `
             VERSION `
             update.json

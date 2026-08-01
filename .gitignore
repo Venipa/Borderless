@@ -8,5 +8,7 @@ riderModule.iml
 /VERSION
 /update.json
 /publish/
+/publish-bundled/
+
 /*.zip
 /*-setup.exe

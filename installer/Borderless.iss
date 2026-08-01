@@ -1,4 +1,4 @@
-; Borderless — Inno Setup installer (ask elevate / current-user)
+; Borderless — Inno Setup installer (framework-dependent; needs .NET 9 Desktop Runtime)
 ; Build: ISCC.exe /DMyAppVersion=1.0.0.0 /DMyAppSourceDir=..\publish installer\Borderless.iss
 
 #ifndef MyAppVersion
