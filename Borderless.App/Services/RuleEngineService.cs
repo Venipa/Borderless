@@ -1,4 +1,4 @@
-using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Windows.Threading;
 using Borderless.App.Helpers;
@@ -12,14 +12,21 @@ namespace Borderless.App.Services;
 /// </summary>
 public sealed class RuleEngineService : IDisposable
 {
+    private const int PidCacheTtlMs = 10_000;
+    private const int MuteSessionRefreshTicks = 5;
+
     private readonly WindowStyleService _windowStyleService;
     private readonly AudioMuteService _audioMuteService;
     private readonly DispatcherTimer _timer;
     private readonly int _ownProcessId = Environment.ProcessId;
     private readonly object _rulesGate = new();
+    private readonly Dictionary<int, CachedExe> _pidExeCache = new();
+    private readonly StringBuilder _titleBuffer = new(512);
+    private readonly StringBuilder _pathBuffer = new(1024);
     private IReadOnlyList<ProcessRule> _rules = [];
     private readonly HashSet<int> _muteTrackedPids = [];
     private int _tickRunning;
+    private int _muteRefreshCountdown;
     private bool _disposed;
 
     public RuleEngineService(WindowStyleService windowStyleService, AudioMuteService audioMuteService)
@@ -70,6 +77,7 @@ public sealed class RuleEngineService : IDisposable
 
     private void TickWorker()
     {
+        var posted = false;
         try
         {
             IReadOnlyList<ProcessRule> rules;
@@ -80,12 +88,32 @@ public sealed class RuleEngineService : IDisposable
 
             if (rules.Count == 0)
             {
+                UiDispatch.Post(() =>
+                {
+                    try
+                    {
+                        if (_disposed)
+                        {
+                            return;
+                        }
+
+                        _windowStyleService.SyncActiveWindows([]);
+                        ClearMuteTracking();
+                    }
+                    finally
+                    {
+                        Interlocked.Exchange(ref _tickRunning, 0);
+                    }
+                });
+                posted = true;
                 return;
             }
 
             var foreground = NativeMethods.GetForegroundWindow();
             var matches = new List<WindowMatch>();
             var matchedMutePids = new HashSet<int>();
+            var now = Environment.TickCount64;
+            PrunePidCache(now);
 
             NativeMethods.EnumWindows((hwnd, _) =>
             {
@@ -106,7 +134,7 @@ public sealed class RuleEngineService : IDisposable
                     return true;
                 }
 
-                var executableName = TryGetExecutableName((int)pid);
+                var executableName = TryGetExecutableName((int)pid, now);
                 var rule = rules.FirstOrDefault(r => r.Matches(title, executableName));
                 if (rule is null)
                 {
@@ -122,23 +150,58 @@ public sealed class RuleEngineService : IDisposable
                 return true;
             }, IntPtr.Zero);
 
+            var refreshMuteSessions = false;
+            if (matchedMutePids.Count > 0)
+            {
+                _muteRefreshCountdown--;
+                if (_muteRefreshCountdown <= 0)
+                {
+                    _muteRefreshCountdown = MuteSessionRefreshTicks;
+                    refreshMuteSessions = true;
+                }
+            }
+            else
+            {
+                _muteRefreshCountdown = 0;
+            }
+
             // Win32 style + Core Audio COM — marshal to UI/STA dispatcher.
-            UiDispatch.Post(() => ApplyMatches(matches, matchedMutePids), DispatcherPriority.Background);
+            UiDispatch.Post(() =>
+            {
+                try
+                {
+                    ApplyMatches(matches, matchedMutePids, refreshMuteSessions);
+                }
+                finally
+                {
+                    Interlocked.Exchange(ref _tickRunning, 0);
+                }
+            }, DispatcherPriority.Background);
+            posted = true;
         }
         finally
         {
-            Interlocked.Exchange(ref _tickRunning, 0);
+            if (!posted)
+            {
+                Interlocked.Exchange(ref _tickRunning, 0);
+            }
         }
     }
 
-    private void ApplyMatches(List<WindowMatch> matches, HashSet<int> matchedMutePids)
+    private void ApplyMatches(List<WindowMatch> matches, HashSet<int> matchedMutePids, bool refreshMuteSessions)
     {
         if (_disposed)
         {
             return;
         }
 
-        _windowStyleService.PruneClosed();
+        var activeHwnds = new HashSet<nint>(matches.Count);
+        foreach (var match in matches)
+        {
+            activeHwnds.Add(match.Hwnd);
+        }
+
+        _windowStyleService.SyncActiveWindows(activeHwnds);
 
         foreach (var match in matches)
         {
@@ -161,28 +224,87 @@ public sealed class RuleEngineService : IDisposable
             _muteTrackedPids.Add(pid);
         }
 
-        _audioMuteService.Refresh();
+        if (refreshMuteSessions)
+        {
+            _audioMuteService.Refresh();
+        }
     }
 
-    private static string GetWindowTitle(nint hwnd)
+    private void ClearMuteTracking()
     {
-        var buffer = new StringBuilder(512);
-        _ = NativeMethods.GetWindowText(hwnd, buffer, buffer.Capacity);
-        return buffer.ToString();
+        foreach (var pid in _muteTrackedPids.ToList())
+        {
+            _audioMuteService.Clear(pid);
+        }
+
+        _muteTrackedPids.Clear();
     }
 
-    private static string? TryGetExecutableName(int processId)
+    private string GetWindowTitle(nint hwnd)
     {
+        _titleBuffer.Clear();
+        _titleBuffer.EnsureCapacity(512);
+        _ = NativeMethods.GetWindowText(hwnd, _titleBuffer, _titleBuffer.Capacity);
+        return _titleBuffer.ToString();
+    }
+
+    private string? TryGetExecutableName(int processId, long now)
+    {
+        if (_pidExeCache.TryGetValue(processId, out var cached) && cached.ExpiresAt > now)
+        {
+            return cached.Name;
+        }
+
+        var name = QueryExecutableName(processId);
+        _pidExeCache[processId] = new CachedExe(name, now + PidCacheTtlMs);
+        return name;
+    }
+
+    private string? QueryExecutableName(int processId)
+    {
+        var handle = NativeMethods.OpenProcess(NativeMethods.ProcessQueryLimitedInformation, false, processId);
+        if (handle == IntPtr.Zero)
+        {
+            return null;
+        }
+
         try
         {
-            using var process = Process.GetProcessById(processId);
-            return process.ProcessName + ".exe";
+            _pathBuffer.Clear();
+            _pathBuffer.EnsureCapacity(1024);
+            var size = _pathBuffer.Capacity;
+            if (!NativeMethods.QueryFullProcessImageName(handle, 0, _pathBuffer, ref size) || size <= 0)
+            {
+                return null;
+            }
+
+            var fileName = Path.GetFileName(_pathBuffer.ToString());
+            return string.IsNullOrWhiteSpace(fileName) ? null : fileName;
         }
         catch
         {
             return null;
         }
+        finally
+        {
+            NativeMethods.CloseHandle(handle);
+        }
+    }
+
+    private void PrunePidCache(long now)
+    {
+        if (_pidExeCache.Count < 64)
+        {
+            return;
+        }
+
+        foreach (var pid in _pidExeCache.Where(kv => kv.Value.ExpiresAt <= now).Select(kv => kv.Key).ToList())
+        {
+            _pidExeCache.Remove(pid);
+        }
     }
 
     private readonly record struct WindowMatch(nint Hwnd, int ProcessId, ProcessRule Rule, bool IsForeground);
+
+    private readonly record struct CachedExe(string? Name, long ExpiresAt);
 }

@@ -11,6 +11,7 @@ public sealed class AudioMuteService : IDisposable
     private static readonly Guid MmDeviceEnumeratorClsid = new("BCDE0395-E52F-467C-8E3D-C4579291692E");
 
     private readonly Dictionary<int, bool> _desiredMute = new();
+    private readonly Dictionary<int, bool> _appliedMute = new();
     private readonly object _gate = new();
     private bool _disposed;
 
@@ -18,10 +19,23 @@ public sealed class AudioMuteService : IDisposable
     {
         lock (_gate)
         {
+            if (_desiredMute.TryGetValue(processId, out var desired)
+                && desired == mute
+                && _appliedMute.TryGetValue(processId, out var applied)
+                && applied == mute)
+            {
+                return;
+            }
+
             _desiredMute[processId] = mute;
         }
 
+        // Mark applied even if no session yet; Refresh re-asserts for late sessions.
         TryApplyMute(processId, mute);
+        lock (_gate)
+        {
+            _appliedMute[processId] = mute;
+        }
     }
 
     public void Clear(int processId)
@@ -29,6 +43,7 @@ public sealed class AudioMuteService : IDisposable
         lock (_gate)
         {
             _desiredMute.Remove(processId);
+            _appliedMute.Remove(processId);
         }
 
         TryApplyMute(processId, false);
@@ -44,7 +59,14 @@ public sealed class AudioMuteService : IDisposable
 
         foreach (var (processId, mute) in snapshot)
         {
-            TryApplyMute(processId, mute);
+            // Re-assert so newly created audio sessions pick up the desired mute.
+            if (TryApplyMute(processId, mute))
+            {
+                lock (_gate)
+                {
+                    _appliedMute[processId] = mute;
+                }
+            }
         }
     }
 
@@ -62,6 +84,7 @@ public sealed class AudioMuteService : IDisposable
         {
             snapshot = new Dictionary<int, bool>(_desiredMute);
             _desiredMute.Clear();
+            _appliedMute.Clear();
         }
 
         foreach (var processId in snapshot.Keys)
@@ -70,31 +93,32 @@ public sealed class AudioMuteService : IDisposable
         }
     }
 
-    private static void TryApplyMute(int processId, bool mute)
+    private static bool TryApplyMute(int processId, bool mute)
     {
         IMMDeviceEnumerator? enumerator = null;
         IMMDevice? device = null;
         IAudioSessionManager2? sessionManager = null;
         IAudioSessionEnumerator? sessionEnumerator = null;
+        var applied = false;
 
         try
         {
             enumerator = (IMMDeviceEnumerator)Activator.CreateInstance(Type.GetTypeFromCLSID(MmDeviceEnumeratorClsid)!)!;
             if (enumerator.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eMultimedia, out device) != 0 || device is null)
             {
-                return;
+                return false;
             }
 
             var iid = AudioSessionManager2Iid;
             if (device.Activate(ref iid, ClsCtx.InProcServer, IntPtr.Zero, out var managerObj) != 0)
             {
-                return;
+                return false;
             }
 
             sessionManager = (IAudioSessionManager2)managerObj;
             if (sessionManager.GetSessionEnumerator(out sessionEnumerator) != 0 || sessionEnumerator is null)
             {
-                return;
+                return false;
             }
 
             sessionEnumerator.GetCount(out var count);
@@ -120,7 +144,10 @@ public sealed class AudioMuteService : IDisposable
                     if (sessionControl is ISimpleAudioVolume volume)
                     {
                         var eventContext = Guid.Empty;
-                        volume.SetMute(mute, ref eventContext);
+                        if (volume.SetMute(mute, ref eventContext) == 0)
+                        {
+                            applied = true;
+                        }
                     }
                 }
                 finally
@@ -155,6 +182,8 @@ public sealed class AudioMuteService : IDisposable
                 Marshal.ReleaseComObject(enumerator);
             }
         }
+
+        return applied;
     }
 
     private enum EDataFlow

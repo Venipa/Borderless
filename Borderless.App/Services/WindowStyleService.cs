@@ -36,6 +36,8 @@ public sealed class WindowStyleService
         else if (_managedHwnds.Contains(hwnd))
         {
             RestoreBorderlessChrome(hwnd);
+            _managedHwnds.Remove(hwnd);
+            _chromeBackups.Remove(hwnd);
         }
 
         var layoutSignature = BuildLayoutSignature(rule);
@@ -78,6 +80,22 @@ public sealed class WindowStyleService
         _topMostState[hwnd] = enabled;
     }
 
+    /// <summary>
+    /// Drop tracking for HWNDs that no longer match a rule. Restores chrome / topmost when still alive.
+    /// </summary>
+    public void SyncActiveWindows(HashSet<nint> activeHwnds)
+    {
+        foreach (var hwnd in CollectTrackedHwnds())
+        {
+            if (activeHwnds.Contains(hwnd))
+            {
+                continue;
+            }
+
+            Release(hwnd);
+        }
+    }
+
     public void Forget(nint hwnd)
     {
         _chromeBackups.Remove(hwnd);
@@ -88,24 +106,12 @@ public sealed class WindowStyleService
 
     public void PruneClosed()
     {
-        foreach (var hwnd in _managedHwnds.Where(h => !NativeMethods.IsWindow(h)).ToList())
+        foreach (var hwnd in CollectTrackedHwnds())
         {
-            Forget(hwnd);
-        }
-
-        foreach (var hwnd in _chromeBackups.Keys.Where(h => !NativeMethods.IsWindow(h)).ToList())
-        {
-            Forget(hwnd);
-        }
-
-        foreach (var hwnd in _topMostState.Keys.Where(h => !NativeMethods.IsWindow(h)).ToList())
-        {
-            _topMostState.Remove(hwnd);
-        }
-
-        foreach (var hwnd in _lastLayoutSignature.Keys.Where(h => !NativeMethods.IsWindow(h)).ToList())
-        {
-            _lastLayoutSignature.Remove(hwnd);
+            if (!NativeMethods.IsWindow(hwnd))
+            {
+                Forget(hwnd);
+            }
         }
     }
 
@@ -117,6 +123,52 @@ public sealed class WindowStyleService
         }
 
         return (rect.Right - rect.Left, rect.Bottom - rect.Top);
+    }
+
+    private void Release(nint hwnd)
+    {
+        if (NativeMethods.IsWindow(hwnd))
+        {
+            if (_managedHwnds.Contains(hwnd))
+            {
+                RestoreBorderlessChrome(hwnd);
+            }
+
+            if (_topMostState.TryGetValue(hwnd, out var wasTopMost) && wasTopMost)
+            {
+                NativeMethods.SetWindowPos(
+                    hwnd,
+                    NativeMethods.HwndNoTopMost,
+                    0,
+                    0,
+                    0,
+                    0,
+                    NativeMethods.SwpNoMove | NativeMethods.SwpNoSize | NativeMethods.SwpNoActivate | NativeMethods.SwpShowWindow);
+            }
+        }
+
+        Forget(hwnd);
+    }
+
+    private List<nint> CollectTrackedHwnds()
+    {
+        var set = new HashSet<nint>(_managedHwnds);
+        foreach (var hwnd in _chromeBackups.Keys)
+        {
+            set.Add(hwnd);
+        }
+
+        foreach (var hwnd in _topMostState.Keys)
+        {
+            set.Add(hwnd);
+        }
+
+        foreach (var hwnd in _lastLayoutSignature.Keys)
+        {
+            set.Add(hwnd);
+        }
+
+        return set.ToList();
     }
 
     private void ApplyBorderlessChrome(nint hwnd)
