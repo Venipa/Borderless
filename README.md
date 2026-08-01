@@ -7,7 +7,8 @@
 [![License](https://img.shields.io/github/license/Venipa/Borderless)](LICENSE)
 
 Windows utility that forces apps into borderless windowed mode. Match by window title and/or executable name, then keep the styles applied.
-<img width="1024" height="680" alt="image" src="https://github.com/user-attachments/assets/71d03716-1408-4dff-8302-c8078d5f0e9c" />
+
+<img width="1024" height="680" alt="image" src="https://github.com/user-attachments/assets/372676ed-3948-4474-b16a-c28e97c67d8d" />
 
 
 ## Features
