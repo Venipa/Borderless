@@ -1,4 +1,4 @@
-# Borderless
+# <img src="Borderless.App/Resources/Iconx48.png" width="32" height="32" alt="" /> Borderless
 
 [![.NET](https://img.shields.io/badge/.NET-9.0-512BD4?logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/)
 [![C#](https://img.shields.io/badge/C%23-13-239120?logo=csharp&logoColor=white)](https://learn.microsoft.com/dotnet/csharp/)
