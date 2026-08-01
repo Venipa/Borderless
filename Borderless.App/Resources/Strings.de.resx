@@ -71,6 +71,11 @@
   <data name="DimensionWidth" xml:space="preserve"><value>Breite</value></data>
   <data name="DimensionHeight" xml:space="preserve"><value>Höhe</value></data>
   <data name="ValidationMatchRequired" xml:space="preserve"><value>Exakten Fenstertitel oder Executable-Namen setzen.</value></data>
+  <data name="ValidationDuplicateRule" xml:space="preserve"><value>Eine Regel mit demselben Fenstertitel und Executable existiert bereits.</value></data>
+  <data name="RuleStatusIdle" xml:space="preserve"><value>Kein passender Prozess</value></data>
+  <data name="RuleStatusActive" xml:space="preserve"><value>Passender Prozess aktiv</value></data>
+  <data name="RuleStatusError" xml:space="preserve"><value>Fehler beim Anwenden der Regel</value></data>
+  <data name="RuleStatusDisabled" xml:space="preserve"><value>Regel deaktiviert</value></data>
   <data name="UntitledRule" xml:space="preserve"><value>Unbenannte Regel</value></data>
   <data name="NavRules" xml:space="preserve"><value>Regeln</value></data>
   <data name="NavDefaults" xml:space="preserve"><value>Standards</value></data>

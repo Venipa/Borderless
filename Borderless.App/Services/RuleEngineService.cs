@@ -29,6 +29,12 @@ public sealed class RuleEngineService : IDisposable
     private int _muteRefreshCountdown;
     private bool _disposed;
 
+    /// <summary>
+    /// Fired on the UI thread after each apply pass with live statuses for matched rule ids.
+    /// Missing ids are idle (no matching process this tick).
+    /// </summary>
+    public event Action<IReadOnlyDictionary<Guid, RuleLiveStatus>>? RuleStatusesChanged;
+
     public RuleEngineService(WindowStyleService windowStyleService, AudioMuteService audioMuteService)
     {
         _windowStyleService = windowStyleService;
@@ -99,6 +105,7 @@ public sealed class RuleEngineService : IDisposable
 
                         _windowStyleService.SyncActiveWindows([]);
                         ClearMuteTracking();
+                        RuleStatusesChanged?.Invoke(new Dictionary<Guid, RuleLiveStatus>());
                     }
                     finally
                     {
@@ -203,13 +210,26 @@ public sealed class RuleEngineService : IDisposable
 
         _windowStyleService.SyncActiveWindows(activeHwnds);
 
+        var statuses = new Dictionary<Guid, RuleLiveStatus>();
         foreach (var match in matches)
         {
-            _windowStyleService.ApplyVideo(match.Hwnd, match.Rule);
-
-            if (match.Rule.MuteInBackground)
+            try
             {
-                _audioMuteService.SetMuteDesired(match.ProcessId, !match.IsForeground);
+                _windowStyleService.ApplyVideo(match.Hwnd, match.Rule);
+
+                if (match.Rule.MuteInBackground)
+                {
+                    _audioMuteService.SetMuteDesired(match.ProcessId, !match.IsForeground);
+                }
+
+                if (!statuses.TryGetValue(match.Rule.Id, out var existing) || existing != RuleLiveStatus.Error)
+                {
+                    statuses[match.Rule.Id] = RuleLiveStatus.Active;
+                }
+            }
+            catch
+            {
+                statuses[match.Rule.Id] = RuleLiveStatus.Error;
             }
         }
 
@@ -228,6 +248,8 @@ public sealed class RuleEngineService : IDisposable
         {
             _audioMuteService.Refresh();
         }
+
+        RuleStatusesChanged?.Invoke(statuses);
     }
 
     private void ClearMuteTracking()

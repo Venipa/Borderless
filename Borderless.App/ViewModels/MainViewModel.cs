@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows.Data;
+using Borderless.App.Localization;
 using Borderless.App.Models;
 using Borderless.App.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -63,6 +64,7 @@ public sealed partial class MainViewModel : ObservableObject
         FilteredRules = CollectionViewSource.GetDefaultView(Rules);
         FilteredRules.Filter = MatchesRulesSearch;
         Rules.CollectionChanged += OnRulesCollectionChanged;
+        _ruleEngine.RuleStatusesChanged += OnRuleStatusesChanged;
 
         foreach (var rule in _ruleStore.Load())
         {
@@ -72,6 +74,28 @@ public sealed partial class MainViewModel : ObservableObject
         RefreshRuleVisibility();
         PushRulesToEngine();
         _ruleEngine.Start();
+    }
+
+    private void OnRuleStatusesChanged(IReadOnlyDictionary<Guid, RuleLiveStatus> live)
+    {
+        foreach (var rule in Rules)
+        {
+            if (!rule.IsEnabled)
+            {
+                if (rule.LiveStatus != RuleLiveStatus.Idle)
+                {
+                    rule.LiveStatus = RuleLiveStatus.Idle;
+                }
+
+                continue;
+            }
+
+            var next = live.TryGetValue(rule.Id, out var status) ? status : RuleLiveStatus.Idle;
+            if (rule.LiveStatus != next)
+            {
+                rule.LiveStatus = next;
+            }
+        }
     }
 
     partial void OnCurrentSectionChanged(AppSection value)
@@ -136,12 +160,24 @@ public sealed partial class MainViewModel : ObservableObject
             return;
         }
 
+        if (Rules.Any(r => r.Id != rule.Id && r.HasSameMatchKey(rule)))
+        {
+            Editor.ValidationMessage = Loc.Get("ValidationDuplicateRule");
+            return;
+        }
+
         AddOrUpdateRule(rule);
         CloseEditor();
     }
 
     public void AddOrUpdateRule(ProcessRule rule)
     {
+        var duplicate = Rules.FirstOrDefault(r => r.Id != rule.Id && r.HasSameMatchKey(rule));
+        if (duplicate is not null)
+        {
+            return;
+        }
+
         var existing = Rules.FirstOrDefault(r => r.Id == rule.Id);
         if (existing is null)
         {
@@ -150,6 +186,7 @@ public sealed partial class MainViewModel : ObservableObject
         else
         {
             var index = Rules.IndexOf(existing);
+            rule.LiveStatus = existing.LiveStatus;
             Rules[index] = rule;
         }
 

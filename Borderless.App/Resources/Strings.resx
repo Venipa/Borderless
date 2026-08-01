@@ -71,6 +71,11 @@
   <data name="DimensionWidth" xml:space="preserve"><value>Width</value></data>
   <data name="DimensionHeight" xml:space="preserve"><value>Height</value></data>
   <data name="ValidationMatchRequired" xml:space="preserve"><value>Set exact window title or executable name.</value></data>
+  <data name="ValidationDuplicateRule" xml:space="preserve"><value>A rule with the same window title and executable already exists.</value></data>
+  <data name="RuleStatusIdle" xml:space="preserve"><value>No matching process</value></data>
+  <data name="RuleStatusActive" xml:space="preserve"><value>Matching process active</value></data>
+  <data name="RuleStatusError" xml:space="preserve"><value>Error applying rule</value></data>
+  <data name="RuleStatusDisabled" xml:space="preserve"><value>Rule disabled</value></data>
   <data name="UntitledRule" xml:space="preserve"><value>Untitled rule</value></data>
   <data name="NavRules" xml:space="preserve"><value>Rules</value></data>
   <data name="NavDefaults" xml:space="preserve"><value>Defaults</value></data>

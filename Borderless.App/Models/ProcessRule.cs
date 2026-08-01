@@ -1,11 +1,13 @@
 using System.IO;
+using System.Text.Json.Serialization;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Borderless.App.Models;
 
 /// <summary>
 /// Rule that matches a process by window title and/or executable name and applies window options.
 /// </summary>
-public sealed class ProcessRule
+public sealed partial class ProcessRule : ObservableObject
 {
     public Guid Id { get; set; } = Guid.NewGuid();
 
@@ -40,6 +42,11 @@ public sealed class ProcessRule
     public int CustomHeight { get; set; }
 
     public bool MuteInBackground { get; set; }
+
+    /// <summary>Runtime indicator; not persisted.</summary>
+    [JsonIgnore]
+    [ObservableProperty]
+    private RuleLiveStatus _liveStatus = RuleLiveStatus.Idle;
 
     public string DisplayName
     {
@@ -79,5 +86,16 @@ public sealed class ProcessRule
                 StringComparison.OrdinalIgnoreCase);
 
         return titleOk && exeOk;
+    }
+
+    public bool HasSameMatchKey(ProcessRule other)
+    {
+        ArgumentNullException.ThrowIfNull(other);
+
+        return string.Equals(WindowTitle.Trim(), other.WindowTitle.Trim(), StringComparison.Ordinal)
+            && string.Equals(
+                Path.GetFileName(ExecutableName)?.Trim() ?? string.Empty,
+                Path.GetFileName(other.ExecutableName)?.Trim() ?? string.Empty,
+                StringComparison.OrdinalIgnoreCase);
     }
 }

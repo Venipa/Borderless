@@ -11,6 +11,8 @@
     <Page.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter" />
+        <converters:RuleLiveStatusToBrushConverter x:Key="RuleLiveStatusToBrushConverter" />
+        <converters:RuleLiveStatusToTooltipConverter x:Key="RuleLiveStatusToTooltipConverter" />
 
         <Style x:Key="RuleFeatureIconStyle" TargetType="ui:SymbolIcon">
             <Setter Property="FontSize" Value="14" />
@@ -118,31 +120,32 @@
                               Background="Transparent"
                               MouseLeftButtonUp="OnEditRuleClick"
                               Tag="{Binding}">
-                            <Grid.Style>
-                                <Style TargetType="Grid">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsEnabled}" Value="False">
-                                            <Setter Property="Opacity" Value="0.45" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Grid.Style>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="3" />
+                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
-                            <Border Grid.Column="0"
-                                    Width="3"
-                                    Height="22"
-                                    CornerRadius="1.5"
-                                    VerticalAlignment="Center"
-                                    Margin="6,0,0,0"
-                                    Background="{DynamicResource AccentFillColorDefaultBrush}"
-                                    Visibility="{Binding IsEnabled, Converter={StaticResource BooleanToVisibilityConverter}}" />
-
+                            <!-- Status pill (enabled) or disabled icon -->
+                            <Grid Grid.Column="0"
+                                  Width="16"
+                                  Margin="6,0,0,0"
+                                  VerticalAlignment="Center">
+                                <Border Width="3"
+                                        Height="22"
+                                        CornerRadius="1.5"
+                                        HorizontalAlignment="Center"
+                                        Background="{Binding LiveStatus, Converter={StaticResource RuleLiveStatusToBrushConverter}}"
+                                        Visibility="{Binding IsEnabled, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                        ToolTip="{Binding LiveStatus, Converter={StaticResource RuleLiveStatusToTooltipConverter}}" />
+                                <ui:SymbolIcon Symbol="Prohibited24"
+                                               FontSize="14"
+                                               HorizontalAlignment="Center"
+                                               Foreground="{DynamicResource TextFillColorDisabledBrush}"
+                                               Visibility="{Binding IsEnabled, Converter={StaticResource InverseBooleanToVisibilityConverter}}"
+                                               ToolTip="{loc:Loc RuleStatusDisabled}" />
+                            </Grid>
                             <Grid Grid.Column="1"
                                   VerticalAlignment="Center"
                                   Margin="12,0,12,0">
