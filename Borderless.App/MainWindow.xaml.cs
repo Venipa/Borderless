@@ -201,17 +201,17 @@ public partial class MainWindow : FluentWindow
 
     private void OnWindowClosing(object sender, CancelEventArgs e)
     {
-        if (_forceClose || !ViewModel.Settings.CloseToTray)
+        if (_forceClose)
         {
             return;
         }
 
-        e.Cancel = true;
-        Hide();
-        EnsureTrayIcon();
-        if (_trayIcon is not null)
+        // Close-to-tray: X only hides. Quit comes from the tray menu.
+        if (ViewModel.Settings.CloseToTray)
         {
-            _trayIcon.Visible = true;
+            e.Cancel = true;
+            Hide();
+            EnsureTrayIcon();
         }
     }
 
@@ -219,6 +219,7 @@ public partial class MainWindow : FluentWindow
     {
         if (_trayIcon is not null)
         {
+            _trayIcon.Visible = true;
             return;
         }
 
@@ -226,13 +227,13 @@ public partial class MainWindow : FluentWindow
         {
             Text = Loc.Get("AppTitle"),
             Icon = LoadAppIcon(),
-            Visible = false
+            Visible = true
         };
         _trayIcon.MouseClick += OnTrayMouseClick;
 
         var menu = new ContextMenuStrip();
-        menu.Items.Add(Loc.Get("TrayOpen"), null, (_, _) => RestoreFromTray());
-        menu.Items.Add(Loc.Get("TrayExit"), null, (_, _) => ExitFromTray());
+        menu.Items.Add(Loc.Get("TrayShow"), null, (_, _) => RestoreFromTray());
+        menu.Items.Add(Loc.Get("TrayQuit"), null, (_, _) => ExitFromTray());
         _trayIcon.ContextMenuStrip = menu;
     }
 
@@ -285,20 +286,12 @@ public partial class MainWindow : FluentWindow
         Show();
         WindowState = WindowState.Normal;
         Activate();
-        if (_trayIcon is not null)
-        {
-            _trayIcon.Visible = false;
-        }
+        EnsureTrayIcon();
     }
 
     private void ExitFromTray()
     {
         _forceClose = true;
-        if (_trayIcon is not null)
-        {
-            _trayIcon.Visible = false;
-        }
-
         Application.Current.Shutdown();
     }
 

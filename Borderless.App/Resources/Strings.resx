@@ -100,6 +100,6 @@
   <data name="UpdateCheckErrorFormat" xml:space="preserve"><value>Update check failed: {0}</value></data>
   <data name="UpdateApplyErrorFormat" xml:space="preserve"><value>Update install failed: {0}</value></data>
   <data name="UpdateNoAsset" xml:space="preserve"><value>No downloadable setup/zip asset found on the release.</value></data>
-  <data name="TrayOpen" xml:space="preserve"><value>Open</value></data>
-  <data name="TrayExit" xml:space="preserve"><value>Exit</value></data>
+  <data name="TrayShow" xml:space="preserve"><value>Show</value></data>
+  <data name="TrayQuit" xml:space="preserve"><value>Quit</value></data>
 </root>
