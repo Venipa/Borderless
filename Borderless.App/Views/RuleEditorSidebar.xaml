@@ -52,6 +52,7 @@
                                   Margin="0,0,0,6" />
                     <ui:TextBox Text="{Binding WindowTitle, UpdateSourceTrigger=PropertyChanged}"
                                 PlaceholderText="{loc:Loc WindowTitlePlaceholder}"
+                                ClearButtonEnabled="True"
                                 Margin="0,0,0,16" />
 
                     <ui:TextBlock Text="{loc:Loc ExecutableNameLabel}"
@@ -112,83 +113,184 @@
                         </Popup>
                     </Grid>
 
-                    <ui:TextBlock Text="{loc:Loc GroupVideo}"
-                                  FontTypography="BodyStrong"
-                                  Appearance="Primary"
-                                  Margin="0,0,0,8" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="16" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
 
-                    <ui:Card Padding="14" Margin="0,0,0,8">
-                        <StackPanel>
-                            <ui:ToggleSwitch Content="{loc:Loc ToggleBorderless}"
-                                             IsChecked="{Binding IsBorderless}"
-                                             Margin="0,0,0,12" />
-                            <ui:ToggleSwitch Content="{loc:Loc ToggleAlwaysOnTop}"
-                                             IsChecked="{Binding IsAlwaysOnTop}"
-                                             Margin="0,0,0,12" />
-                            <ui:ToggleSwitch Content="{loc:Loc ToggleExpandToScreen}"
-                                             IsChecked="{Binding IsExpandToScreen}"
-                                             IsEnabled="{Binding UseCustomDimension, Converter={StaticResource InverseBooleanConverter}}"
-                                             Margin="0,0,0,12" />
-                            <ui:ToggleSwitch Content="{loc:Loc ToggleCustomDimension}"
-                                             IsChecked="{Binding UseCustomDimension}"
-                                             IsEnabled="{Binding IsExpandToScreen, Converter={StaticResource InverseBooleanConverter}}" />
-                            <Grid Margin="0,10,0,0"
-                                  Visibility="{Binding UseCustomDimension, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <ui:TextBlock Text="{Binding CustomDimensionSummary}"
-                                              FontTypography="Caption"
-                                              Appearance="Secondary"
-                                              VerticalAlignment="Center"
-                                              TextWrapping="Wrap"
-                                              Margin="0,0,8,0" />
-                                <ui:Button Grid.Column="1"
-                                           Content="{loc:Loc EditDimensions}"
-                                           Appearance="Secondary"
-                                           Command="{Binding EditDimensionDialogCommand}" />
-                            </Grid>
+                        <StackPanel Grid.Row="0" Grid.Column="0">
+                            <ui:TextBlock Text="{loc:Loc GroupVideo}"
+                                          FontTypography="BodyStrong"
+                                          Appearance="Primary"
+                                          Margin="0,0,0,8" />
+                            <Border Style="{StaticResource OutlinedGroupCard}" Margin="0,0,0,0">
+                                <StackPanel>
+                                    <controls:ToggleOptionRow Label="{loc:Loc ToggleBorderless}"
+                                                              IsChecked="{Binding IsBorderless}" />
+                                    <controls:ToggleOptionRow Label="{loc:Loc ToggleAlwaysOnTop}"
+                                                              IsChecked="{Binding IsAlwaysOnTop}" />
+                                    <controls:ToggleOptionRow Label="{loc:Loc ToggleExpandToScreen}"
+                                                              IsChecked="{Binding IsExpandToScreen}"
+                                                              IsEnabled="{Binding UseCustomDimension, Converter={StaticResource InverseBooleanConverter}}" />
+                                    <controls:ToggleOptionRow Label="{loc:Loc ToggleCustomDimension}"
+                                                              IsChecked="{Binding UseCustomDimension}"
+                                                              IsEnabled="{Binding IsExpandToScreen, Converter={StaticResource InverseBooleanConverter}}"
+                                                              Margin="0" />
+                                    <Grid Margin="0,10,0,0"
+                                          Visibility="{Binding UseCustomDimension, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <ui:TextBlock Text="{Binding CustomDimensionSummary}"
+                                                      FontTypography="Caption"
+                                                      Appearance="Secondary"
+                                                      VerticalAlignment="Center"
+                                                      TextWrapping="Wrap"
+                                                      Margin="0,0,8,0" />
+                                        <ui:Button Grid.Column="1"
+                                                   Content="{loc:Loc EditDimensions}"
+                                                   Appearance="Secondary"
+                                                   Command="{Binding EditDimensionDialogCommand}" />
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
                         </StackPanel>
-                    </ui:Card>
 
-                    <ui:TextBlock Text="{loc:Loc GroupAudio}"
-                                  FontTypography="BodyStrong"
-                                  Appearance="Primary"
-                                  Margin="0,12,0,8" />
+                        <StackPanel Grid.Row="0" Grid.Column="2">
+                            <ui:TextBlock Text="{loc:Loc GroupInput}"
+                                          FontTypography="BodyStrong"
+                                          Appearance="Primary"
+                                          Margin="0,0,0,8" />
+                            <Border Style="{StaticResource OutlinedGroupCard}" Margin="0">
+                                <StackPanel>
+                                    <controls:ToggleOptionRow Label="{loc:Loc ToggleLockCursor}"
+                                                              Description="{loc:Loc ToggleLockCursorHint}"
+                                                              IsChecked="{Binding LockCursor}" />
+                                    <controls:ToggleOptionRow Label="{loc:Loc ToggleHideCursor}"
+                                                              Description="{loc:Loc ToggleHideCursorHint}"
+                                                              IsChecked="{Binding HideCursor}" />
+                                    <controls:ToggleOptionRow Label="{loc:Loc ToggleRemoveGameMenus}"
+                                                              Description="{loc:Loc ToggleRemoveGameMenusHint}"
+                                                              IsChecked="{Binding RemoveGameMenus}"
+                                                              Margin="0" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
 
-                    <ui:Card Padding="14" Margin="0,0,0,8">
-                        <ui:ToggleSwitch Content="{loc:Loc ToggleMuteBackground}"
-                                         IsChecked="{Binding MuteInBackground}" />
-                    </ui:Card>
-
-                    <ui:TextBlock Text="{loc:Loc GroupGeneral}"
-                                  FontTypography="BodyStrong"
-                                  Appearance="Primary"
-                                  Margin="0,12,0,8" />
-
-                    <ui:Card Padding="14" Margin="0,0,0,10">
-                        <ui:ToggleSwitch Content="{loc:Loc ToggleRuleEnabled}"
-                                         IsChecked="{Binding IsEnabled}" />
-                    </ui:Card>
+                        <StackPanel Grid.Row="1"
+                                    Grid.Column="0"
+                                    Margin="0,16,0,0">
+                            <ui:TextBlock Text="{loc:Loc GroupAudio}"
+                                          FontTypography="BodyStrong"
+                                          Appearance="Primary"
+                                          Margin="0,0,0,8" />
+                            <Border Style="{StaticResource OutlinedGroupCard}" Margin="0">
+                                <controls:ToggleOptionRow Label="{loc:Loc ToggleMuteBackground}"
+                                                          IsChecked="{Binding MuteInBackground}"
+                                                          Margin="0" />
+                            </Border>
+                        </StackPanel>
+                    </Grid>
 
                     <TextBlock Text="{Binding ValidationMessage}"
                                Foreground="#FFFF6B6B"
                                TextWrapping="Wrap"
-                               Margin="0,8,0,0" />
+                               Margin="0,12,0,0" />
                 </StackPanel>
             </ScrollViewer>
 
             <StackPanel Grid.Row="2"
                         Orientation="Horizontal"
                         HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
                         Margin="20,12,20,20">
+                <ToggleButton IsChecked="{Binding IsEnabled, Mode=TwoWay}"
+                              Content="{Binding EnabledToggleLabel}"
+                              Width="168"
+                              Height="36"
+                              VerticalAlignment="Center"
+                              HorizontalContentAlignment="Center"
+                              Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                              FocusVisualStyle="{x:Null}">
+                    <ToggleButton.Template>
+                        <ControlTemplate TargetType="ToggleButton">
+                            <Border x:Name="Root"
+                                    Background="{DynamicResource ControlFillColorDefaultBrush}"
+                                    BorderBrush="{DynamicResource ControlElevationBorderBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="8"
+                                    ClipToBounds="True"
+                                    SnapsToDevicePixels="True">
+                                <Grid>
+                                    <ContentPresenter HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center"
+                                                      Margin="10,6,10,8"
+                                                      RecognizesAccessKey="True" />
+                                    <!-- Bottom-edge pill: top corners only, Fluent system accent -->
+                                    <Border x:Name="StatusPill"
+                                            Width="28"
+                                            Height="3"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Bottom"
+                                            CornerRadius="2,2,0,0"
+                                            Background="{DynamicResource TextFillColorDisabledBrush}"
+                                            SnapsToDevicePixels="True" />
+                                </Grid>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Root" Property="Background" Value="{DynamicResource ControlFillColorSecondaryBrush}" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="Root" Property="Background" Value="{DynamicResource ControlFillColorTertiaryBrush}" />
+                                </Trigger>
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter TargetName="StatusPill" Property="Background" Value="{DynamicResource ListViewItemPillFillBrush}" />
+                                    <Setter TargetName="StatusPill" Property="Width" Value="32" />
+                                </Trigger>
+                                <Trigger Property="IsChecked" Value="False">
+                                    <Setter TargetName="StatusPill" Property="Background" Value="{DynamicResource TextFillColorDisabledBrush}" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </ToggleButton.Template>
+                </ToggleButton>
+
+                <Line X1="0"
+                      Y1="0"
+                      X2="0"
+                      Y2="1"
+                      Stretch="Fill"
+                      Width="1"
+                      Height="36"
+                      Margin="12,0"
+                      VerticalAlignment="Center"
+                      Stroke="{DynamicResource ControlStrokeColorDefaultBrush}"
+                      StrokeThickness="1"
+                      StrokeDashArray="1 2"
+                      SnapsToDevicePixels="True" />
+
                 <ui:Button Content="{loc:Loc Cancel}"
                            Appearance="Secondary"
+                           Height="36"
+                           MinHeight="36"
+                           Padding="14,0"
                            Margin="0,0,8,0"
+                           VerticalAlignment="Center"
                            Command="{Binding DataContext.CloseEditorCommand, RelativeSource={RelativeSource AncestorType=Window}}" />
                 <ui:Button Content="{loc:Loc Save}"
                            Appearance="Primary"
+                           Height="36"
+                           MinHeight="36"
+                           Padding="14,0"
+                           VerticalAlignment="Center"
                            Command="{Binding DataContext.SaveEditorCommand, RelativeSource={RelativeSource AncestorType=Window}}" />
             </StackPanel>
 

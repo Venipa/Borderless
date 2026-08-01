@@ -37,6 +37,9 @@
   <data name="BadgeAlwaysOnTop" xml:space="preserve"><value>Always on top</value></data>
   <data name="BadgeExpandToScreen" xml:space="preserve"><value>Max size</value></data>
   <data name="BadgeMuteBackground" xml:space="preserve"><value>Mute bg</value></data>
+  <data name="BadgeLockCursor" xml:space="preserve"><value>Lock cursor</value></data>
+  <data name="BadgeHideCursor" xml:space="preserve"><value>Hide cursor</value></data>
+  <data name="BadgeRemoveGameMenus" xml:space="preserve"><value>No menus</value></data>
   <data name="EnabledFormat" xml:space="preserve"><value>Enabled: {0}</value></data>
   <data name="DeleteRuleTooltip" xml:space="preserve"><value>Delete rule</value></data>
   <data name="EmptyTitle" xml:space="preserve"><value>No rules yet</value></data>
@@ -58,8 +61,15 @@
   <data name="ToggleExpandToScreen" xml:space="preserve"><value>Max size / expand to screen</value></data>
   <data name="ToggleCustomDimension" xml:space="preserve"><value>Custom dimension</value></data>
   <data name="ToggleMuteBackground" xml:space="preserve"><value>Mute in background</value></data>
+  <data name="ToggleLockCursor" xml:space="preserve"><value>Lock cursor to window</value></data>
+  <data name="ToggleLockCursorHint" xml:space="preserve"><value>Alt+Tab to release the cursor.</value></data>
+  <data name="ToggleHideCursor" xml:space="preserve"><value>Hide mouse cursor</value></data>
+  <data name="ToggleHideCursorHint" xml:space="preserve"><value>Alt+Tab to show the cursor again.</value></data>
+  <data name="ToggleRemoveGameMenus" xml:space="preserve"><value>Remove game menus</value></data>
+  <data name="ToggleRemoveGameMenusHint" xml:space="preserve"><value>Hide the window menu bar while the rule is active.</value></data>
   <data name="ToggleRuleEnabled" xml:space="preserve"><value>Rule enabled</value></data>
   <data name="GroupVideo" xml:space="preserve"><value>Video</value></data>
+  <data name="GroupInput" xml:space="preserve"><value>Input</value></data>
   <data name="GroupAudio" xml:space="preserve"><value>Audio</value></data>
   <data name="GroupGeneral" xml:space="preserve"><value>General</value></data>
   <data name="EditDimensions" xml:space="preserve"><value>Edit</value></data>

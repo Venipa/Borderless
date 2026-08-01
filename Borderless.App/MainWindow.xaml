@@ -84,7 +84,10 @@
                                 VerticalAlignment="Stretch"
                                 HorizontalContentAlignment="Stretch"
                                 VerticalContentAlignment="Stretch"
-                                Background="{DynamicResource NavigationViewContentBackground}" />
+                                Background="{DynamicResource NavigationViewContentBackground}"
+                                Focusable="False"
+                                IsTabStop="False"
+                                FocusVisualStyle="{x:Null}" />
             </ui:NavigationView.ContentOverlay>
 
             <ui:NavigationView.MenuItems>
@@ -124,14 +127,14 @@
                     MouseLeftButtonDown="OnEditorScrimClick" />
 
             <Border x:Name="EditorSidebarHost"
-                    Width="520"
+                    Width="640"
                     HorizontalAlignment="Right"
                     Background="{DynamicResource ApplicationBackgroundBrush}"
                     BorderBrush="{DynamicResource ControlElevationBorderBrush}"
                     BorderThickness="1,0,0,0"
                     IsHitTestVisible="True">
                 <Border.RenderTransform>
-                    <TranslateTransform x:Name="EditorSidebarTransform" X="520" />
+                    <TranslateTransform x:Name="EditorSidebarTransform" X="640" />
                 </Border.RenderTransform>
                 <views:RuleEditorSidebar DataContext="{Binding Editor}" />
             </Border>

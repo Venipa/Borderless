@@ -37,6 +37,9 @@
   <data name="BadgeAlwaysOnTop" xml:space="preserve"><value>항상 위</value></data>
   <data name="BadgeExpandToScreen" xml:space="preserve"><value>최대 크기</value></data>
   <data name="BadgeMuteBackground" xml:space="preserve"><value>BG 음소거</value></data>
+  <data name="BadgeLockCursor" xml:space="preserve"><value>커서 잠금</value></data>
+  <data name="BadgeHideCursor" xml:space="preserve"><value>커서 숨김</value></data>
+  <data name="BadgeRemoveGameMenus" xml:space="preserve"><value>메뉴 없음</value></data>
   <data name="EnabledFormat" xml:space="preserve"><value>사용: {0}</value></data>
   <data name="DeleteRuleTooltip" xml:space="preserve"><value>규칙 삭제</value></data>
   <data name="EmptyTitle" xml:space="preserve"><value>규칙 없음</value></data>
@@ -58,8 +61,15 @@
   <data name="ToggleExpandToScreen" xml:space="preserve"><value>최대 / 화면 맞춤</value></data>
   <data name="ToggleCustomDimension" xml:space="preserve"><value>사용자 크기</value></data>
   <data name="ToggleMuteBackground" xml:space="preserve"><value>백그라운드 음소거</value></data>
+  <data name="ToggleLockCursor" xml:space="preserve"><value>창에 커서 잠금</value></data>
+  <data name="ToggleLockCursorHint" xml:space="preserve"><value>Alt+Tab으로 해제합니다.</value></data>
+  <data name="ToggleHideCursor" xml:space="preserve"><value>마우스 커서 숨기기</value></data>
+  <data name="ToggleHideCursorHint" xml:space="preserve"><value>Alt+Tab으로 다시 표시합니다.</value></data>
+  <data name="ToggleRemoveGameMenus" xml:space="preserve"><value>게임 메뉴 제거</value></data>
+  <data name="ToggleRemoveGameMenusHint" xml:space="preserve"><value>규칙이 활성일 때 메뉴 표시줄을 숨깁니다.</value></data>
   <data name="ToggleRuleEnabled" xml:space="preserve"><value>규칙 사용</value></data>
   <data name="GroupVideo" xml:space="preserve"><value>비디오</value></data>
+  <data name="GroupInput" xml:space="preserve"><value>입력</value></data>
   <data name="GroupAudio" xml:space="preserve"><value>오디오</value></data>
   <data name="GroupGeneral" xml:space="preserve"><value>일반</value></data>
   <data name="EditDimensions" xml:space="preserve"><value>편집</value></data>

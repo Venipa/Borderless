@@ -20,6 +20,12 @@ public sealed class RuleDefaults
 
     public bool MuteInBackground { get; set; }
 
+    public bool LockCursor { get; set; }
+
+    public bool HideCursor { get; set; }
+
+    public bool RemoveGameMenus { get; set; }
+
     public bool IsEnabled { get; set; } = true;
 }
 

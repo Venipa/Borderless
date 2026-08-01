@@ -16,10 +16,15 @@ public sealed class WindowStyleService
         | NativeMethods.WsSysMenu
         | NativeMethods.WsBorder;
 
+    private const int StandardChromeExStyle =
+        NativeMethods.WsExDlgModalFrame
+        | NativeMethods.WsExClientEdge
+        | NativeMethods.WsExStaticEdge
+        | NativeMethods.WsExWindowEdge;
+
     private readonly Dictionary<nint, ChromeBackup> _chromeBackups = new();
     private readonly HashSet<nint> _managedHwnds = [];
     private readonly Dictionary<nint, bool> _topMostState = new();
-    private readonly Dictionary<nint, string> _lastLayoutSignature = new();
 
     public void ApplyVideo(nint hwnd, ProcessRule rule)
     {
@@ -28,7 +33,7 @@ public sealed class WindowStyleService
             return;
         }
 
-        // Chrome is asserted every tick so games that re-strip styles still get undone.
+        // Re-assert every tick — games (esp. already-borderless titles) reset style/z-order.
         if (rule.IsBorderless)
         {
             ApplyBorderlessChrome(hwnd);
@@ -40,30 +45,18 @@ public sealed class WindowStyleService
             _chromeBackups.Remove(hwnd);
         }
 
-        var layoutSignature = BuildLayoutSignature(rule);
-        if (_lastLayoutSignature.TryGetValue(hwnd, out var previous) && previous == layoutSignature)
-        {
-            ApplyAlwaysOnTop(hwnd, rule.IsAlwaysOnTop);
-            return;
-        }
-
         if (rule.IsExpandToScreen || rule.UseCustomDimension)
         {
             ApplyBounds(hwnd, rule);
         }
 
+        // Topmost last so it wins over style/bounds SetWindowPos.
         ApplyAlwaysOnTop(hwnd, rule.IsAlwaysOnTop);
-        _lastLayoutSignature[hwnd] = layoutSignature;
     }
 
     public void ApplyAlwaysOnTop(nint hwnd, bool enabled)
     {
         if (!NativeMethods.IsWindow(hwnd))
-        {
-            return;
-        }
-
-        if (_topMostState.TryGetValue(hwnd, out var current) && current == enabled)
         {
             return;
         }
@@ -75,7 +68,7 @@ public sealed class WindowStyleService
             0,
             0,
             0,
-            NativeMethods.SwpNoMove | NativeMethods.SwpNoSize | NativeMethods.SwpNoActivate | NativeMethods.SwpShowWindow);
+            NativeMethods.SwpNoMove | NativeMethods.SwpNoSize | NativeMethods.SwpNoActivate);
 
         _topMostState[hwnd] = enabled;
     }
@@ -101,7 +94,6 @@ public sealed class WindowStyleService
         _chromeBackups.Remove(hwnd);
         _managedHwnds.Remove(hwnd);
         _topMostState.Remove(hwnd);
-        _lastLayoutSignature.Remove(hwnd);
     }
 
     public void PruneClosed()
@@ -143,7 +135,7 @@ public sealed class WindowStyleService
                     0,
                     0,
                     0,
-                    NativeMethods.SwpNoMove | NativeMethods.SwpNoSize | NativeMethods.SwpNoActivate | NativeMethods.SwpShowWindow);
+                    NativeMethods.SwpNoMove | NativeMethods.SwpNoSize | NativeMethods.SwpNoActivate);
             }
         }
 
@@ -159,11 +151,6 @@ public sealed class WindowStyleService
         }
 
         foreach (var hwnd in _topMostState.Keys)
-        {
-            set.Add(hwnd);
-        }
-
-        foreach (var hwnd in _lastLayoutSignature.Keys)
         {
             set.Add(hwnd);
         }
@@ -188,19 +175,15 @@ public sealed class WindowStyleService
 
         _managedHwnds.Add(hwnd);
 
-        if (!IsMissingChrome(currentStyle))
-        {
-            var style = currentStyle;
-            style &= ~StandardChromeStyle;
-            NativeMethods.SetWindowLongPtr(hwnd, NativeMethods.GwlStyle, new IntPtr(style));
+        // Clear any remaining chrome bits — already-borderless games may keep WS_BORDER etc.
+        var desiredStyle = currentStyle & ~StandardChromeStyle;
+        var desiredExStyle = currentExStyle & ~StandardChromeExStyle;
+        var changed = desiredStyle != currentStyle || desiredExStyle != currentExStyle;
 
-            var exStyle = currentExStyle;
-            exStyle &= ~(
-                NativeMethods.WsExDlgModalFrame
-                | NativeMethods.WsExClientEdge
-                | NativeMethods.WsExStaticEdge
-                | NativeMethods.WsExWindowEdge);
-            NativeMethods.SetWindowLongPtr(hwnd, NativeMethods.GwlExStyle, new IntPtr(exStyle));
+        if (changed)
+        {
+            NativeMethods.SetWindowLongPtr(hwnd, NativeMethods.GwlStyle, new IntPtr(desiredStyle));
+            NativeMethods.SetWindowLongPtr(hwnd, NativeMethods.GwlExStyle, new IntPtr(desiredExStyle));
             NotifyFrameChanged(hwnd);
         }
     }
@@ -231,10 +214,6 @@ public sealed class WindowStyleService
         exStyle |= NativeMethods.WsExWindowEdge;
         NativeMethods.SetWindowLongPtr(hwnd, NativeMethods.GwlExStyle, new IntPtr(exStyle));
     }
-
-    private static bool IsMissingChrome(int style) =>
-        (style & NativeMethods.WsCaption) == 0
-        && (style & NativeMethods.WsThickFrame) == 0;
 
     private static void NotifyFrameChanged(nint hwnd)
     {
@@ -293,6 +272,16 @@ public sealed class WindowStyleService
 
         if (rule.IsBorderless)
         {
+            // Prefer client-area sizing for already-borderless / popup games.
+            if (TryGetClientScreenRect(hwnd, out var client)
+                && client.Left == targetX
+                && client.Top == targetY
+                && client.Right - client.Left == targetWidth
+                && client.Bottom - client.Top == targetHeight)
+            {
+                return;
+            }
+
             NativeMethods.SetWindowPos(
                 hwnd,
                 IntPtr.Zero,
@@ -337,6 +326,33 @@ public sealed class WindowStyleService
             NativeMethods.SwpNoZOrder | NativeMethods.SwpNoActivate | NativeMethods.SwpFrameChanged);
     }
 
+    private static bool TryGetClientScreenRect(nint hwnd, out NativeMethods.Rect screenRect)
+    {
+        if (!NativeMethods.GetClientRect(hwnd, out var client))
+        {
+            screenRect = default;
+            return false;
+        }
+
+        var topLeft = new NativeMethods.Point { X = client.Left, Y = client.Top };
+        var bottomRight = new NativeMethods.Point { X = client.Right, Y = client.Bottom };
+        if (!NativeMethods.ClientToScreen(hwnd, ref topLeft)
+            || !NativeMethods.ClientToScreen(hwnd, ref bottomRight))
+        {
+            screenRect = default;
+            return false;
+        }
+
+        screenRect = new NativeMethods.Rect
+        {
+            Left = topLeft.X,
+            Top = topLeft.Y,
+            Right = bottomRight.X,
+            Bottom = bottomRight.Y
+        };
+        return true;
+    }
+
     private static bool TryGetMonitorRect(nint hwnd, out NativeMethods.Rect monitorRect)
     {
         var monitor = hwnd == IntPtr.Zero
@@ -357,9 +373,6 @@ public sealed class WindowStyleService
         monitorRect = info.Monitor;
         return true;
     }
-
-    private static string BuildLayoutSignature(ProcessRule rule) =>
-        $"{rule.IsBorderless}|{rule.IsExpandToScreen}|{rule.UseCustomDimension}|{rule.CustomX}|{rule.CustomY}|{rule.CustomWidth}|{rule.CustomHeight}|{rule.IsAlwaysOnTop}";
 
     private readonly record struct ChromeBackup(int Style, int ExStyle);
 }

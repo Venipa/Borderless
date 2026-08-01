@@ -27,7 +27,8 @@ public partial class App : Application
         var settings = new AppSettingsViewModel(settingsStore, startupService, updateService);
         var windowStyleService = new WindowStyleService();
         var audioMuteService = new AudioMuteService();
-        _ruleEngine = new RuleEngineService(windowStyleService, audioMuteService);
+        var inputCaptureService = new InputCaptureService();
+        _ruleEngine = new RuleEngineService(windowStyleService, audioMuteService, inputCaptureService);
         MainViewModel = new MainViewModel(ruleStore, _ruleEngine, ProcessCatalog, settings);
 
         ApplicationThemeManager.Apply(ApplicationTheme.Dark);

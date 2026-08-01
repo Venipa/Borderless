@@ -43,6 +43,15 @@ public sealed partial class ProcessRule : ObservableObject
 
     public bool MuteInBackground { get; set; }
 
+    /// <summary>Clip the cursor to the matched window while it is focused. Alt+Tab releases.</summary>
+    public bool LockCursor { get; set; }
+
+    /// <summary>Hide the mouse cursor while the matched window is focused. Alt+Tab restores.</summary>
+    public bool HideCursor { get; set; }
+
+    /// <summary>Remove the window menu bar (HMENU) while the rule is active.</summary>
+    public bool RemoveGameMenus { get; set; }
+
     /// <summary>Runtime indicator; not persisted.</summary>
     [JsonIgnore]
     [ObservableProperty]

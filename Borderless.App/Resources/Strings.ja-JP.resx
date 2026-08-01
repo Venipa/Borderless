@@ -37,6 +37,9 @@
   <data name="BadgeAlwaysOnTop" xml:space="preserve"><value>最前面</value></data>
   <data name="BadgeExpandToScreen" xml:space="preserve"><value>最大サイズ</value></data>
   <data name="BadgeMuteBackground" xml:space="preserve"><value>BGミュート</value></data>
+  <data name="BadgeLockCursor" xml:space="preserve"><value>カーソル固定</value></data>
+  <data name="BadgeHideCursor" xml:space="preserve"><value>カーソル非表示</value></data>
+  <data name="BadgeRemoveGameMenus" xml:space="preserve"><value>メニューなし</value></data>
   <data name="EnabledFormat" xml:space="preserve"><value>有効: {0}</value></data>
   <data name="DeleteRuleTooltip" xml:space="preserve"><value>ルール削除</value></data>
   <data name="EmptyTitle" xml:space="preserve"><value>ルールなし</value></data>
@@ -58,8 +61,15 @@
   <data name="ToggleExpandToScreen" xml:space="preserve"><value>最大／画面に合わせる</value></data>
   <data name="ToggleCustomDimension" xml:space="preserve"><value>カスタムサイズ</value></data>
   <data name="ToggleMuteBackground" xml:space="preserve"><value>背面でミュート</value></data>
+  <data name="ToggleLockCursor" xml:space="preserve"><value>カーソルをウィンドウに固定</value></data>
+  <data name="ToggleLockCursorHint" xml:space="preserve"><value>Alt+Tab で解除します。</value></data>
+  <data name="ToggleHideCursor" xml:space="preserve"><value>マウスカーソルを隠す</value></data>
+  <data name="ToggleHideCursorHint" xml:space="preserve"><value>Alt+Tab で再表示します。</value></data>
+  <data name="ToggleRemoveGameMenus" xml:space="preserve"><value>ゲームメニューを削除</value></data>
+  <data name="ToggleRemoveGameMenusHint" xml:space="preserve"><value>ルール有効中はメニューバーを非表示にします。</value></data>
   <data name="ToggleRuleEnabled" xml:space="preserve"><value>ルール有効</value></data>
   <data name="GroupVideo" xml:space="preserve"><value>映像</value></data>
+  <data name="GroupInput" xml:space="preserve"><value>入力</value></data>
   <data name="GroupAudio" xml:space="preserve"><value>音声</value></data>
   <data name="GroupGeneral" xml:space="preserve"><value>一般</value></data>
   <data name="EditDimensions" xml:space="preserve"><value>編集</value></data>

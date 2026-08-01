@@ -3,6 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       xmlns:loc="clr-namespace:Borderless.App.Localization"
+      xmlns:controls="clr-namespace:Borderless.App.Controls"
       ScrollViewer.CanContentScroll="False"
       HorizontalAlignment="Stretch"
       VerticalAlignment="Stretch">
@@ -33,38 +34,59 @@
                           Appearance="Primary"
                           Margin="0,0,0,10" />
 
-            <ui:Card Padding="16" Margin="0,0,0,10" HorizontalAlignment="Stretch">
+            <Border Style="{StaticResource OutlinedGroupCard}">
                 <StackPanel>
-                    <ui:ToggleSwitch Content="{loc:Loc ToggleBorderless}"
-                                     IsChecked="{Binding Settings.DefaultIsBorderless}"
-                                     Margin="0,0,0,12" />
-                    <ui:ToggleSwitch Content="{loc:Loc ToggleAlwaysOnTop}"
-                                     IsChecked="{Binding Settings.DefaultIsAlwaysOnTop}"
-                                     Margin="0,0,0,12" />
-                    <ui:ToggleSwitch Content="{loc:Loc ToggleExpandToScreen}"
-                                     IsChecked="{Binding Settings.DefaultIsExpandToScreen}" />
+                    <controls:ToggleOptionRow Label="{loc:Loc ToggleBorderless}"
+                                              IsChecked="{Binding Settings.DefaultIsBorderless}" />
+                    <controls:ToggleOptionRow Label="{loc:Loc ToggleAlwaysOnTop}"
+                                              IsChecked="{Binding Settings.DefaultIsAlwaysOnTop}" />
+                    <controls:ToggleOptionRow Label="{loc:Loc ToggleExpandToScreen}"
+                                              IsChecked="{Binding Settings.DefaultIsExpandToScreen}"
+                                              Margin="0" />
                 </StackPanel>
-            </ui:Card>
+            </Border>
+
+            <ui:TextBlock Text="{loc:Loc GroupInput}"
+                          FontTypography="BodyStrong"
+                          Appearance="Primary"
+                          Margin="0,10,0,10" />
+
+            <Border Style="{StaticResource OutlinedGroupCard}">
+                <StackPanel>
+                    <controls:ToggleOptionRow Label="{loc:Loc ToggleLockCursor}"
+                                              Description="{loc:Loc ToggleLockCursorHint}"
+                                              IsChecked="{Binding Settings.DefaultLockCursor}" />
+                    <controls:ToggleOptionRow Label="{loc:Loc ToggleHideCursor}"
+                                              Description="{loc:Loc ToggleHideCursorHint}"
+                                              IsChecked="{Binding Settings.DefaultHideCursor}" />
+                    <controls:ToggleOptionRow Label="{loc:Loc ToggleRemoveGameMenus}"
+                                              Description="{loc:Loc ToggleRemoveGameMenusHint}"
+                                              IsChecked="{Binding Settings.DefaultRemoveGameMenus}"
+                                              Margin="0" />
+                </StackPanel>
+            </Border>
 
             <ui:TextBlock Text="{loc:Loc GroupAudio}"
                           FontTypography="BodyStrong"
                           Appearance="Primary"
                           Margin="0,10,0,10" />
 
-            <ui:Card Padding="16" Margin="0,0,0,10" HorizontalAlignment="Stretch">
-                <ui:ToggleSwitch Content="{loc:Loc ToggleMuteBackground}"
-                                 IsChecked="{Binding Settings.DefaultMuteInBackground}" />
-            </ui:Card>
+            <Border Style="{StaticResource OutlinedGroupCard}">
+                <controls:ToggleOptionRow Label="{loc:Loc ToggleMuteBackground}"
+                                          IsChecked="{Binding Settings.DefaultMuteInBackground}"
+                                          Margin="0" />
+            </Border>
 
             <ui:TextBlock Text="{loc:Loc GroupGeneral}"
                           FontTypography="BodyStrong"
                           Appearance="Primary"
                           Margin="0,10,0,10" />
 
-            <ui:Card Padding="16" HorizontalAlignment="Stretch">
-                <ui:ToggleSwitch Content="{loc:Loc ToggleRuleEnabled}"
-                                 IsChecked="{Binding Settings.DefaultIsEnabled}" />
-            </ui:Card>
+            <Border Style="{StaticResource OutlinedGroupCard}" Margin="0">
+                <controls:ToggleOptionRow Label="{loc:Loc ToggleRuleEnabled}"
+                                          IsChecked="{Binding Settings.DefaultIsEnabled}"
+                                          Margin="0" />
+            </Border>
         </StackPanel>
     </ScrollViewer>
 </Page>

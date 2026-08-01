@@ -17,6 +17,7 @@ public sealed class RuleEngineService : IDisposable
 
     private readonly WindowStyleService _windowStyleService;
     private readonly AudioMuteService _audioMuteService;
+    private readonly InputCaptureService _inputCaptureService;
     private readonly DispatcherTimer _timer;
     private readonly int _ownProcessId = Environment.ProcessId;
     private readonly object _rulesGate = new();
@@ -35,10 +36,14 @@ public sealed class RuleEngineService : IDisposable
     /// </summary>
     public event Action<IReadOnlyDictionary<Guid, RuleLiveStatus>>? RuleStatusesChanged;
 
-    public RuleEngineService(WindowStyleService windowStyleService, AudioMuteService audioMuteService)
+    public RuleEngineService(
+        WindowStyleService windowStyleService,
+        AudioMuteService audioMuteService,
+        InputCaptureService inputCaptureService)
     {
         _windowStyleService = windowStyleService;
         _audioMuteService = audioMuteService;
+        _inputCaptureService = inputCaptureService;
         _timer = new DispatcherTimer(DispatcherPriority.Background)
         {
             Interval = TimeSpan.FromMilliseconds(1000)
@@ -68,6 +73,7 @@ public sealed class RuleEngineService : IDisposable
 
         _disposed = true;
         Stop();
+        _inputCaptureService.Dispose();
         _audioMuteService.Dispose();
     }
 
@@ -105,6 +111,7 @@ public sealed class RuleEngineService : IDisposable
 
                         _windowStyleService.SyncActiveWindows([]);
                         ClearMuteTracking();
+                        _inputCaptureService.SyncActiveWindows([], 0, false, false);
                         RuleStatusesChanged?.Invoke(new Dictionary<Guid, RuleLiveStatus>());
                     }
                     finally
@@ -203,12 +210,27 @@ public sealed class RuleEngineService : IDisposable
         }
 
         var activeHwnds = new HashSet<nint>(matches.Count);
+        var foregroundHwnd = nint.Zero;
+        var foregroundWantsClip = false;
+        var foregroundWantsHide = false;
+
         foreach (var match in matches)
         {
             activeHwnds.Add(match.Hwnd);
+            if (match.IsForeground)
+            {
+                foregroundHwnd = match.Hwnd;
+                foregroundWantsClip = match.Rule.LockCursor;
+                foregroundWantsHide = match.Rule.HideCursor;
+            }
         }
 
         _windowStyleService.SyncActiveWindows(activeHwnds);
+        _inputCaptureService.SyncActiveWindows(
+            activeHwnds,
+            foregroundHwnd,
+            foregroundWantsClip,
+            foregroundWantsHide);
 
         var statuses = new Dictionary<Guid, RuleLiveStatus>();
         foreach (var match in matches)
@@ -216,6 +238,7 @@ public sealed class RuleEngineService : IDisposable
             try
             {
                 _windowStyleService.ApplyVideo(match.Hwnd, match.Rule);
+                _inputCaptureService.Apply(match.Hwnd, match.Rule, match.IsForeground);
 
                 if (match.Rule.MuteInBackground)
                 {

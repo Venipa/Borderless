@@ -37,6 +37,9 @@
   <data name="BadgeAlwaysOnTop" xml:space="preserve"><value>Завжди зверху</value></data>
   <data name="BadgeExpandToScreen" xml:space="preserve"><value>Макс. розмір</value></data>
   <data name="BadgeMuteBackground" xml:space="preserve"><value>Mute фон</value></data>
+  <data name="BadgeLockCursor" xml:space="preserve"><value>Блок. курсор</value></data>
+  <data name="BadgeHideCursor" xml:space="preserve"><value>Прихов. курсор</value></data>
+  <data name="BadgeRemoveGameMenus" xml:space="preserve"><value>Без меню</value></data>
   <data name="EnabledFormat" xml:space="preserve"><value>Увімк.: {0}</value></data>
   <data name="DeleteRuleTooltip" xml:space="preserve"><value>Видалити правило</value></data>
   <data name="EmptyTitle" xml:space="preserve"><value>Ще немає правил</value></data>
@@ -58,8 +61,15 @@
   <data name="ToggleExpandToScreen" xml:space="preserve"><value>Макс. / на екран</value></data>
   <data name="ToggleCustomDimension" xml:space="preserve"><value>Свій розмір</value></data>
   <data name="ToggleMuteBackground" xml:space="preserve"><value>Mute у фоні</value></data>
+  <data name="ToggleLockCursor" xml:space="preserve"><value>Заблокувати курсор у вікні</value></data>
+  <data name="ToggleLockCursorHint" xml:space="preserve"><value>Alt+Tab, щоб звільнити курсор.</value></data>
+  <data name="ToggleHideCursor" xml:space="preserve"><value>Приховати курсор миші</value></data>
+  <data name="ToggleHideCursorHint" xml:space="preserve"><value>Alt+Tab, щоб знову показати курсор.</value></data>
+  <data name="ToggleRemoveGameMenus" xml:space="preserve"><value>Прибрати меню гри</value></data>
+  <data name="ToggleRemoveGameMenusHint" xml:space="preserve"><value>Ховає рядок меню, поки правило активне.</value></data>
   <data name="ToggleRuleEnabled" xml:space="preserve"><value>Правило увімкнено</value></data>
   <data name="GroupVideo" xml:space="preserve"><value>Відео</value></data>
+  <data name="GroupInput" xml:space="preserve"><value>Ввід</value></data>
   <data name="GroupAudio" xml:space="preserve"><value>Аудіо</value></data>
   <data name="GroupGeneral" xml:space="preserve"><value>Загальне</value></data>
   <data name="EditDimensions" xml:space="preserve"><value>Змінити</value></data>

@@ -53,6 +53,15 @@ public sealed partial class RuleEditorViewModel : ObservableObject
     private bool _muteInBackground;
 
     [ObservableProperty]
+    private bool _lockCursor;
+
+    [ObservableProperty]
+    private bool _hideCursor;
+
+    [ObservableProperty]
+    private bool _removeGameMenus;
+
+    [ObservableProperty]
     private bool _isEnabled = true;
 
     [ObservableProperty]
@@ -85,6 +94,9 @@ public sealed partial class RuleEditorViewModel : ObservableObject
 
     public string DialogTitle { get; }
 
+    public string EnabledToggleLabel =>
+        IsEnabled ? Loc.Get("ToggleRuleEnabled") : Loc.Get("RuleStatusDisabled");
+
     public string CustomDimensionSummary
     {
         get
@@ -104,6 +116,9 @@ public sealed partial class RuleEditorViewModel : ObservableObject
         IsBorderless = defaults.IsBorderless;
         IsAlwaysOnTop = defaults.IsAlwaysOnTop;
         MuteInBackground = defaults.MuteInBackground;
+        LockCursor = defaults.LockCursor;
+        HideCursor = defaults.HideCursor;
+        RemoveGameMenus = defaults.RemoveGameMenus;
         IsEnabled = defaults.IsEnabled;
         CustomX = defaults.CustomX;
         CustomY = defaults.CustomY;
@@ -121,6 +136,9 @@ public sealed partial class RuleEditorViewModel : ObservableObject
         IsBorderless = rule.IsBorderless;
         IsAlwaysOnTop = rule.IsAlwaysOnTop;
         MuteInBackground = rule.MuteInBackground;
+        LockCursor = rule.LockCursor;
+        HideCursor = rule.HideCursor;
+        RemoveGameMenus = rule.RemoveGameMenus;
         IsEnabled = rule.IsEnabled;
         CustomX = rule.CustomX;
         CustomY = rule.CustomY;
@@ -226,10 +244,16 @@ public sealed partial class RuleEditorViewModel : ObservableObject
             CustomWidth = CustomWidth,
             CustomHeight = CustomHeight,
             MuteInBackground = MuteInBackground,
+            LockCursor = LockCursor,
+            HideCursor = HideCursor,
+            RemoveGameMenus = RemoveGameMenus,
             IsEnabled = IsEnabled
         };
         return true;
     }
+
+    partial void OnIsEnabledChanged(bool value) =>
+        OnPropertyChanged(nameof(EnabledToggleLabel));
 
     partial void OnIsExpandToScreenChanged(bool value)
     {

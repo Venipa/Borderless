@@ -206,6 +206,21 @@
                                     Symbol="SpeakerMute24"
                                     ToolTip="{loc:Loc BadgeMuteBackground}"
                                     Visibility="{Binding MuteInBackground, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                <ui:SymbolIcon
+                                    Style="{StaticResource RuleFeatureIconStyle}"
+                                    Symbol="LockClosed24"
+                                    ToolTip="{loc:Loc BadgeLockCursor}"
+                                    Visibility="{Binding LockCursor, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                <ui:SymbolIcon
+                                    Style="{StaticResource RuleFeatureIconStyle}"
+                                    Symbol="CursorHoverOff24"
+                                    ToolTip="{loc:Loc BadgeHideCursor}"
+                                    Visibility="{Binding HideCursor, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                <ui:SymbolIcon
+                                    Style="{StaticResource RuleFeatureIconStyle}"
+                                    Symbol="TextBulletListSquare24"
+                                    ToolTip="{loc:Loc BadgeRemoveGameMenus}"
+                                    Visibility="{Binding RemoveGameMenus, Converter={StaticResource BooleanToVisibilityConverter}}" />
                             </StackPanel>
 
                             <ui:Button

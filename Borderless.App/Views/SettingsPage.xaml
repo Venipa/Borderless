@@ -3,6 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       xmlns:loc="clr-namespace:Borderless.App.Localization"
+      xmlns:controls="clr-namespace:Borderless.App.Controls"
       xmlns:converters="clr-namespace:Borderless.App.Converters"
       ScrollViewer.CanContentScroll="False"
       HorizontalAlignment="Stretch"
@@ -37,21 +38,22 @@
                           Appearance="Primary"
                           Margin="0,0,0,10" />
 
-            <ui:Card Padding="16" Margin="0,0,0,10" HorizontalAlignment="Stretch">
-                <ui:ToggleSwitch Content="{loc:Loc SettingsStartOnStartup}"
-                                 IsChecked="{Binding Settings.StartOnStartup}" />
-            </ui:Card>
-            <ui:Card Padding="16" Margin="0,0,0,20" HorizontalAlignment="Stretch">
-                <ui:ToggleSwitch Content="{loc:Loc SettingsCloseToTray}"
-                                 IsChecked="{Binding Settings.CloseToTray}" />
-            </ui:Card>
+            <Border Style="{StaticResource OutlinedGroupCard}">
+                <StackPanel>
+                    <controls:ToggleOptionRow Label="{loc:Loc SettingsStartOnStartup}"
+                                              IsChecked="{Binding Settings.StartOnStartup}" />
+                    <controls:ToggleOptionRow Label="{loc:Loc SettingsCloseToTray}"
+                                              IsChecked="{Binding Settings.CloseToTray}"
+                                              Margin="0" />
+                </StackPanel>
+            </Border>
 
             <ui:TextBlock Text="{loc:Loc SettingsLanguageGroup}"
                           FontTypography="BodyStrong"
                           Appearance="Primary"
-                          Margin="0,0,0,10" />
+                          Margin="0,10,0,10" />
 
-            <ui:Card Padding="16" Margin="0,0,0,20" HorizontalAlignment="Stretch">
+            <Border Style="{StaticResource OutlinedGroupCard}" Margin="0,0,0,20">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -70,22 +72,25 @@
                               MinHeight="32"
                               VerticalAlignment="Center" />
                 </Grid>
-            </ui:Card>
+            </Border>
 
-            <ui:TextBlock Text="{loc:Loc SettingsUpdaterGroup}"                          FontTypography="BodyStrong"
+            <ui:TextBlock Text="{loc:Loc SettingsUpdaterGroup}"
+                          FontTypography="BodyStrong"
                           Appearance="Primary"
                           Margin="0,0,0,10" />
 
-            <ui:Card Padding="16" Margin="0,0,0,10" HorizontalAlignment="Stretch">
-                <ui:ToggleSwitch Content="{loc:Loc SettingsEnableUpdater}"
-                                 IsChecked="{Binding Settings.UpdaterEnabled}" />
-            </ui:Card>
-            <ui:Card Padding="16" Margin="0,0,0,10" HorizontalAlignment="Stretch">
-                <ui:ToggleSwitch Content="{loc:Loc SettingsAutoUpdate}"
-                                 IsChecked="{Binding Settings.AutoUpdateWithoutConfirmation}"
-                                 IsEnabled="{Binding Settings.UpdaterEnabled}" />
-            </ui:Card>
-            <ui:Card Padding="16" Margin="0,0,0,20" HorizontalAlignment="Stretch">
+            <Border Style="{StaticResource OutlinedGroupCard}">
+                <StackPanel>
+                    <controls:ToggleOptionRow Label="{loc:Loc SettingsEnableUpdater}"
+                                              IsChecked="{Binding Settings.UpdaterEnabled}" />
+                    <controls:ToggleOptionRow Label="{loc:Loc SettingsAutoUpdate}"
+                                              IsChecked="{Binding Settings.AutoUpdateWithoutConfirmation}"
+                                              IsEnabled="{Binding Settings.UpdaterEnabled}"
+                                              Margin="0" />
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource OutlinedGroupCard}" Margin="0,0,0,20">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -99,7 +104,7 @@
                                       FontTypography="Caption"
                                       Appearance="Secondary"
                                       TextWrapping="Wrap"
-                                      Margin="0,4,0,0" />
+                                      Margin="0,2,0,0" />
                     </StackPanel>
                     <ui:Button Grid.Column="1"
                                Content="{loc:Loc SettingsCheckUpdatesButton}"
@@ -108,14 +113,14 @@
                                IsEnabled="{Binding Settings.IsCheckingForUpdates, Converter={StaticResource InverseBooleanConverter}}"
                                VerticalAlignment="Center" />
                 </Grid>
-            </ui:Card>
+            </Border>
 
             <ui:TextBlock Text="{loc:Loc SettingsAboutGroup}"
                           FontTypography="BodyStrong"
                           Appearance="Primary"
                           Margin="0,0,0,10" />
 
-            <ui:Card Padding="16" HorizontalAlignment="Stretch">
+            <Border Style="{StaticResource OutlinedGroupCard}" Margin="0">
                 <StackPanel>
                     <ui:TextBlock Text="{Binding Settings.AppVersionText}"
                                   FontTypography="Body"
@@ -125,9 +130,10 @@
                                   Appearance="Secondary"
                                   Margin="0,4,0,10" />
                     <ui:HyperlinkButton Content="{Binding Settings.RepositoryUrl}"
-                                        Command="{Binding Settings.OpenRepositoryCommand}" />
+                                        Command="{Binding Settings.OpenRepositoryCommand}"
+                                        NavigateUri="{Binding Settings.RepositoryUrl}" />
                 </StackPanel>
-            </ui:Card>
+            </Border>
         </StackPanel>
     </ScrollViewer>
 </Page>

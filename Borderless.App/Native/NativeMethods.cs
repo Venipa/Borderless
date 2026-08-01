@@ -139,6 +139,24 @@ internal static class NativeMethods
     [DllImport("user32.dll")]
     public static extern IntPtr MonitorFromPoint(Point pt, uint dwFlags);
 
+    [DllImport("user32.dll")]
+    public static extern bool ClipCursor(ref Rect lpRect);
+
+    [DllImport("user32.dll")]
+    public static extern bool ClipCursor(IntPtr lpRect);
+
+    [DllImport("user32.dll")]
+    public static extern int ShowCursor(bool bShow);
+
+    [DllImport("user32.dll")]
+    public static extern IntPtr GetMenu(IntPtr hWnd);
+
+    [DllImport("user32.dll")]
+    public static extern bool SetMenu(IntPtr hWnd, IntPtr hMenu);
+
+    [DllImport("user32.dll")]
+    public static extern bool DrawMenuBar(IntPtr hWnd);
+
     [StructLayout(LayoutKind.Sequential)]
     public struct Rect
     {

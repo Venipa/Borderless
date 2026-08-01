@@ -40,6 +40,15 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
     private bool _defaultMuteInBackground;
 
     [ObservableProperty]
+    private bool _defaultLockCursor;
+
+    [ObservableProperty]
+    private bool _defaultHideCursor;
+
+    [ObservableProperty]
+    private bool _defaultRemoveGameMenus;
+
+    [ObservableProperty]
     private bool _defaultIsEnabled = true;
 
     [ObservableProperty]
@@ -88,6 +97,9 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
         DefaultIsAlwaysOnTop = settings.Defaults.IsAlwaysOnTop;
         DefaultIsExpandToScreen = settings.Defaults.IsExpandToScreen;
         DefaultMuteInBackground = settings.Defaults.MuteInBackground;
+        DefaultLockCursor = settings.Defaults.LockCursor;
+        DefaultHideCursor = settings.Defaults.HideCursor;
+        DefaultRemoveGameMenus = settings.Defaults.RemoveGameMenus;
         DefaultIsEnabled = settings.Defaults.IsEnabled;
         StartOnStartup = settings.StartOnStartup;
         CloseToTray = settings.CloseToTray;
@@ -107,6 +119,9 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
         IsAlwaysOnTop = DefaultIsAlwaysOnTop,
         IsExpandToScreen = DefaultIsExpandToScreen,
         MuteInBackground = DefaultMuteInBackground,
+        LockCursor = DefaultLockCursor,
+        HideCursor = DefaultHideCursor,
+        RemoveGameMenus = DefaultRemoveGameMenus,
         IsEnabled = DefaultIsEnabled
     };
 
@@ -302,6 +317,9 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
     partial void OnDefaultIsAlwaysOnTopChanged(bool value) => ScheduleSave();
     partial void OnDefaultIsExpandToScreenChanged(bool value) => ScheduleSave();
     partial void OnDefaultMuteInBackgroundChanged(bool value) => ScheduleSave();
+    partial void OnDefaultLockCursorChanged(bool value) => ScheduleSave();
+    partial void OnDefaultHideCursorChanged(bool value) => ScheduleSave();
+    partial void OnDefaultRemoveGameMenusChanged(bool value) => ScheduleSave();
     partial void OnDefaultIsEnabledChanged(bool value) => ScheduleSave();
 
     partial void OnStartOnStartupChanged(bool value)

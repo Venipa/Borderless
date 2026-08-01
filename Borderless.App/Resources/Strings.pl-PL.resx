@@ -37,6 +37,9 @@
   <data name="BadgeAlwaysOnTop" xml:space="preserve"><value>Na wierzchu</value></data>
   <data name="BadgeExpandToScreen" xml:space="preserve"><value>Maks. rozmiar</value></data>
   <data name="BadgeMuteBackground" xml:space="preserve"><value>Wycisz tło</value></data>
+  <data name="BadgeLockCursor" xml:space="preserve"><value>Blokuj kursor</value></data>
+  <data name="BadgeHideCursor" xml:space="preserve"><value>Ukryj kursor</value></data>
+  <data name="BadgeRemoveGameMenus" xml:space="preserve"><value>Bez menu</value></data>
   <data name="EnabledFormat" xml:space="preserve"><value>Włączona: {0}</value></data>
   <data name="DeleteRuleTooltip" xml:space="preserve"><value>Usuń regułę</value></data>
   <data name="EmptyTitle" xml:space="preserve"><value>Brak reguł</value></data>
@@ -58,8 +61,15 @@
   <data name="ToggleExpandToScreen" xml:space="preserve"><value>Maks. / pełny ekran</value></data>
   <data name="ToggleCustomDimension" xml:space="preserve"><value>Własny rozmiar</value></data>
   <data name="ToggleMuteBackground" xml:space="preserve"><value>Wycisz w tle</value></data>
+  <data name="ToggleLockCursor" xml:space="preserve"><value>Zablokuj kursor w oknie</value></data>
+  <data name="ToggleLockCursorHint" xml:space="preserve"><value>Alt+Tab, aby zwolnić kursor.</value></data>
+  <data name="ToggleHideCursor" xml:space="preserve"><value>Ukryj kursor myszy</value></data>
+  <data name="ToggleHideCursorHint" xml:space="preserve"><value>Alt+Tab, aby znów pokazać kursor.</value></data>
+  <data name="ToggleRemoveGameMenus" xml:space="preserve"><value>Usuń menu gry</value></data>
+  <data name="ToggleRemoveGameMenusHint" xml:space="preserve"><value>Ukrywa pasek menu, gdy reguła jest aktywna.</value></data>
   <data name="ToggleRuleEnabled" xml:space="preserve"><value>Reguła włączona</value></data>
   <data name="GroupVideo" xml:space="preserve"><value>Wideo</value></data>
+  <data name="GroupInput" xml:space="preserve"><value>Wejście</value></data>
   <data name="GroupAudio" xml:space="preserve"><value>Dźwięk</value></data>
   <data name="GroupGeneral" xml:space="preserve"><value>Ogólne</value></data>
   <data name="EditDimensions" xml:space="preserve"><value>Edytuj</value></data>

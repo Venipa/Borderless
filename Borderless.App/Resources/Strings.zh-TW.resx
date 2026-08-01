@@ -37,6 +37,9 @@
   <data name="BadgeAlwaysOnTop" xml:space="preserve"><value>置頂</value></data>
   <data name="BadgeExpandToScreen" xml:space="preserve"><value>最大尺寸</value></data>
   <data name="BadgeMuteBackground" xml:space="preserve"><value>背景靜音</value></data>
+  <data name="BadgeLockCursor" xml:space="preserve"><value>鎖定游標</value></data>
+  <data name="BadgeHideCursor" xml:space="preserve"><value>隱藏游標</value></data>
+  <data name="BadgeRemoveGameMenus" xml:space="preserve"><value>無選單</value></data>
   <data name="EnabledFormat" xml:space="preserve"><value>已啟用: {0}</value></data>
   <data name="DeleteRuleTooltip" xml:space="preserve"><value>刪除規則</value></data>
   <data name="EmptyTitle" xml:space="preserve"><value>尚無規則</value></data>
@@ -58,8 +61,15 @@
   <data name="ToggleExpandToScreen" xml:space="preserve"><value>最大／鋪滿螢幕</value></data>
   <data name="ToggleCustomDimension" xml:space="preserve"><value>自訂尺寸</value></data>
   <data name="ToggleMuteBackground" xml:space="preserve"><value>背景靜音</value></data>
+  <data name="ToggleLockCursor" xml:space="preserve"><value>將游標鎖定到視窗</value></data>
+  <data name="ToggleLockCursorHint" xml:space="preserve"><value>按 Alt+Tab 解除鎖定。</value></data>
+  <data name="ToggleHideCursor" xml:space="preserve"><value>隱藏滑鼠游標</value></data>
+  <data name="ToggleHideCursorHint" xml:space="preserve"><value>按 Alt+Tab 重新顯示游標。</value></data>
+  <data name="ToggleRemoveGameMenus" xml:space="preserve"><value>移除遊戲選單</value></data>
+  <data name="ToggleRemoveGameMenusHint" xml:space="preserve"><value>規則生效時隱藏視窗選單列。</value></data>
   <data name="ToggleRuleEnabled" xml:space="preserve"><value>啟用規則</value></data>
   <data name="GroupVideo" xml:space="preserve"><value>畫面</value></data>
+  <data name="GroupInput" xml:space="preserve"><value>輸入</value></data>
   <data name="GroupAudio" xml:space="preserve"><value>音訊</value></data>
   <data name="GroupGeneral" xml:space="preserve"><value>一般</value></data>
   <data name="EditDimensions" xml:space="preserve"><value>編輯</value></data>

@@ -17,7 +17,7 @@ namespace Borderless.App;
 
 public partial class MainWindow : FluentWindow
 {
-    private const double SidebarWidth = 520;
+    private const double SidebarWidth = 640;
     private const double OpenDurationMs = 220;
     private const double CloseDurationMs = 180;
     private const double NavToggleTopGap = 8;
@@ -50,6 +50,7 @@ public partial class MainWindow : FluentWindow
 
     private void OnNavigationLoaded(object sender, RoutedEventArgs e)
     {
+        SuppressNavigationContentFocusChrome();
         ApplyToggleBrandContent();
     }
 
@@ -186,10 +187,37 @@ public partial class MainWindow : FluentWindow
         }
 
         element.DataContext = ViewModel;
+        // Page shell is not actionable — suppress focus rectangle when tabbing into content.
+        element.Focusable = false;
+        element.FocusVisualStyle = null;
+        if (element is Control control)
+        {
+            control.IsTabStop = false;
+            control.FocusVisualStyle = null;
+        }
+
+        SuppressNavigationContentFocusChrome();
 
         if (!ReferenceEquals(ContentHost.Content, element))
         {
             ContentHost.Content = element;
+        }
+    }
+
+    private void SuppressNavigationContentFocusChrome()
+    {
+        if (RootNavigation.Template?.FindName(
+                "PART_NavigationViewContentPresenter",
+                RootNavigation) is not FrameworkElement presenter)
+        {
+            return;
+        }
+
+        presenter.Focusable = false;
+        presenter.FocusVisualStyle = null;
+        if (presenter is Control control)
+        {
+            control.IsTabStop = false;
         }
     }
 
