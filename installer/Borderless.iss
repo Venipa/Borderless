@@ -68,9 +68,8 @@ Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
 [Run]
-; Always elevate post-install launch. Default Inno de-elevates to the original user,
-; which breaks highestAvailable (no UAC) and causes runtime errors.
-Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#MyAppName}}"; Verb: runas; Flags: nowait postinstall skipifsilent shellexec
+; Launch elevated after install (including silent updates — do not use skipifsilent).
+Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#MyAppName}}"; Verb: runas; Flags: nowait postinstall shellexec
 
 [Code]
 // WPF needs Microsoft.WindowsDesktop.App — plain ".NET Runtime" is not enough.

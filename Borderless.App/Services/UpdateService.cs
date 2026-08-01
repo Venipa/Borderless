@@ -161,11 +161,14 @@ public sealed class UpdateService : IDisposable
 
             if (fileName.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
             {
+                // Silent install; Inno [Run] Verb=runas starts the app elevated.
+                // NORESTARTAPPLICATIONS avoids a non-elevated auto-restart of the closed process.
                 Process.Start(new ProcessStartInfo
                 {
                     FileName = targetPath,
-                    Arguments = "/SILENT /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS",
-                    UseShellExecute = true
+                    Arguments = "/SILENT /CLOSEAPPLICATIONS /NORESTARTAPPLICATIONS",
+                    UseShellExecute = true,
+                    Verb = "runas"
                 });
             }
             else
