@@ -9,6 +9,8 @@
                 <ui:ThemesDictionary Theme="Dark" />
                 <ui:ControlsDictionary />
                 <ResourceDictionary Source="Themes/ToggleGroups.xaml" />
+                <ResourceDictionary Source="Themes/PillToggleButton.xaml" />
+                <ResourceDictionary Source="Themes/NonInteractiveFocus.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

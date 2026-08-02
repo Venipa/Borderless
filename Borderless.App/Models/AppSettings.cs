@@ -2,6 +2,9 @@ namespace Borderless.App.Models;
 
 public sealed class RuleDefaults
 {
+    /// <summary>Default match logic for new rules. Default: <see cref="MatchCondition.Both"/>.</summary>
+    public MatchCondition MatchCondition { get; set; } = MatchCondition.Both;
+
     public bool IsBorderless { get; set; } = true;
 
     public bool IsAlwaysOnTop { get; set; }

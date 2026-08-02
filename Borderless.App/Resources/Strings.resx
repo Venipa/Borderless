@@ -52,8 +52,17 @@
   <data name="EditRuleTitle" xml:space="preserve"><value>Edit app rule</value></data>
   <data name="Save" xml:space="preserve"><value>Save</value></data>
   <data name="Cancel" xml:space="preserve"><value>Cancel</value></data>
-  <data name="WindowTitleLabel" xml:space="preserve"><value>Exact window title</value></data>
+  <data name="WindowTitleLabel" xml:space="preserve"><value>Window title</value></data>
   <data name="WindowTitlePlaceholder" xml:space="preserve"><value>e.g. Counter-Strike 2</value></data>
+  <data name="WindowTitlePlaceholderRegex" xml:space="preserve"><value>e.g. ^Marvel Rivals</value></data>
+  <data name="ToggleTitleRegexTooltip" xml:space="preserve"><value>Match title as regular expression</value></data>
+  <data name="MatchConditionLabel" xml:space="preserve"><value>Match condition</value></data>
+  <data name="MatchConditionBoth" xml:space="preserve"><value>Both</value></data>
+  <data name="MatchConditionBothSummary" xml:space="preserve"><value>All filled fields must match (title and/or executable).</value></data>
+  <data name="MatchConditionAnd" xml:space="preserve"><value>And</value></data>
+  <data name="MatchConditionAndSummary" xml:space="preserve"><value>Window title and executable must both match. Both fields are required.</value></data>
+  <data name="MatchConditionOr" xml:space="preserve"><value>Or</value></data>
+  <data name="MatchConditionOrSummary" xml:space="preserve"><value>Match if either window title or executable matches.</value></data>
   <data name="ExecutableNameLabel" xml:space="preserve"><value>Executable name</value></data>
   <data name="ExecutableNamePlaceholder" xml:space="preserve"><value>e.g. cs2.exe</value></data>
   <data name="ToggleBorderless" xml:space="preserve"><value>Borderless window</value></data>
@@ -80,7 +89,9 @@
   <data name="DimensionY" xml:space="preserve"><value>Y</value></data>
   <data name="DimensionWidth" xml:space="preserve"><value>Width</value></data>
   <data name="DimensionHeight" xml:space="preserve"><value>Height</value></data>
-  <data name="ValidationMatchRequired" xml:space="preserve"><value>Set exact window title or executable name.</value></data>
+  <data name="ValidationMatchRequired" xml:space="preserve"><value>Set window title or executable name.</value></data>
+  <data name="ValidationAndRequiresBoth" xml:space="preserve"><value>And requires both window title and executable.</value></data>
+  <data name="ValidationInvalidRegex" xml:space="preserve"><value>Window title is not a valid regular expression.</value></data>
   <data name="ValidationDuplicateRule" xml:space="preserve"><value>A rule with the same window title and executable already exists.</value></data>
   <data name="RuleStatusIdle" xml:space="preserve"><value>No matching process</value></data>
   <data name="RuleStatusActive" xml:space="preserve"><value>Matching process active</value></data>

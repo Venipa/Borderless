@@ -50,10 +50,44 @@
                                   FontTypography="Caption"
                                   Appearance="Secondary"
                                   Margin="0,0,0,6" />
-                    <ui:TextBox Text="{Binding WindowTitle, UpdateSourceTrigger=PropertyChanged}"
-                                PlaceholderText="{loc:Loc WindowTitlePlaceholder}"
-                                ClearButtonEnabled="True"
-                                Margin="0,0,0,16" />
+                    <Grid Margin="0,0,0,16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <ui:TextBox Text="{Binding WindowTitle, UpdateSourceTrigger=PropertyChanged}"
+                                    PlaceholderText="{Binding WindowTitlePlaceholder}"
+                                    ClearButtonEnabled="True" />
+                        <controls:PillToggleButton Grid.Column="1"
+                                                   IsChecked="{Binding UseTitleRegex, Mode=TwoWay}"
+                                                   Width="36"
+                                                   Height="36"
+                                                   Margin="8,0,0,0"
+                                                   Padding="0"
+                                                   ToolTip="{loc:Loc ToggleTitleRegexTooltip}"
+                                                   VerticalAlignment="Center">
+                            <ui:SymbolIcon Symbol="BracesVariable24" FontSize="16" />
+                        </controls:PillToggleButton>
+                    </Grid>
+
+                    <ui:TextBlock Text="{loc:Loc MatchConditionLabel}"
+                                  FontTypography="Caption"
+                                  Appearance="Secondary"
+                                  Margin="0,0,0,6" />
+                    <ComboBox ItemsSource="{Binding MatchConditionOptions}"
+                              SelectedValue="{Binding MatchCondition, Mode=TwoWay}"
+                              SelectedValuePath="Value"
+                              DisplayMemberPath="DisplayName"
+                              ToolTip="{Binding MatchConditionToolTip}"
+                              MinHeight="32"
+                              Margin="0,0,0,16">
+                        <ComboBox.ItemContainerStyle>
+                            <Style TargetType="ComboBoxItem"
+                                   BasedOn="{StaticResource DefaultComboBoxItemStyle}">
+                                <Setter Property="ToolTip" Value="{Binding FormattedToolTip}" />
+                            </Style>
+                        </ComboBox.ItemContainerStyle>
+                    </ComboBox>
 
                     <ui:TextBlock Text="{loc:Loc ExecutableNameLabel}"
                                   FontTypography="Caption"
@@ -91,7 +125,8 @@
                                          Background="Transparent"
                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                          PreviewMouseLeftButtonUp="OnProcessListPreviewMouseLeftButtonUp"
-                                         KeyboardNavigation.DirectionalNavigation="Contained">
+                                         KeyboardNavigation.DirectionalNavigation="Contained"
+                                         Style="{StaticResource DefaultListBoxStyle}">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
                                             <controls:HighlightTextBlock
@@ -102,7 +137,8 @@
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                     <ListBox.ItemContainerStyle>
-                                        <Style TargetType="ListBoxItem">
+                                        <Style TargetType="ListBoxItem"
+                                               BasedOn="{StaticResource DefaultListBoxItemStyle}">
                                             <Setter Property="Padding" Value="10,6" />
                                             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                                             <Setter Property="Cursor" Value="Hand" />
@@ -211,57 +247,11 @@
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
                         Margin="20,12,20,20">
-                <ToggleButton IsChecked="{Binding IsEnabled, Mode=TwoWay}"
-                              Content="{Binding EnabledToggleLabel}"
-                              Width="168"
-                              Height="36"
-                              VerticalAlignment="Center"
-                              HorizontalContentAlignment="Center"
-                              Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                              FocusVisualStyle="{x:Null}">
-                    <ToggleButton.Template>
-                        <ControlTemplate TargetType="ToggleButton">
-                            <Border x:Name="Root"
-                                    Background="{DynamicResource ControlFillColorDefaultBrush}"
-                                    BorderBrush="{DynamicResource ControlElevationBorderBrush}"
-                                    BorderThickness="1"
-                                    CornerRadius="8"
-                                    ClipToBounds="True"
-                                    SnapsToDevicePixels="True">
-                                <Grid>
-                                    <ContentPresenter HorizontalAlignment="Center"
-                                                      VerticalAlignment="Center"
-                                                      Margin="10,6,10,8"
-                                                      RecognizesAccessKey="True" />
-                                    <!-- Bottom-edge pill: top corners only, Fluent system accent -->
-                                    <Border x:Name="StatusPill"
-                                            Width="28"
-                                            Height="3"
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Bottom"
-                                            CornerRadius="2,2,0,0"
-                                            Background="{DynamicResource TextFillColorDisabledBrush}"
-                                            SnapsToDevicePixels="True" />
-                                </Grid>
-                            </Border>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter TargetName="Root" Property="Background" Value="{DynamicResource ControlFillColorSecondaryBrush}" />
-                                </Trigger>
-                                <Trigger Property="IsPressed" Value="True">
-                                    <Setter TargetName="Root" Property="Background" Value="{DynamicResource ControlFillColorTertiaryBrush}" />
-                                </Trigger>
-                                <Trigger Property="IsChecked" Value="True">
-                                    <Setter TargetName="StatusPill" Property="Background" Value="{DynamicResource ListViewItemPillFillBrush}" />
-                                    <Setter TargetName="StatusPill" Property="Width" Value="32" />
-                                </Trigger>
-                                <Trigger Property="IsChecked" Value="False">
-                                    <Setter TargetName="StatusPill" Property="Background" Value="{DynamicResource TextFillColorDisabledBrush}" />
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </ToggleButton.Template>
-                </ToggleButton>
+                <controls:PillToggleButton IsChecked="{Binding IsEnabled, Mode=TwoWay}"
+                                           Content="{Binding EnabledToggleLabel}"
+                                           Width="168"
+                                           Height="36"
+                                           VerticalAlignment="Center" />
 
                 <Line X1="0"
                       Y1="0"

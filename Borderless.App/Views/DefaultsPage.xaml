@@ -29,6 +29,28 @@
                     Background="{DynamicResource DividerStrokeColorDefaultBrush}"
                     SnapsToDevicePixels="True" />
 
+            <ui:TextBlock Text="{loc:Loc MatchConditionLabel}"
+                          FontTypography="BodyStrong"
+                          Appearance="Primary"
+                          Margin="0,0,0,10" />
+
+            <Border Style="{StaticResource OutlinedGroupCard}" Margin="0,0,0,16">
+                <ComboBox ItemsSource="{Binding Settings.MatchConditionOptions}"
+                          SelectedValue="{Binding Settings.DefaultMatchCondition, Mode=TwoWay}"
+                          SelectedValuePath="Value"
+                          DisplayMemberPath="DisplayName"
+                          ToolTip="{Binding Settings.DefaultMatchConditionToolTip}"
+                          MinHeight="32"
+                          HorizontalAlignment="Stretch">
+                    <ComboBox.ItemContainerStyle>
+                        <Style TargetType="ComboBoxItem"
+                               BasedOn="{StaticResource DefaultComboBoxItemStyle}">
+                            <Setter Property="ToolTip" Value="{Binding FormattedToolTip}" />
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+                </ComboBox>
+            </Border>
+
             <ui:TextBlock Text="{loc:Loc GroupVideo}"
                           FontTypography="BodyStrong"
                           Appearance="Primary"

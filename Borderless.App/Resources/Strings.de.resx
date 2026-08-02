@@ -52,8 +52,19 @@
   <data name="EditRuleTitle" xml:space="preserve"><value>App-Regel bearbeiten</value></data>
   <data name="Save" xml:space="preserve"><value>Speichern</value></data>
   <data name="Cancel" xml:space="preserve"><value>Abbrechen</value></data>
-  <data name="WindowTitleLabel" xml:space="preserve"><value>Exakter Fenstertitel</value></data>
+  <data name="WindowTitleLabel" xml:space="preserve"><value>Fenstertitel</value></data>
   <data name="WindowTitlePlaceholder" xml:space="preserve"><value>z. B. Counter-Strike 2</value></data>
+  <data name="WindowTitlePlaceholderRegex" xml:space="preserve"><value>z. B. ^Marvel Rivals</value></data>
+  <data name="ToggleTitleRegexTooltip" xml:space="preserve"><value>Titel als regulären Ausdruck abgleichen</value></data>
+  <data name="MatchConditionLabel" xml:space="preserve"><value>Match-Bedingung</value></data>
+  <data name="MatchConditionBoth" xml:space="preserve"><value>Beide</value></data>
+  <data name="MatchConditionBothSummary" xml:space="preserve"><value>Alle ausgefüllten Felder müssen passen (Titel und/oder Exe).</value></data>
+  <data name="MatchConditionAnd" xml:space="preserve"><value>Und</value></data>
+  <data name="MatchConditionAndSummary" xml:space="preserve"><value>Fenstertitel und Exe müssen beide passen. Beide Felder sind erforderlich.</value></data>
+  <data name="MatchConditionOr" xml:space="preserve"><value>Oder</value></data>
+  <data name="MatchConditionOrSummary" xml:space="preserve"><value>Passt, wenn Titel oder Exe übereinstimmt.</value></data>
+  <data name="ValidationAndRequiresBoth" xml:space="preserve"><value>„Und“ erfordert Fenstertitel und Exe.</value></data>
+  <data name="ValidationInvalidRegex" xml:space="preserve"><value>Fenstertitel ist kein gültiger regulärer Ausdruck.</value></data>
   <data name="ExecutableNameLabel" xml:space="preserve"><value>Executable-Name</value></data>
   <data name="ExecutableNamePlaceholder" xml:space="preserve"><value>z. B. cs2.exe</value></data>
   <data name="ToggleBorderless" xml:space="preserve"><value>Borderless-Fenster</value></data>
@@ -80,7 +91,7 @@
   <data name="DimensionY" xml:space="preserve"><value>Y</value></data>
   <data name="DimensionWidth" xml:space="preserve"><value>Breite</value></data>
   <data name="DimensionHeight" xml:space="preserve"><value>Höhe</value></data>
-  <data name="ValidationMatchRequired" xml:space="preserve"><value>Exakten Fenstertitel oder Executable-Namen setzen.</value></data>
+  <data name="ValidationMatchRequired" xml:space="preserve"><value>Fenstertitel oder Exe angeben.</value></data>
   <data name="ValidationDuplicateRule" xml:space="preserve"><value>Eine Regel mit demselben Fenstertitel und Executable existiert bereits.</value></data>
   <data name="RuleStatusIdle" xml:space="preserve"><value>Kein passender Prozess</value></data>
   <data name="RuleStatusActive" xml:space="preserve"><value>Passender Prozess aktiv</value></data>

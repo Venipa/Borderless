@@ -52,8 +52,19 @@
   <data name="EditRuleTitle" xml:space="preserve"><value>Edytuj regułę</value></data>
   <data name="Save" xml:space="preserve"><value>Zapisz</value></data>
   <data name="Cancel" xml:space="preserve"><value>Anuluj</value></data>
-  <data name="WindowTitleLabel" xml:space="preserve"><value>Dokładny tytuł</value></data>
+  <data name="WindowTitleLabel" xml:space="preserve"><value>Tytuł okna</value></data>
   <data name="WindowTitlePlaceholder" xml:space="preserve"><value>np. Counter-Strike 2</value></data>
+  <data name="WindowTitlePlaceholderRegex" xml:space="preserve"><value>np. ^Marvel Rivals</value></data>
+  <data name="ToggleTitleRegexTooltip" xml:space="preserve"><value>Dopasuj tytuł jako wyrażenie regularne</value></data>
+  <data name="MatchConditionLabel" xml:space="preserve"><value>Warunek dopasowania</value></data>
+  <data name="MatchConditionBoth" xml:space="preserve"><value>Oba</value></data>
+  <data name="MatchConditionBothSummary" xml:space="preserve"><value>Wszystkie wypełnione pola muszą pasować (tytuł i/lub exe).</value></data>
+  <data name="MatchConditionAnd" xml:space="preserve"><value>I</value></data>
+  <data name="MatchConditionAndSummary" xml:space="preserve"><value>Tytuł i exe muszą pasować. Oba pola są wymagane.</value></data>
+  <data name="MatchConditionOr" xml:space="preserve"><value>Lub</value></data>
+  <data name="MatchConditionOrSummary" xml:space="preserve"><value>Pasuje, gdy tytuł lub exe się zgadza.</value></data>
+  <data name="ValidationAndRequiresBoth" xml:space="preserve"><value>„I” wymaga tytułu i exe.</value></data>
+  <data name="ValidationInvalidRegex" xml:space="preserve"><value>Tytuł nie jest poprawnym wyrażeniem regularnym.</value></data>
   <data name="ExecutableNameLabel" xml:space="preserve"><value>Nazwa exe</value></data>
   <data name="ExecutableNamePlaceholder" xml:space="preserve"><value>np. cs2.exe</value></data>
   <data name="ToggleBorderless" xml:space="preserve"><value>Okno bez ramek</value></data>
@@ -80,7 +91,7 @@
   <data name="DimensionY" xml:space="preserve"><value>Y</value></data>
   <data name="DimensionWidth" xml:space="preserve"><value>Szerokość</value></data>
   <data name="DimensionHeight" xml:space="preserve"><value>Wysokość</value></data>
-  <data name="ValidationMatchRequired" xml:space="preserve"><value>Podaj dokładny tytuł lub nazwę exe.</value></data>
+  <data name="ValidationMatchRequired" xml:space="preserve"><value>Podaj tytuł okna lub nazwę exe.</value></data>
   <data name="ValidationDuplicateRule" xml:space="preserve"><value>Reguła z tym tytułem i exe już istnieje.</value></data>
   <data name="RuleStatusIdle" xml:space="preserve"><value>Brak procesu</value></data>
   <data name="RuleStatusActive" xml:space="preserve"><value>Proces aktywny</value></data>

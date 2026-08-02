@@ -52,8 +52,19 @@
   <data name="EditRuleTitle" xml:space="preserve"><value>Editar regla</value></data>
   <data name="Save" xml:space="preserve"><value>Guardar</value></data>
   <data name="Cancel" xml:space="preserve"><value>Cancelar</value></data>
-  <data name="WindowTitleLabel" xml:space="preserve"><value>Título exacto</value></data>
+  <data name="WindowTitleLabel" xml:space="preserve"><value>Título de ventana</value></data>
   <data name="WindowTitlePlaceholder" xml:space="preserve"><value>p. ej. Counter-Strike 2</value></data>
+  <data name="WindowTitlePlaceholderRegex" xml:space="preserve"><value>p. ej. ^Marvel Rivals</value></data>
+  <data name="ToggleTitleRegexTooltip" xml:space="preserve"><value>Coincidir título como expresión regular</value></data>
+  <data name="MatchConditionLabel" xml:space="preserve"><value>Condición de coincidencia</value></data>
+  <data name="MatchConditionBoth" xml:space="preserve"><value>Ambos</value></data>
+  <data name="MatchConditionBothSummary" xml:space="preserve"><value>Todos los campos rellenados deben coincidir (título y/o exe).</value></data>
+  <data name="MatchConditionAnd" xml:space="preserve"><value>Y</value></data>
+  <data name="MatchConditionAndSummary" xml:space="preserve"><value>El título y el exe deben coincidir. Ambos campos son obligatorios.</value></data>
+  <data name="MatchConditionOr" xml:space="preserve"><value>O</value></data>
+  <data name="MatchConditionOrSummary" xml:space="preserve"><value>Coincide si el título o el exe coinciden.</value></data>
+  <data name="ValidationAndRequiresBoth" xml:space="preserve"><value>«Y» requiere título y exe.</value></data>
+  <data name="ValidationInvalidRegex" xml:space="preserve"><value>El título no es una expresión regular válida.</value></data>
   <data name="ExecutableNameLabel" xml:space="preserve"><value>Nombre del exe</value></data>
   <data name="ExecutableNamePlaceholder" xml:space="preserve"><value>p. ej. cs2.exe</value></data>
   <data name="ToggleBorderless" xml:space="preserve"><value>Ventana sin bordes</value></data>
@@ -80,7 +91,7 @@
   <data name="DimensionY" xml:space="preserve"><value>Y</value></data>
   <data name="DimensionWidth" xml:space="preserve"><value>Ancho</value></data>
   <data name="DimensionHeight" xml:space="preserve"><value>Alto</value></data>
-  <data name="ValidationMatchRequired" xml:space="preserve"><value>Indica título exacto o nombre de exe.</value></data>
+  <data name="ValidationMatchRequired" xml:space="preserve"><value>Indica título o nombre de exe.</value></data>
   <data name="ValidationDuplicateRule" xml:space="preserve"><value>Ya existe una regla con el mismo título y exe.</value></data>
   <data name="RuleStatusIdle" xml:space="preserve"><value>Sin proceso activo</value></data>
   <data name="RuleStatusActive" xml:space="preserve"><value>Proceso coincidente</value></data>

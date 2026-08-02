@@ -52,8 +52,19 @@
   <data name="EditRuleTitle" xml:space="preserve"><value>編輯規則</value></data>
   <data name="Save" xml:space="preserve"><value>儲存</value></data>
   <data name="Cancel" xml:space="preserve"><value>取消</value></data>
-  <data name="WindowTitleLabel" xml:space="preserve"><value>精確視窗標題</value></data>
+  <data name="WindowTitleLabel" xml:space="preserve"><value>視窗標題</value></data>
   <data name="WindowTitlePlaceholder" xml:space="preserve"><value>例如 Counter-Strike 2</value></data>
+  <data name="WindowTitlePlaceholderRegex" xml:space="preserve"><value>例如 ^Marvel Rivals</value></data>
+  <data name="ToggleTitleRegexTooltip" xml:space="preserve"><value>將標題作為正規表示式比對</value></data>
+  <data name="MatchConditionLabel" xml:space="preserve"><value>相符條件</value></data>
+  <data name="MatchConditionBoth" xml:space="preserve"><value>兩者</value></data>
+  <data name="MatchConditionBothSummary" xml:space="preserve"><value>所有已填欄位都必須相符（標題及／或執行檔）。</value></data>
+  <data name="MatchConditionAnd" xml:space="preserve"><value>與</value></data>
+  <data name="MatchConditionAndSummary" xml:space="preserve"><value>視窗標題與執行檔都必須相符。兩個欄位皆為必填。</value></data>
+  <data name="MatchConditionOr" xml:space="preserve"><value>或</value></data>
+  <data name="MatchConditionOrSummary" xml:space="preserve"><value>標題或執行檔任一相符即可。</value></data>
+  <data name="ValidationAndRequiresBoth" xml:space="preserve"><value>「與」需要同時填寫視窗標題與執行檔。</value></data>
+  <data name="ValidationInvalidRegex" xml:space="preserve"><value>視窗標題不是有效的正規表示式。</value></data>
   <data name="ExecutableNameLabel" xml:space="preserve"><value>執行檔名稱</value></data>
   <data name="ExecutableNamePlaceholder" xml:space="preserve"><value>例如 cs2.exe</value></data>
   <data name="ToggleBorderless" xml:space="preserve"><value>無邊框視窗</value></data>
@@ -80,7 +91,7 @@
   <data name="DimensionY" xml:space="preserve"><value>Y</value></data>
   <data name="DimensionWidth" xml:space="preserve"><value>寬度</value></data>
   <data name="DimensionHeight" xml:space="preserve"><value>高度</value></data>
-  <data name="ValidationMatchRequired" xml:space="preserve"><value>請填寫精確標題或 exe 名稱。</value></data>
+  <data name="ValidationMatchRequired" xml:space="preserve"><value>請設定視窗標題或執行檔名稱。</value></data>
   <data name="ValidationDuplicateRule" xml:space="preserve"><value>已有相同標題與 exe 的規則。</value></data>
   <data name="RuleStatusIdle" xml:space="preserve"><value>無相符程序</value></data>
   <data name="RuleStatusActive" xml:space="preserve"><value>程序已配對</value></data>

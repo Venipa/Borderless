@@ -52,8 +52,19 @@
   <data name="EditRuleTitle" xml:space="preserve"><value>ルール編集</value></data>
   <data name="Save" xml:space="preserve"><value>保存</value></data>
   <data name="Cancel" xml:space="preserve"><value>キャンセル</value></data>
-  <data name="WindowTitleLabel" xml:space="preserve"><value>完全一致タイトル</value></data>
+  <data name="WindowTitleLabel" xml:space="preserve"><value>ウィンドウタイトル</value></data>
   <data name="WindowTitlePlaceholder" xml:space="preserve"><value>例: Counter-Strike 2</value></data>
+  <data name="WindowTitlePlaceholderRegex" xml:space="preserve"><value>例: ^Marvel Rivals</value></data>
+  <data name="ToggleTitleRegexTooltip" xml:space="preserve"><value>タイトルを正規表現で一致</value></data>
+  <data name="MatchConditionLabel" xml:space="preserve"><value>一致条件</value></data>
+  <data name="MatchConditionBoth" xml:space="preserve"><value>両方</value></data>
+  <data name="MatchConditionBothSummary" xml:space="preserve"><value>入力した全フィールドが一致する必要があります（タイトルおよび/または exe）。</value></data>
+  <data name="MatchConditionAnd" xml:space="preserve"><value>かつ</value></data>
+  <data name="MatchConditionAndSummary" xml:space="preserve"><value>タイトルと exe の両方が一致する必要があります。両方のフィールド必須です。</value></data>
+  <data name="MatchConditionOr" xml:space="preserve"><value>または</value></data>
+  <data name="MatchConditionOrSummary" xml:space="preserve"><value>タイトルまたは exe のいずれかが一致すればマッチします。</value></data>
+  <data name="ValidationAndRequiresBoth" xml:space="preserve"><value>「かつ」にはタイトルと exe の両方が必要です。</value></data>
+  <data name="ValidationInvalidRegex" xml:space="preserve"><value>タイトルは有効な正規表現ではありません。</value></data>
   <data name="ExecutableNameLabel" xml:space="preserve"><value>実行ファイル名</value></data>
   <data name="ExecutableNamePlaceholder" xml:space="preserve"><value>例: cs2.exe</value></data>
   <data name="ToggleBorderless" xml:space="preserve"><value>枠なしウィンドウ</value></data>
@@ -80,7 +91,7 @@
   <data name="DimensionY" xml:space="preserve"><value>Y</value></data>
   <data name="DimensionWidth" xml:space="preserve"><value>幅</value></data>
   <data name="DimensionHeight" xml:space="preserve"><value>高さ</value></data>
-  <data name="ValidationMatchRequired" xml:space="preserve"><value>タイトルか exe を指定してください。</value></data>
+  <data name="ValidationMatchRequired" xml:space="preserve"><value>タイトルまたは exe 名を設定してください。</value></data>
   <data name="ValidationDuplicateRule" xml:space="preserve"><value>同じタイトルと exe のルールが既にあります。</value></data>
   <data name="RuleStatusIdle" xml:space="preserve"><value>一致プロセスなし</value></data>
   <data name="RuleStatusActive" xml:space="preserve"><value>プロセス動作中</value></data>

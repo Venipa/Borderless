@@ -1,5 +1,6 @@
 using System.IO;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Borderless.App.Models;
@@ -9,13 +10,21 @@ namespace Borderless.App.Models;
 /// </summary>
 public sealed partial class ProcessRule : ObservableObject
 {
+    private static readonly TimeSpan RegexMatchTimeout = TimeSpan.FromMilliseconds(150);
+
     public Guid Id { get; set; } = Guid.NewGuid();
 
-    /// <summary>Exact window title match. Empty skips title matching.</summary>
+    /// <summary>Window title match (exact or regex). Empty skips title matching.</summary>
     public string WindowTitle { get; set; } = string.Empty;
+
+    /// <summary>When true, <see cref="WindowTitle"/> is treated as a regular expression.</summary>
+    public bool UseTitleRegex { get; set; }
 
     /// <summary>Executable file name, e.g. game.exe. Empty skips executable matching.</summary>
     public string ExecutableName { get; set; } = string.Empty;
+
+    /// <summary>How title and executable criteria combine. Default: <see cref="MatchCondition.Both"/>.</summary>
+    public MatchCondition MatchCondition { get; set; } = MatchCondition.Both;
 
     public bool IsEnabled { get; set; } = true;
 
@@ -85,16 +94,20 @@ public sealed partial class ProcessRule : ObservableObject
             return false;
         }
 
-        var titleOk = !hasTitle
-            || string.Equals(windowTitle?.Trim(), WindowTitle.Trim(), StringComparison.Ordinal);
+        if (MatchCondition == MatchCondition.And && (!hasTitle || !hasExe))
+        {
+            return false;
+        }
 
-        var exeOk = !hasExe
-            || string.Equals(
-                Path.GetFileName(executableName)?.Trim(),
-                Path.GetFileName(ExecutableName)?.Trim(),
-                StringComparison.OrdinalIgnoreCase);
+        var titleMatched = hasTitle && MatchTitle(windowTitle);
+        var exeMatched = hasExe && MatchExecutable(executableName);
 
-        return titleOk && exeOk;
+        return MatchCondition switch
+        {
+            MatchCondition.Or => titleMatched || exeMatched,
+            MatchCondition.And => titleMatched && exeMatched,
+            _ => (!hasTitle || titleMatched) && (!hasExe || exeMatched)
+        };
     }
 
     public bool HasSameMatchKey(ProcessRule other)
@@ -102,9 +115,45 @@ public sealed partial class ProcessRule : ObservableObject
         ArgumentNullException.ThrowIfNull(other);
 
         return string.Equals(WindowTitle.Trim(), other.WindowTitle.Trim(), StringComparison.Ordinal)
+            && UseTitleRegex == other.UseTitleRegex
+            && MatchCondition == other.MatchCondition
             && string.Equals(
                 Path.GetFileName(ExecutableName)?.Trim() ?? string.Empty,
                 Path.GetFileName(other.ExecutableName)?.Trim() ?? string.Empty,
                 StringComparison.OrdinalIgnoreCase);
     }
+
+    private bool MatchTitle(string? windowTitle)
+    {
+        var actual = windowTitle?.Trim() ?? string.Empty;
+        var pattern = WindowTitle.Trim();
+
+        if (!UseTitleRegex)
+        {
+            return string.Equals(actual, pattern, StringComparison.Ordinal);
+        }
+
+        try
+        {
+            return Regex.IsMatch(
+                actual,
+                pattern,
+                RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture,
+                RegexMatchTimeout);
+        }
+        catch (ArgumentException)
+        {
+            return false;
+        }
+        catch (RegexMatchTimeoutException)
+        {
+            return false;
+        }
+    }
+
+    private bool MatchExecutable(string? executableName) =>
+        string.Equals(
+            Path.GetFileName(executableName)?.Trim(),
+            Path.GetFileName(ExecutableName)?.Trim(),
+            StringComparison.OrdinalIgnoreCase);
 }

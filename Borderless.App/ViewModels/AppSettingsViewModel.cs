@@ -52,6 +52,9 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
     private bool _defaultIsEnabled = true;
 
     [ObservableProperty]
+    private MatchCondition _defaultMatchCondition = MatchCondition.Both;
+
+    [ObservableProperty]
     private bool _startOnStartup;
 
     [ObservableProperty]
@@ -82,6 +85,12 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
 
     public IReadOnlyList<LanguageOption> LanguageOptions => LanguageManager.Options;
 
+    public IReadOnlyList<MatchConditionOption> MatchConditionOptions { get; private set; } =
+        MatchConditionOption.CreateAll();
+
+    public string DefaultMatchConditionToolTip =>
+        MatchConditionOption.Find(MatchConditionOptions, DefaultMatchCondition).FormattedToolTip;
+
     public AppSettingsViewModel(
         SettingsStore store,
         StartupRegistrationService startup,
@@ -101,6 +110,7 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
         DefaultHideCursor = settings.Defaults.HideCursor;
         DefaultRemoveGameMenus = settings.Defaults.RemoveGameMenus;
         DefaultIsEnabled = settings.Defaults.IsEnabled;
+        DefaultMatchCondition = settings.Defaults.MatchCondition;
         StartOnStartup = settings.StartOnStartup;
         CloseToTray = settings.CloseToTray;
         SelectedLanguage = LanguageManager.FindOption(settings.UiLanguage);
@@ -115,6 +125,7 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
 
     public RuleDefaults CreateRuleDefaults() => new()
     {
+        MatchCondition = DefaultMatchCondition,
         IsBorderless = DefaultIsBorderless,
         IsAlwaysOnTop = DefaultIsAlwaysOnTop,
         IsExpandToScreen = DefaultIsExpandToScreen,
@@ -143,6 +154,9 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
 
     private void OnLocChanged(object? sender, PropertyChangedEventArgs e)
     {
+        MatchConditionOptions = MatchConditionOption.CreateAll();
+        OnPropertyChanged(nameof(MatchConditionOptions));
+        OnPropertyChanged(nameof(DefaultMatchConditionToolTip));
         OnPropertyChanged(nameof(AppVersionText));
         OnPropertyChanged(nameof(AppAuthorText));
         if (!IsCheckingForUpdates)
@@ -321,6 +335,12 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
     partial void OnDefaultHideCursorChanged(bool value) => ScheduleSave();
     partial void OnDefaultRemoveGameMenusChanged(bool value) => ScheduleSave();
     partial void OnDefaultIsEnabledChanged(bool value) => ScheduleSave();
+
+    partial void OnDefaultMatchConditionChanged(MatchCondition value)
+    {
+        OnPropertyChanged(nameof(DefaultMatchConditionToolTip));
+        ScheduleSave();
+    }
 
     partial void OnStartOnStartupChanged(bool value)
     {

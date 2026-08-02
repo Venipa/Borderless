@@ -52,8 +52,19 @@
   <data name="EditRuleTitle" xml:space="preserve"><value>Editar regra</value></data>
   <data name="Save" xml:space="preserve"><value>Guardar</value></data>
   <data name="Cancel" xml:space="preserve"><value>Cancelar</value></data>
-  <data name="WindowTitleLabel" xml:space="preserve"><value>Título exato</value></data>
+  <data name="WindowTitleLabel" xml:space="preserve"><value>Título da janela</value></data>
   <data name="WindowTitlePlaceholder" xml:space="preserve"><value>ex. Counter-Strike 2</value></data>
+  <data name="WindowTitlePlaceholderRegex" xml:space="preserve"><value>p. ex. ^Marvel Rivals</value></data>
+  <data name="ToggleTitleRegexTooltip" xml:space="preserve"><value>Corresponder título como expressão regular</value></data>
+  <data name="MatchConditionLabel" xml:space="preserve"><value>Condição de correspondência</value></data>
+  <data name="MatchConditionBoth" xml:space="preserve"><value>Ambos</value></data>
+  <data name="MatchConditionBothSummary" xml:space="preserve"><value>Todos os campos preenchidos devem corresponder (título e/ou exe).</value></data>
+  <data name="MatchConditionAnd" xml:space="preserve"><value>E</value></data>
+  <data name="MatchConditionAndSummary" xml:space="preserve"><value>O título e o exe devem ambos corresponder. Ambos os campos são obrigatórios.</value></data>
+  <data name="MatchConditionOr" xml:space="preserve"><value>Ou</value></data>
+  <data name="MatchConditionOrSummary" xml:space="preserve"><value>Corresponde se o título ou o exe corresponder.</value></data>
+  <data name="ValidationAndRequiresBoth" xml:space="preserve"><value>«E» exige título e exe.</value></data>
+  <data name="ValidationInvalidRegex" xml:space="preserve"><value>O título não é uma expressão regular válida.</value></data>
   <data name="ExecutableNameLabel" xml:space="preserve"><value>Nome do exe</value></data>
   <data name="ExecutableNamePlaceholder" xml:space="preserve"><value>ex. cs2.exe</value></data>
   <data name="ToggleBorderless" xml:space="preserve"><value>Janela sem bordas</value></data>
@@ -80,7 +91,7 @@
   <data name="DimensionY" xml:space="preserve"><value>Y</value></data>
   <data name="DimensionWidth" xml:space="preserve"><value>Largura</value></data>
   <data name="DimensionHeight" xml:space="preserve"><value>Altura</value></data>
-  <data name="ValidationMatchRequired" xml:space="preserve"><value>Define título exato ou nome do exe.</value></data>
+  <data name="ValidationMatchRequired" xml:space="preserve"><value>Defina o título ou o nome do exe.</value></data>
   <data name="ValidationDuplicateRule" xml:space="preserve"><value>Já existe uma regra com o mesmo título e exe.</value></data>
   <data name="RuleStatusIdle" xml:space="preserve"><value>Sem processo</value></data>
   <data name="RuleStatusActive" xml:space="preserve"><value>Processo ativo</value></data>

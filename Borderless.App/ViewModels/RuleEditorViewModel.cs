@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Text.RegularExpressions;
 using System.Windows.Threading;
 using Borderless.App.Helpers;
 using Borderless.App.Localization;
@@ -23,7 +24,13 @@ public sealed partial class RuleEditorViewModel : ObservableObject
     private string _windowTitle = string.Empty;
 
     [ObservableProperty]
+    private bool _useTitleRegex;
+
+    [ObservableProperty]
     private string _executableName = string.Empty;
+
+    [ObservableProperty]
+    private MatchCondition _matchCondition = MatchCondition.Both;
 
     [ObservableProperty]
     private bool _isBorderless = true;
@@ -89,6 +96,8 @@ public sealed partial class RuleEditorViewModel : ObservableObject
 
     public ObservableCollection<ProcessSuggestion> FilteredProcesses { get; } = [];
 
+    public IReadOnlyList<MatchConditionOption> MatchConditionOptions { get; } = MatchConditionOption.CreateAll();
+
     [ObservableProperty]
     private bool _isProcessPickerOpen;
 
@@ -96,6 +105,12 @@ public sealed partial class RuleEditorViewModel : ObservableObject
 
     public string EnabledToggleLabel =>
         IsEnabled ? Loc.Get("ToggleRuleEnabled") : Loc.Get("RuleStatusDisabled");
+
+    public string WindowTitlePlaceholder =>
+        UseTitleRegex ? Loc.Get("WindowTitlePlaceholderRegex") : Loc.Get("WindowTitlePlaceholder");
+
+    public string MatchConditionToolTip =>
+        MatchConditionOption.Find(MatchConditionOptions, MatchCondition).FormattedToolTip;
 
     public string CustomDimensionSummary
     {
@@ -113,6 +128,7 @@ public sealed partial class RuleEditorViewModel : ObservableObject
         _processCatalog = processCatalog;
         RuleId = Guid.NewGuid();
         DialogTitle = Loc.Get("AddRuleTitle");
+        MatchCondition = defaults.MatchCondition;
         IsBorderless = defaults.IsBorderless;
         IsAlwaysOnTop = defaults.IsAlwaysOnTop;
         MuteInBackground = defaults.MuteInBackground;
@@ -132,7 +148,9 @@ public sealed partial class RuleEditorViewModel : ObservableObject
         _processCatalog = processCatalog;
         RuleId = rule.Id;
         WindowTitle = rule.WindowTitle;
+        UseTitleRegex = rule.UseTitleRegex;
         ExecutableName = rule.ExecutableName;
+        MatchCondition = rule.MatchCondition;
         IsBorderless = rule.IsBorderless;
         IsAlwaysOnTop = rule.IsAlwaysOnTop;
         MuteInBackground = rule.MuteInBackground;
@@ -223,9 +241,27 @@ public sealed partial class RuleEditorViewModel : ObservableObject
     {
         ValidationMessage = null;
 
-        if (string.IsNullOrWhiteSpace(WindowTitle) && string.IsNullOrWhiteSpace(ExecutableName))
+        var title = WindowTitle.Trim();
+        var exe = ExecutableName.Trim();
+
+        if (string.IsNullOrWhiteSpace(title) && string.IsNullOrWhiteSpace(exe))
         {
             ValidationMessage = Loc.Get("ValidationMatchRequired");
+            rule = null;
+            return false;
+        }
+
+        if (MatchCondition == MatchCondition.And
+            && (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(exe)))
+        {
+            ValidationMessage = Loc.Get("ValidationAndRequiresBoth");
+            rule = null;
+            return false;
+        }
+
+        if (UseTitleRegex && !string.IsNullOrWhiteSpace(title) && !IsValidRegex(title))
+        {
+            ValidationMessage = Loc.Get("ValidationInvalidRegex");
             rule = null;
             return false;
         }
@@ -233,8 +269,10 @@ public sealed partial class RuleEditorViewModel : ObservableObject
         rule = new ProcessRule
         {
             Id = RuleId,
-            WindowTitle = WindowTitle.Trim(),
-            ExecutableName = ExecutableName.Trim(),
+            WindowTitle = title,
+            UseTitleRegex = UseTitleRegex,
+            ExecutableName = exe,
+            MatchCondition = MatchCondition,
             IsBorderless = IsBorderless,
             IsAlwaysOnTop = IsAlwaysOnTop,
             IsExpandToScreen = IsExpandToScreen,
@@ -252,8 +290,27 @@ public sealed partial class RuleEditorViewModel : ObservableObject
         return true;
     }
 
+    private static bool IsValidRegex(string pattern)
+    {
+        try
+        {
+            _ = new Regex(pattern, RegexOptions.CultureInvariant, TimeSpan.FromMilliseconds(150));
+            return true;
+        }
+        catch (ArgumentException)
+        {
+            return false;
+        }
+    }
+
     partial void OnIsEnabledChanged(bool value) =>
         OnPropertyChanged(nameof(EnabledToggleLabel));
+
+    partial void OnUseTitleRegexChanged(bool value) =>
+        OnPropertyChanged(nameof(WindowTitlePlaceholder));
+
+    partial void OnMatchConditionChanged(MatchCondition value) =>
+        OnPropertyChanged(nameof(MatchConditionToolTip));
 
     partial void OnIsExpandToScreenChanged(bool value)
     {
