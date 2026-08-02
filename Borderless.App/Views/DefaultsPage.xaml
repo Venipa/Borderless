@@ -40,15 +40,9 @@
                           SelectedValuePath="Value"
                           DisplayMemberPath="DisplayName"
                           ToolTip="{Binding Settings.DefaultMatchConditionToolTip}"
+                          ItemContainerStyle="{StaticResource MatchConditionComboBoxItemStyle}"
                           MinHeight="32"
-                          HorizontalAlignment="Stretch">
-                    <ComboBox.ItemContainerStyle>
-                        <Style TargetType="ComboBoxItem"
-                               BasedOn="{StaticResource DefaultComboBoxItemStyle}">
-                            <Setter Property="ToolTip" Value="{Binding FormattedToolTip}" />
-                        </Style>
-                    </ComboBox.ItemContainerStyle>
-                </ComboBox>
+                          HorizontalAlignment="Stretch" />
             </Border>
 
             <ui:TextBlock Text="{loc:Loc GroupVideo}"

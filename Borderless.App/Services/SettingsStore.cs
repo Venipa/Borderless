@@ -1,17 +1,12 @@
 using System.IO;
 using System.Text.Json;
+using Borderless.App.Helpers;
 using Borderless.App.Models;
 
 namespace Borderless.App.Services;
 
 public sealed class SettingsStore
 {
-    private static readonly JsonSerializerOptions JsonOptions = new()
-    {
-        WriteIndented = true,
-        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-    };
-
     private readonly string _filePath;
 
     public SettingsStore()
@@ -33,7 +28,7 @@ public sealed class SettingsStore
         try
         {
             var json = File.ReadAllText(_filePath);
-            return JsonSerializer.Deserialize<AppSettings>(json, JsonOptions) ?? new AppSettings();
+            return JsonSerializer.Deserialize<AppSettings>(json, AppJson.IndentedCamelCase) ?? new AppSettings();
         }
         catch
         {
@@ -43,7 +38,7 @@ public sealed class SettingsStore
 
     public void Save(AppSettings settings)
     {
-        var json = JsonSerializer.Serialize(settings, JsonOptions);
+        var json = JsonSerializer.Serialize(settings, AppJson.IndentedCamelCase);
         File.WriteAllText(_filePath, json);
     }
 }

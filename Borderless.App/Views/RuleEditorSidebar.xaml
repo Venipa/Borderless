@@ -79,15 +79,9 @@
                               SelectedValuePath="Value"
                               DisplayMemberPath="DisplayName"
                               ToolTip="{Binding MatchConditionToolTip}"
+                              ItemContainerStyle="{StaticResource MatchConditionComboBoxItemStyle}"
                               MinHeight="32"
-                              Margin="0,0,0,16">
-                        <ComboBox.ItemContainerStyle>
-                            <Style TargetType="ComboBoxItem"
-                                   BasedOn="{StaticResource DefaultComboBoxItemStyle}">
-                                <Setter Property="ToolTip" Value="{Binding FormattedToolTip}" />
-                            </Style>
-                        </ComboBox.ItemContainerStyle>
-                    </ComboBox>
+                              Margin="0,0,0,16" />
 
                     <ui:TextBlock Text="{loc:Loc ExecutableNameLabel}"
                                   FontTypography="Caption"

@@ -1,3 +1,4 @@
+using Borderless.App.Helpers;
 using Borderless.App.Models;
 using Borderless.App.Native;
 
@@ -273,7 +274,7 @@ public sealed class WindowStyleService
         if (rule.IsBorderless)
         {
             // Prefer client-area sizing for already-borderless / popup games.
-            if (TryGetClientScreenRect(hwnd, out var client)
+            if (NativeWindowGeometry.TryGetClientScreenRect(hwnd, out var client)
                 && client.Left == targetX
                 && client.Top == targetY
                 && client.Right - client.Left == targetWidth
@@ -324,33 +325,6 @@ public sealed class WindowStyleService
             clientRect.Right - clientRect.Left,
             clientRect.Bottom - clientRect.Top,
             NativeMethods.SwpNoZOrder | NativeMethods.SwpNoActivate | NativeMethods.SwpFrameChanged);
-    }
-
-    private static bool TryGetClientScreenRect(nint hwnd, out NativeMethods.Rect screenRect)
-    {
-        if (!NativeMethods.GetClientRect(hwnd, out var client))
-        {
-            screenRect = default;
-            return false;
-        }
-
-        var topLeft = new NativeMethods.Point { X = client.Left, Y = client.Top };
-        var bottomRight = new NativeMethods.Point { X = client.Right, Y = client.Bottom };
-        if (!NativeMethods.ClientToScreen(hwnd, ref topLeft)
-            || !NativeMethods.ClientToScreen(hwnd, ref bottomRight))
-        {
-            screenRect = default;
-            return false;
-        }
-
-        screenRect = new NativeMethods.Rect
-        {
-            Left = topLeft.X,
-            Top = topLeft.Y,
-            Right = bottomRight.X,
-            Bottom = bottomRight.Y
-        };
-        return true;
     }
 
     private static bool TryGetMonitorRect(nint hwnd, out NativeMethods.Rect monitorRect)

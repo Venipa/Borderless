@@ -68,4 +68,11 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <!-- Fluent ComboBox items with option tooltips (MatchConditionOption.FormattedToolTip). -->
+    <Style x:Key="MatchConditionComboBoxItemStyle"
+           TargetType="ComboBoxItem"
+           BasedOn="{StaticResource DefaultComboBoxItemStyle}">
+        <Setter Property="ToolTip" Value="{Binding FormattedToolTip}" />
+    </Style>
 </ResourceDictionary>

@@ -1,3 +1,4 @@
+using Borderless.App.Helpers;
 using Borderless.App.Models;
 using Borderless.App.Native;
 
@@ -133,28 +134,9 @@ public sealed class InputCaptureService : IDisposable
 
     private void ClipToWindow(nint hwnd)
     {
-        if (!NativeMethods.GetClientRect(hwnd, out var client))
-        {
-            return;
-        }
-
-        var topLeft = new NativeMethods.Point { X = client.Left, Y = client.Top };
-        var bottomRight = new NativeMethods.Point { X = client.Right, Y = client.Bottom };
-        if (!NativeMethods.ClientToScreen(hwnd, ref topLeft)
-            || !NativeMethods.ClientToScreen(hwnd, ref bottomRight))
-        {
-            return;
-        }
-
-        var clip = new NativeMethods.Rect
-        {
-            Left = topLeft.X,
-            Top = topLeft.Y,
-            Right = bottomRight.X,
-            Bottom = bottomRight.Y
-        };
-
-        if (clip.Right <= clip.Left || clip.Bottom <= clip.Top)
+        if (!NativeWindowGeometry.TryGetClientScreenRect(hwnd, out var clip)
+            || clip.Right <= clip.Left
+            || clip.Bottom <= clip.Top)
         {
             return;
         }
