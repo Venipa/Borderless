@@ -73,9 +73,25 @@ Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: de
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#MyAppName}}"; Verb: runas; Flags: nowait postinstall shellexec; Check: ShouldLaunchAfterInstall
 
 [Code]
+// Compatible with older Inno (CI) — CmdLineParamExists needs newer ISCC.
+function HasSetupSwitch(const Switch: String): Boolean;
+var
+  I: Integer;
+begin
+  Result := False;
+  for I := 1 to ParamCount do
+  begin
+    if CompareText(ParamStr(I), Switch) = 0 then
+    begin
+      Result := True;
+      Exit;
+    end;
+  end;
+end;
+
 function ShouldLaunchAfterInstall: Boolean;
 begin
-  Result := not CmdLineParamExists('/NORUN');
+  Result := not HasSetupSwitch('/NORUN');
 end;
 
 // WPF needs Microsoft.WindowsDesktop.App — plain ".NET Runtime" is not enough.
