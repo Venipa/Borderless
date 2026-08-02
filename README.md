@@ -6,18 +6,38 @@
 [![Latest release](https://img.shields.io/github/v/release/Venipa/Borderless?label=latest&logo=github)](https://github.com/Venipa/Borderless/releases/latest)
 [![License](https://img.shields.io/github/license/Venipa/Borderless)](LICENSE)
 
-Windows utility that forces apps into borderless windowed mode. Match by window title and/or executable name, then keep the styles applied.
+Windows desktop app that keeps games and other windows in borderless (and related) layouts. Match by window title and/or executable, then re-apply styles while Borderless is running — useful when a title already runs borderless, fights chrome, or needs extra input/audio rules.
 
 <img width="1018" height="673" alt="Borderless_fVfFZMhH9T" src="https://github.com/user-attachments/assets/c993d5ec-d224-494e-89eb-507ef445d2ff" />
 
 
 ## Features
 
-- Borderless window chrome, always-on-top, expand to screen, custom size/position
-- Mute process audio when the window is in the background
-- Rule defaults, search, Fluent UI (WPF-UI)
-- System tray, start with Windows, optional updates from GitHub Releases
-- English, German, Spanish, French, Italian, Portuguese, Japanese, Korean, Polish, Ukrainian, Simplified Chinese, Traditional Chinese
+### Matching
+- Match by exact window title and/or executable name
+- Optional title **regex**
+- Match condition: **Both** (all filled fields), **And** (title + exe required), or **Or**
+- Live process picker when adding/editing a rule
+- Per-rule enable/disable and live status (idle / active / error)
+
+### Window & video
+- Force **borderless** chrome (re-asserted if the app restores borders)
+- **Always on top**
+- **Expand / max size** to the current monitor
+- **Custom position and size**
+
+### Input & audio
+- **Lock cursor** to the focused window (Alt+Tab releases)
+- **Hide cursor** while focused (Alt+Tab restores)
+- **Remove game menus** (window menu bar) while the rule is active
+- **Mute** process audio when the window is in the background
+
+### App
+- Fluent UI ([WPF-UI](https://github.com/lepoco/wpfui)), system tray, start with Windows, close to tray
+- **Defaults** page for new-rule presets
+- Optional **GitHub Releases** updater: dialog and/or sidebar hint, download now or install after exit
+- Portable zip, bundled zip, and installer builds
+- UI languages: English, German, Spanish, French, Italian, Portuguese, Japanese, Korean, Polish, Ukrainian, Simplified Chinese, Traditional Chinese
 
 ## Install
 
@@ -35,8 +55,8 @@ Run as admin so other windows can be restyled.
 ## Usage
 
 1. Start Borderless
-2. Add a rule (pick a process or enter title / exe)
-3. Set options (borderless, expand, mute, etc.)
+2. Add a rule (pick a process or enter title / exe; optional regex and match condition)
+3. Set options (borderless, expand, input, mute, etc.)
 4. Leave it running; matching windows are re-applied about once per second
 
 Rules and settings are stored in `%LocalAppData%\Borderless\`.
