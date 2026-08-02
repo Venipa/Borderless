@@ -219,21 +219,27 @@ public sealed class UpdateService : IDisposable
             return;
         }
 
-        LaunchInstaller(path, shutdownApp: false);
+        LaunchInstaller(path, shutdownApp: false, launchAppAfterInstall: false);
     }
 
-    public void LaunchInstaller(string installerPath, bool shutdownApp)
+    public void LaunchInstaller(string installerPath, bool shutdownApp, bool launchAppAfterInstall = true)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(installerPath);
 
         if (installerPath.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
         {
-            // Silent install; Inno [Run] Verb=runas starts the app elevated.
+            // Silent install. Inno [Run] starts the app unless /NORUN is passed.
             // NORESTARTAPPLICATIONS avoids a non-elevated auto-restart of the closed process.
+            var arguments = "/SILENT /CLOSEAPPLICATIONS /NORESTARTAPPLICATIONS";
+            if (!launchAppAfterInstall)
+            {
+                arguments += " /NORUN";
+            }
+
             Process.Start(new ProcessStartInfo
             {
                 FileName = installerPath,
-                Arguments = "/SILENT /CLOSEAPPLICATIONS /NORESTARTAPPLICATIONS",
+                Arguments = arguments,
                 UseShellExecute = true,
                 Verb = "runas"
             });

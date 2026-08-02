@@ -68,10 +68,16 @@ Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
 [Run]
-; Launch elevated after install (including silent updates — do not use skipifsilent).
-Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#MyAppName}}"; Verb: runas; Flags: nowait postinstall shellexec
+; Launch elevated after install (including silent immediate updates).
+; Pass /NORUN to skip — used by "install after exit".
+Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#MyAppName}}"; Verb: runas; Flags: nowait postinstall shellexec; Check: ShouldLaunchAfterInstall
 
 [Code]
+function ShouldLaunchAfterInstall: Boolean;
+begin
+  Result := not CmdLineParamExists('/NORUN');
+end;
+
 // WPF needs Microsoft.WindowsDesktop.App — plain ".NET Runtime" is not enough.
 function IsDotNetDesktop9Installed: Boolean;
 var
