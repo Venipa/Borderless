@@ -53,6 +53,8 @@
             <Border Style="{StaticResource OutlinedGroupCard}">
                 <StackPanel>
                     <controls:SwitchOptionRow Title="{loc:Loc ToggleBorderless}"
+                                              InfoTooltipEnabled="True"
+                                              InfoTooltipContent="{loc:Loc ToggleBorderlessHint}"
                                               IsChecked="{Binding Settings.DefaultIsBorderless}" />
                     <controls:SwitchOptionRow Title="{loc:Loc ToggleAlwaysOnTop}"
                                               IsChecked="{Binding Settings.DefaultIsAlwaysOnTop}" />

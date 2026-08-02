@@ -68,6 +68,7 @@
   <data name="ExecutableNameLabel" xml:space="preserve"><value>Nome exe</value></data>
   <data name="ExecutableNamePlaceholder" xml:space="preserve"><value>es. cs2.exe</value></data>
   <data name="ToggleBorderless" xml:space="preserve"><value>Finestra senza bordi</value></data>
+  <data name="ToggleBorderlessHint" xml:space="preserve"><value>Alcuni giochi implementano già una propria modalità borderless e potrebbero non funzionare con questa opzione. In tal caso, disattivala.</value></data>
   <data name="ToggleAlwaysOnTop" xml:space="preserve"><value>Sempre in primo piano</value></data>
   <data name="ToggleExpandToScreen" xml:space="preserve"><value>Max / schermo intero</value></data>
   <data name="ToggleCustomDimension" xml:space="preserve"><value>Dimensioni custom</value></data>

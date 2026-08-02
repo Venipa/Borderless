@@ -162,6 +162,8 @@
                             <Border Style="{StaticResource OutlinedGroupCard}" Margin="0,0,0,0">
                                 <StackPanel>
                                     <controls:SwitchOptionRow Title="{loc:Loc ToggleBorderless}"
+                                                              InfoTooltipEnabled="True"
+                                                              InfoTooltipContent="{loc:Loc ToggleBorderlessHint}"
                                                               IsChecked="{Binding IsBorderless}" />
                                     <controls:SwitchOptionRow Title="{loc:Loc ToggleAlwaysOnTop}"
                                                               IsChecked="{Binding IsAlwaysOnTop}" />

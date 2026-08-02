@@ -68,6 +68,7 @@
   <data name="ExecutableNameLabel" xml:space="preserve"><value>実行ファイル名</value></data>
   <data name="ExecutableNamePlaceholder" xml:space="preserve"><value>例: cs2.exe</value></data>
   <data name="ToggleBorderless" xml:space="preserve"><value>枠なしウィンドウ</value></data>
+  <data name="ToggleBorderlessHint" xml:space="preserve"><value>一部のゲームは独自のボーダーレス実装を持つため、このオプションが動作しないことがあります。その場合はオフにしてください。</value></data>
   <data name="ToggleAlwaysOnTop" xml:space="preserve"><value>常に最前面</value></data>
   <data name="ToggleExpandToScreen" xml:space="preserve"><value>最大／画面に合わせる</value></data>
   <data name="ToggleCustomDimension" xml:space="preserve"><value>カスタムサイズ</value></data>

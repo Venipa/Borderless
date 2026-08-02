@@ -66,6 +66,7 @@
   <data name="ExecutableNameLabel" xml:space="preserve"><value>Executable name</value></data>
   <data name="ExecutableNamePlaceholder" xml:space="preserve"><value>e.g. cs2.exe</value></data>
   <data name="ToggleBorderless" xml:space="preserve"><value>Borderless window</value></data>
+  <data name="ToggleBorderlessHint" xml:space="preserve"><value>Some games already implement their own borderless mode and may not work with this option. If that happens, turn this option off.</value></data>
   <data name="ToggleAlwaysOnTop" xml:space="preserve"><value>Always on top</value></data>
   <data name="ToggleExpandToScreen" xml:space="preserve"><value>Max size / expand to screen</value></data>
   <data name="ToggleCustomDimension" xml:space="preserve"><value>Custom dimension</value></data>

@@ -68,6 +68,7 @@
   <data name="ExecutableNameLabel" xml:space="preserve"><value>Nazwa exe</value></data>
   <data name="ExecutableNamePlaceholder" xml:space="preserve"><value>np. cs2.exe</value></data>
   <data name="ToggleBorderless" xml:space="preserve"><value>Okno bez ramek</value></data>
+  <data name="ToggleBorderlessHint" xml:space="preserve"><value>Niektóre gry mają własny tryb bezramek i mogą nie działać z tą opcją. W takim przypadku wyłącz ją.</value></data>
   <data name="ToggleAlwaysOnTop" xml:space="preserve"><value>Zawsze na wierzchu</value></data>
   <data name="ToggleExpandToScreen" xml:space="preserve"><value>Maks. / pełny ekran</value></data>
   <data name="ToggleCustomDimension" xml:space="preserve"><value>Własny rozmiar</value></data>

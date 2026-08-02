@@ -68,6 +68,7 @@
   <data name="ExecutableNameLabel" xml:space="preserve"><value>Nome do exe</value></data>
   <data name="ExecutableNamePlaceholder" xml:space="preserve"><value>ex. cs2.exe</value></data>
   <data name="ToggleBorderless" xml:space="preserve"><value>Janela sem bordas</value></data>
+  <data name="ToggleBorderlessHint" xml:space="preserve"><value>Alguns jogos já implementam o próprio modo sem margens e podem não funcionar com esta opção. Se isso acontecer, desative-a.</value></data>
   <data name="ToggleAlwaysOnTop" xml:space="preserve"><value>Sempre no topo</value></data>
   <data name="ToggleExpandToScreen" xml:space="preserve"><value>Máx. / ecrã completo</value></data>
   <data name="ToggleCustomDimension" xml:space="preserve"><value>Tamanho personalizado</value></data>

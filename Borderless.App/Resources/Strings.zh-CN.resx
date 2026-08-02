@@ -68,6 +68,7 @@
   <data name="ExecutableNameLabel" xml:space="preserve"><value>可执行文件名</value></data>
   <data name="ExecutableNamePlaceholder" xml:space="preserve"><value>例如 cs2.exe</value></data>
   <data name="ToggleBorderless" xml:space="preserve"><value>无边框窗口</value></data>
+  <data name="ToggleBorderlessHint" xml:space="preserve"><value>部分游戏已自带无边框实现，可能导致此选项无效。若出现问题，请关闭此选项。</value></data>
   <data name="ToggleAlwaysOnTop" xml:space="preserve"><value>始终置顶</value></data>
   <data name="ToggleExpandToScreen" xml:space="preserve"><value>最大 / 铺满屏幕</value></data>
   <data name="ToggleCustomDimension" xml:space="preserve"><value>自定义尺寸</value></data>

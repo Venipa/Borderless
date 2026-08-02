@@ -68,6 +68,7 @@
   <data name="ExecutableNameLabel" xml:space="preserve"><value>Nombre del exe</value></data>
   <data name="ExecutableNamePlaceholder" xml:space="preserve"><value>p. ej. cs2.exe</value></data>
   <data name="ToggleBorderless" xml:space="preserve"><value>Ventana sin bordes</value></data>
+  <data name="ToggleBorderlessHint" xml:space="preserve"><value>Algunos juegos ya implementan su propio modo sin bordes y pueden no funcionar con esta opción. Si ocurre, desactívala.</value></data>
   <data name="ToggleAlwaysOnTop" xml:space="preserve"><value>Siempre encima</value></data>
   <data name="ToggleExpandToScreen" xml:space="preserve"><value>Máx. / pantalla completa</value></data>
   <data name="ToggleCustomDimension" xml:space="preserve"><value>Tamaño personalizado</value></data>
