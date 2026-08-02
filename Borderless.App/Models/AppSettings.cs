@@ -49,6 +49,13 @@ public sealed class AppSettings
 
     /// <summary>When true, apply updates immediately without asking.</summary>
     public bool AutoUpdateWithoutConfirmation { get; set; }
+
+    /// <summary>
+    /// When true (default), show the update dialog when a new version is found.
+    /// When false, only the sidebar update hint is shown.
+    /// Nullable so older settings.json without the key still default to on.
+    /// </summary>
+    public bool? ShowUpdateDialog { get; set; }
 }
 
 public enum AppSection

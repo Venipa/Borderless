@@ -113,6 +113,10 @@
   <data name="SettingsCloseToTray" xml:space="preserve"><value>關閉到系統匣</value></data>
   <data name="SettingsUpdaterGroup" xml:space="preserve"><value>更新</value></data>
   <data name="SettingsEnableUpdater" xml:space="preserve"><value>啟用更新程式</value></data>
+  <data name="SettingsShowUpdateDialog" xml:space="preserve"><value>發現新版本時顯示更新對話框</value></data>
+  <data name="SettingsShowUpdateDialogHint" xml:space="preserve"><value>關閉後僅顯示側欄提醒。</value></data>
+  <data name="UpdateHintLabelFormat" xml:space="preserve"><value>更新 {0}</value></data>
+  <data name="UpdateHintSubtitle" xml:space="preserve"><value>有可用更新</value></data>
   <data name="SettingsAutoUpdate" xml:space="preserve"><value>發現更新立即安裝（不詢問）</value></data>
   <data name="SettingsCheckUpdates" xml:space="preserve"><value>檢查更新</value></data>
   <data name="SettingsCheckUpdatesButton" xml:space="preserve"><value>立即檢查</value></data>

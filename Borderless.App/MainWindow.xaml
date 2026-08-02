@@ -1,73 +1,89 @@
-﻿<ui:FluentWindow x:Class="Borderless.App.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-        xmlns:tray="http://schemas.lepo.co/wpfui/2022/xaml/tray"
-        xmlns:loc="clr-namespace:Borderless.App.Localization"
-        xmlns:views="clr-namespace:Borderless.App.Views"
-        mc:Ignorable="d"
-        Title="{loc:Loc AppTitle}"
-        Icon="pack://application:,,,/Resources/Iconx256.png"
-        Width="1024"
-        Height="680"
-        MinWidth="800"
-        MinHeight="520"
-        ExtendsContentIntoTitleBar="True"
-        WindowBackdropType="Mica"
-        WindowCornerPreference="Round"
-        Closing="OnWindowClosing">
+﻿<ui:FluentWindow
+    Closing="OnWindowClosing"
+    ExtendsContentIntoTitleBar="True"
+    Height="680"
+    Icon="pack://application:,,,/Resources/Iconx256.png"
+    MinHeight="520"
+    MinWidth="800"
+    Title="{loc:Loc AppTitle}"
+    Width="1024"
+    WindowBackdropType="Mica"
+    WindowCornerPreference="Round"
+    mc:Ignorable="d"
+    x:Class="Borderless.App.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:loc="clr-namespace:Borderless.App.Localization"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:tray="http://schemas.lepo.co/wpfui/2022/xaml/tray"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:views="clr-namespace:Borderless.App.Views"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </Window.Resources>
 
     <Grid>
-        <tray:NotifyIcon x:Name="AppTrayIcon"
-                         TooltipText="{loc:Loc AppTitle}"
-                         Icon="pack://application:,,,/Resources/Iconx24.png"
-                         FocusOnLeftClick="False"
-                         MenuOnRightClick="True"
-                         LeftClick="OnTrayLeftClick">
+        <tray:NotifyIcon
+            FocusOnLeftClick="False"
+            Icon="pack://application:,,,/Resources/Iconx24.png"
+            LeftClick="OnTrayLeftClick"
+            MenuOnRightClick="True"
+            TooltipText="{loc:Loc AppTitle}"
+            x:Name="AppTrayIcon">
             <tray:NotifyIcon.Menu>
                 <ContextMenu Opened="OnTrayMenuOpened">
-                    <MenuItem x:Name="TrayToggleMenuItem"
-                              Click="OnTrayToggleClick" />
+                    <MenuItem Click="OnTrayToggleClick" x:Name="TrayToggleMenuItem" />
                     <Separator />
-                    <MenuItem Header="{loc:Loc TrayQuit}"
-                              Click="OnTrayQuitClick" />
+                    <MenuItem Click="OnTrayQuitClick" Header="{loc:Loc TrayQuit}" />
                 </ContextMenu>
             </tray:NotifyIcon.Menu>
         </tray:NotifyIcon>
 
-        <ui:NavigationView x:Name="RootNavigation"
-                           PaneDisplayMode="Left"
-                           IsBackButtonVisible="Collapsed"
-                           IsPaneToggleVisible="True"
-                           IsTopSeparatorVisible="False"
-                           IsFooterSeparatorVisible="False"
-                           OpenPaneLength="220"
-                           CompactPaneLength="40"
-                           PaneTitle=""
-                           TitleBar="{Binding ElementName=TitleBar}"
-                           FrameMargin="0"
-                           TransitionDuration="0"
-                           Navigated="OnNavigated"
-                           PaneOpened="OnPaneOpened"
-                           PaneClosed="OnPaneClosed"
-                           Loaded="OnNavigationLoaded">
+        <ui:NavigationView
+            CompactPaneLength="40"
+            FrameMargin="0"
+            IsBackButtonVisible="Collapsed"
+            IsFooterSeparatorVisible="False"
+            IsPaneToggleVisible="True"
+            IsTopSeparatorVisible="False"
+            Loaded="OnNavigationLoaded"
+            Navigated="OnNavigated"
+            OpenPaneLength="220"
+            PaneClosed="OnPaneClosed"
+            PaneDisplayMode="Left"
+            PaneOpened="OnPaneOpened"
+            PaneTitle=""
+            TitleBar="{Binding ElementName=TitleBar}"
+            TransitionDuration="0"
+            x:Name="RootNavigation">
             <ui:NavigationView.Resources>
                 <Style TargetType="ui:NavigationViewItemSeparator">
-                    <Setter Property="Height" Value="1" />
-                    <Setter Property="Margin" Value="12,8" />
-                    <Setter Property="Opacity" Value="1" />
-                    <Setter Property="Background" Value="{DynamicResource ControlStrokeColorDefaultBrush}" />
-                    <Setter Property="BorderBrush" Value="{DynamicResource ControlStrokeColorDefaultBrush}" />
-                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="Background" Value="Transparent" />
+                    <!--  1px top border only — keep vertical margin tight.  -->
+                    <Setter Property="BorderBrush" Value="{DynamicResource DividerStrokeColorDefaultBrush}" />
+                    <Setter Property="BorderThickness" Value="0,1,0,0" />
+                    <Setter Property="Margin" Value="4,4" />
+                    <Setter Property="Padding" Value="0" />
+                    <Setter Property="MinHeight" Value="0" />
+                    <Setter Property="Height" Value="Auto" />
+                    <Setter Property="HorizontalAlignment" Value="Stretch" />
+                    <Setter Property="SnapsToDevicePixels" Value="True" />
+                    <Setter Property="Focusable" Value="False" />
+                    <Setter Property="IsTabStop" Value="False" />
+                    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                    <Setter Property="OverridesDefaultStyle" Value="True" />
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="ui:NavigationViewItemSeparator">
-                                <Border Height="{TemplateBinding Height}"
-                                        Margin="{TemplateBinding Margin}"
-                                        Background="{TemplateBinding Background}"
-                                        SnapsToDevicePixels="True" />
+                                <Border
+                                    Background="Transparent"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="0,1,0,0"
+                                    HorizontalAlignment="Stretch"
+                                    Margin="{TemplateBinding Margin}"
+                                    SnapsToDevicePixels="True" />
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
@@ -75,66 +91,97 @@
             </ui:NavigationView.Resources>
 
             <!--
-              Own content host over NavigationView's built-in presenter.
-              Pages are moved here after Navigate so DynamicScrollViewer never owns them.
+                Own content host over NavigationView's built-in presenter.
+                Pages are moved here after Navigate so DynamicScrollViewer never owns them.
             -->
             <ui:NavigationView.ContentOverlay>
-                <ContentControl x:Name="ContentHost"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Stretch"
-                                HorizontalContentAlignment="Stretch"
-                                VerticalContentAlignment="Stretch"
-                                Background="{DynamicResource NavigationViewContentBackground}"
-                                Focusable="False"
-                                IsTabStop="False"
-                                FocusVisualStyle="{x:Null}" />
+                <ContentControl
+                    Background="{DynamicResource NavigationViewContentBackground}"
+                    FocusVisualStyle="{x:Null}"
+                    Focusable="False"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Stretch"
+                    IsTabStop="False"
+                    VerticalAlignment="Stretch"
+                    VerticalContentAlignment="Stretch"
+                    x:Name="ContentHost" />
             </ui:NavigationView.ContentOverlay>
 
             <ui:NavigationView.MenuItems>
-                <ui:NavigationViewItem Content="{loc:Loc NavRules}"
-                                       Icon="{ui:SymbolIcon DesktopPulse24}"
-                                       TargetPageType="{x:Type views:RulesPage}" />
-                <ui:NavigationViewItem Content="{loc:Loc NavDefaults}"
-                                       Icon="{ui:SymbolIcon Options24}"
-                                       TargetPageType="{x:Type views:DefaultsPage}" />
+                <ui:NavigationViewItem
+                    Content="{loc:Loc NavRules}"
+                    Icon="{ui:SymbolIcon DesktopPulse24}"
+                    TargetPageType="{x:Type views:RulesPage}" />
+                <ui:NavigationViewItem
+                    Content="{loc:Loc NavDefaults}"
+                    Icon="{ui:SymbolIcon Options24}"
+                    TargetPageType="{x:Type views:DefaultsPage}" />
             </ui:NavigationView.MenuItems>
             <ui:NavigationView.FooterMenuItems>
+                <ui:NavigationViewItem
+                    Icon="{ui:SymbolIcon ArrowDownload24}"
+                    PreviewMouseLeftButtonUp="OnUpdateHintClick"
+                    Tag="UpdateHint"
+                    ToolTip="{Binding Settings.UpdateHintToolTip}"
+                    Visibility="{Binding Settings.ShowUpdateHint, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    x:Name="UpdateHintItem">
+                    <ui:NavigationViewItem.Content>
+                        <StackPanel Margin="0,4" VerticalAlignment="Center">
+                            <ui:TextBlock
+                                Appearance="Primary"
+                                FontTypography="Body"
+                                Text="{Binding Settings.UpdateHintLabel}"
+                                TextTrimming="CharacterEllipsis" />
+                            <ui:TextBlock
+                                Appearance="Secondary"
+                                FontTypography="Caption"
+                                Margin="0,1,0,0"
+                                Text="{loc:Loc UpdateHintSubtitle}"
+                                TextTrimming="CharacterEllipsis" />
+                        </StackPanel>
+                    </ui:NavigationViewItem.Content>
+                </ui:NavigationViewItem>
                 <ui:NavigationViewItemSeparator />
-                <ui:NavigationViewItem Content="{loc:Loc NavSettings}"
-                                       Icon="{ui:SymbolIcon Settings24}"
-                                       TargetPageType="{x:Type views:SettingsPage}" />
+                <ui:NavigationViewItem
+                    Content="{loc:Loc NavSettings}"
+                    Icon="{ui:SymbolIcon Settings24}"
+                    TargetPageType="{x:Type views:SettingsPage}" />
             </ui:NavigationView.FooterMenuItems>
         </ui:NavigationView>
 
-        <!-- Overlay caption buttons only -->
-        <ui:TitleBar x:Name="TitleBar"
-                     Title=""
-                     ShowMaximize="True"
-                     ShowMinimize="True"
-                     ShowClose="True"
-                     Background="Transparent"
-                     Height="48"
-                     MinHeight="48"
-                     VerticalAlignment="Top"
-                     Panel.ZIndex="100" />
+        <!--  Overlay caption buttons only  -->
+        <ui:TitleBar
+            Background="Transparent"
+            Height="48"
+            MinHeight="48"
+            Panel.ZIndex="100"
+            ShowClose="True"
+            ShowMaximize="True"
+            ShowMinimize="True"
+            Title=""
+            VerticalAlignment="Top"
+            x:Name="TitleBar" />
 
-        <Grid x:Name="EditorOverlay"
-              Panel.ZIndex="200"
-              Visibility="Collapsed">
-            <Border x:Name="EditorScrim"
-                    Background="#99000000"
-                    IsHitTestVisible="True"
-                    MouseLeftButtonDown="OnEditorScrimClick" />
+        <Grid
+            Panel.ZIndex="200"
+            Visibility="Collapsed"
+            x:Name="EditorOverlay">
+            <Border
+                Background="#99000000"
+                IsHitTestVisible="True"
+                MouseLeftButtonDown="OnEditorScrimClick"
+                x:Name="EditorScrim" />
 
-            <Border x:Name="EditorSidebarHost"
-                    Width="640"
-                    HorizontalAlignment="Right"
-                    Background="{DynamicResource ApplicationBackgroundBrush}"
-                    BorderBrush="{DynamicResource ControlElevationBorderBrush}"
-                    BorderThickness="1,0,0,0"
-                    IsHitTestVisible="True">
+            <Border
+                Background="{DynamicResource ApplicationBackgroundBrush}"
+                BorderBrush="{DynamicResource ControlElevationBorderBrush}"
+                BorderThickness="1,0,0,0"
+                HorizontalAlignment="Right"
+                IsHitTestVisible="True"
+                Width="640"
+                x:Name="EditorSidebarHost">
                 <Border.RenderTransform>
-                    <TranslateTransform x:Name="EditorSidebarTransform" X="640" />
+                    <TranslateTransform X="640" x:Name="EditorSidebarTransform" />
                 </Border.RenderTransform>
                 <views:RuleEditorSidebar DataContext="{Binding Editor}" />
             </Border>

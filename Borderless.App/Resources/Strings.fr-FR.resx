@@ -113,6 +113,10 @@
   <data name="SettingsCloseToTray" xml:space="preserve"><value>Réduire dans la zone</value></data>
   <data name="SettingsUpdaterGroup" xml:space="preserve"><value>Mises à jour</value></data>
   <data name="SettingsEnableUpdater" xml:space="preserve"><value>Activer l'updater</value></data>
+  <data name="SettingsShowUpdateDialog" xml:space="preserve"><value>Afficher la boîte de dialogue de mise à jour</value></data>
+  <data name="SettingsShowUpdateDialogHint" xml:space="preserve"><value>Si désactivé, seul le rappel de la barre latérale s'affiche.</value></data>
+  <data name="UpdateHintLabelFormat" xml:space="preserve"><value>Maj {0}</value></data>
+  <data name="UpdateHintSubtitle" xml:space="preserve"><value>Mise à jour dispo</value></data>
   <data name="SettingsAutoUpdate" xml:space="preserve"><value>Installer dès qu'une maj est trouvée (sans demander)</value></data>
   <data name="SettingsCheckUpdates" xml:space="preserve"><value>Vérifier les maj</value></data>
   <data name="SettingsCheckUpdatesButton" xml:space="preserve"><value>Vérifier</value></data>

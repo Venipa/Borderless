@@ -113,6 +113,10 @@
   <data name="SettingsCloseToTray" xml:space="preserve"><value>Fechar para o tabuleiro</value></data>
   <data name="SettingsUpdaterGroup" xml:space="preserve"><value>Atualizador</value></data>
   <data name="SettingsEnableUpdater" xml:space="preserve"><value>Ativar atualizador</value></data>
+  <data name="SettingsShowUpdateDialog" xml:space="preserve"><value>Mostrar diálogo de update ao encontrar nova versão</value></data>
+  <data name="SettingsShowUpdateDialogHint" xml:space="preserve"><value>Se desligado, só aparece o aviso na barra lateral.</value></data>
+  <data name="UpdateHintLabelFormat" xml:space="preserve"><value>Update {0}</value></data>
+  <data name="UpdateHintSubtitle" xml:space="preserve"><value>Update disponível</value></data>
   <data name="SettingsAutoUpdate" xml:space="preserve"><value>Instalar update ao detetar (sem perguntar)</value></data>
   <data name="SettingsCheckUpdates" xml:space="preserve"><value>Procurar atualizações</value></data>
   <data name="SettingsCheckUpdatesButton" xml:space="preserve"><value>Verificar</value></data>

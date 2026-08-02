@@ -69,11 +69,26 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
     [ObservableProperty]
     private bool _autoUpdateWithoutConfirmation;
 
+    /// <summary>Show modal update dialog when a new version is found (default on).</summary>
+    [ObservableProperty]
+    private bool _showUpdateDialog = true;
+
     [ObservableProperty]
     private bool _isCheckingForUpdates;
 
     [ObservableProperty]
     private string _updateStatusMessage = string.Empty;
+
+    [ObservableProperty]
+    private bool _showUpdateHint;
+
+    [ObservableProperty]
+    private string _updateHintLabel = string.Empty;
+
+    [ObservableProperty]
+    private string _updateHintToolTip = string.Empty;
+
+    private UpdateCheckResult? _pendingUpdate;
 
     public string AppVersionText =>
         string.Format(Loc.Get("AboutVersionFormat"), AppMetadata.GetLocalVersionString());
@@ -116,6 +131,7 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
         SelectedLanguage = LanguageManager.FindOption(settings.UiLanguage);
         UpdaterEnabled = settings.UpdaterEnabled;
         AutoUpdateWithoutConfirmation = settings.AutoUpdateWithoutConfirmation;
+        ShowUpdateDialog = settings.ShowUpdateDialog ?? true;
         _suppressSave = false;
 
         _startup.Apply(StartOnStartup);
@@ -159,6 +175,7 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
         OnPropertyChanged(nameof(DefaultMatchConditionToolTip));
         OnPropertyChanged(nameof(AppVersionText));
         OnPropertyChanged(nameof(AppAuthorText));
+        RefreshUpdateHintTexts();
         if (!IsCheckingForUpdates)
         {
             UpdateStatusMessage = Loc.Get("UpdateStatusIdle");
@@ -202,6 +219,20 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
 
     [RelayCommand]
     private Task CheckForUpdatesAsync() => RunUpdateCheckAsync(interactive: true);
+
+    /// <summary>Opens the update dialog for a previously detected pending update.</summary>
+    public Task ShowPendingUpdateDialogAsync()
+    {
+        if (_pendingUpdate is null || !_pendingUpdate.IsUpdateAvailable)
+        {
+            return Task.CompletedTask;
+        }
+
+        return PromptAndHandleUpdateAsync(_pendingUpdate, CancellationToken.None);
+    }
+
+    [RelayCommand]
+    private Task OpenPendingUpdateDialogAsync() => ShowPendingUpdateDialogAsync();
 
     [RelayCommand]
     private void OpenRepository()
@@ -256,6 +287,8 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
 
         if (!string.IsNullOrWhiteSpace(result.ErrorMessage) || !result.IsUpdateAvailable)
         {
+            await UiDispatch.InvokeAsync(ClearPendingUpdate).ConfigureAwait(false);
+
             if (interactive && !string.IsNullOrWhiteSpace(result.ErrorMessage))
             {
                 await UiDispatch.InvokeAsync(() =>
@@ -269,29 +302,46 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
             return;
         }
 
-        var shouldApply = AutoUpdateWithoutConfirmation;
-        var promptResult = UpdatePromptResult.Cancel;
+        await UiDispatch.InvokeAsync(() => SetPendingUpdate(result)).ConfigureAwait(false);
 
-        if (shouldApply)
+        if (AutoUpdateWithoutConfirmation)
         {
-            promptResult = UpdatePromptResult.DownloadNow;
+            await HandleUpdatePromptAsync(result, UpdatePromptResult.DownloadNow, token).ConfigureAwait(false);
+            return;
         }
-        else
+
+        // Interactive check always opens the dialog; startup/background respects the setting.
+        if (!interactive && !ShowUpdateDialog)
         {
-            promptResult = await UiDispatch.InvokeAsync(() =>
+            return;
+        }
+
+        await PromptAndHandleUpdateAsync(result, token).ConfigureAwait(false);
+    }
+
+    private async Task PromptAndHandleUpdateAsync(UpdateCheckResult result, CancellationToken cancellationToken)
+    {
+        var promptResult = await UiDispatch.InvokeAsync(() =>
+        {
+            var owner = Application.Current.MainWindow;
+            var window = new UpdateAvailableWindow(result);
+            if (owner is { IsLoaded: true })
             {
-                var owner = Application.Current.MainWindow;
-                var window = new UpdateAvailableWindow(result);
-                if (owner is { IsLoaded: true })
-                {
-                    window.Owner = owner;
-                }
+                window.Owner = owner;
+            }
 
-                _ = window.ShowDialog();
-                return window.Result;
-            }).ConfigureAwait(false);
-        }
+            _ = window.ShowDialog();
+            return window.Result;
+        }).ConfigureAwait(false);
 
+        await HandleUpdatePromptAsync(result, promptResult, cancellationToken).ConfigureAwait(false);
+    }
+
+    private async Task HandleUpdatePromptAsync(
+        UpdateCheckResult result,
+        UpdatePromptResult promptResult,
+        CancellationToken token)
+    {
         if (promptResult == UpdatePromptResult.Cancel)
         {
             return;
@@ -304,6 +354,7 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
 
             if (promptResult == UpdatePromptResult.DownloadNow)
             {
+                await UiDispatch.InvokeAsync(ClearPendingUpdate).ConfigureAwait(false);
                 await _updater.ApplyUpdateAsync(result, token).ConfigureAwait(false);
                 return;
             }
@@ -311,7 +362,10 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
             var path = await _updater.DownloadUpdateAsync(result, token).ConfigureAwait(false);
             _updater.ScheduleInstallOnExit(path);
             await UiDispatch.InvokeAsync(() =>
-                UpdateStatusMessage = Loc.Get("UpdateQueuedForExit")).ConfigureAwait(false);
+            {
+                ClearPendingUpdate();
+                UpdateStatusMessage = Loc.Get("UpdateQueuedForExit");
+            }).ConfigureAwait(false);
         }
         catch (Exception ex)
         {
@@ -325,6 +379,34 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
                     MessageBoxImage.Error);
             }).ConfigureAwait(false);
         }
+    }
+
+    private void SetPendingUpdate(UpdateCheckResult result)
+    {
+        _pendingUpdate = result;
+        ShowUpdateHint = true;
+        RefreshUpdateHintTexts();
+    }
+
+    private void ClearPendingUpdate()
+    {
+        _pendingUpdate = null;
+        ShowUpdateHint = false;
+        UpdateHintLabel = string.Empty;
+        UpdateHintToolTip = string.Empty;
+    }
+
+    private void RefreshUpdateHintTexts()
+    {
+        if (_pendingUpdate?.RemoteVersion is null)
+        {
+            return;
+        }
+
+        var remote = _pendingUpdate.RemoteVersion.ToString();
+        var local = _pendingUpdate.LocalVersion.ToString();
+        UpdateHintLabel = string.Format(Loc.Get("UpdateHintLabelFormat"), remote);
+        UpdateHintToolTip = string.Format(Loc.Get("UpdateAvailableFormat"), remote, local);
     }
 
     partial void OnDefaultIsBorderlessChanged(bool value) => ScheduleSave();
@@ -370,10 +452,17 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
             _suppressSave = false;
         }
 
+        if (!value)
+        {
+            ClearPendingUpdate();
+        }
+
         ScheduleSave();
     }
 
     partial void OnAutoUpdateWithoutConfirmationChanged(bool value) => ScheduleSave();
+
+    partial void OnShowUpdateDialogChanged(bool value) => ScheduleSave();
 
     private void ScheduleSave()
     {
@@ -441,6 +530,7 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
         CloseToTray = CloseToTray,
         UiLanguage = SelectedLanguage?.Code ?? LanguageManager.SystemCode,
         UpdaterEnabled = UpdaterEnabled,
-        AutoUpdateWithoutConfirmation = AutoUpdateWithoutConfirmation
+        AutoUpdateWithoutConfirmation = AutoUpdateWithoutConfirmation,
+        ShowUpdateDialog = ShowUpdateDialog
     };
 }

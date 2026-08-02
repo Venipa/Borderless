@@ -83,6 +83,10 @@
                 <StackPanel>
                     <controls:ToggleOptionRow Label="{loc:Loc SettingsEnableUpdater}"
                                               IsChecked="{Binding Settings.UpdaterEnabled}" />
+                    <controls:ToggleOptionRow Label="{loc:Loc SettingsShowUpdateDialog}"
+                                              Description="{loc:Loc SettingsShowUpdateDialogHint}"
+                                              IsChecked="{Binding Settings.ShowUpdateDialog}"
+                                              IsEnabled="{Binding Settings.UpdaterEnabled}" />
                     <controls:ToggleOptionRow Label="{loc:Loc SettingsAutoUpdate}"
                                               IsChecked="{Binding Settings.AutoUpdateWithoutConfirmation}"
                                               IsEnabled="{Binding Settings.UpdaterEnabled}"

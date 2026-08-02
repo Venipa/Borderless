@@ -113,6 +113,10 @@
   <data name="SettingsCloseToTray" xml:space="preserve"><value>トレイに閉じる</value></data>
   <data name="SettingsUpdaterGroup" xml:space="preserve"><value>更新</value></data>
   <data name="SettingsEnableUpdater" xml:space="preserve"><value>アップデータを有効</value></data>
+  <data name="SettingsShowUpdateDialog" xml:space="preserve"><value>新しいバージョンが見つかったら更新ダイアログを表示</value></data>
+  <data name="SettingsShowUpdateDialogHint" xml:space="preserve"><value>オフの場合、サイドバーの通知のみ表示されます。</value></data>
+  <data name="UpdateHintLabelFormat" xml:space="preserve"><value>更新 {0}</value></data>
+  <data name="UpdateHintSubtitle" xml:space="preserve"><value>アップデートあり</value></data>
   <data name="SettingsAutoUpdate" xml:space="preserve"><value>見つかったら確認なしで更新</value></data>
   <data name="SettingsCheckUpdates" xml:space="preserve"><value>更新を確認</value></data>
   <data name="SettingsCheckUpdatesButton" xml:space="preserve"><value>今すぐ確認</value></data>

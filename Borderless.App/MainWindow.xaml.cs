@@ -179,6 +179,12 @@ public partial class MainWindow : FluentWindow
         });
     }
 
+    private async void OnUpdateHintClick(object sender, MouseButtonEventArgs e)
+    {
+        e.Handled = true;
+        await ViewModel.Settings.ShowPendingUpdateDialogAsync();
+    }
+
     private void AdoptPageIntoContentHost(object? page)
     {
         if (page is not FrameworkElement element)

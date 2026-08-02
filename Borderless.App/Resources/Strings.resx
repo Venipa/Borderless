@@ -113,6 +113,8 @@
   <data name="SettingsCloseToTray" xml:space="preserve"><value>Close to tray</value></data>
   <data name="SettingsUpdaterGroup" xml:space="preserve"><value>Updater</value></data>
   <data name="SettingsEnableUpdater" xml:space="preserve"><value>Enable updater</value></data>
+  <data name="SettingsShowUpdateDialog" xml:space="preserve"><value>Show update dialog when a new version is found</value></data>
+  <data name="SettingsShowUpdateDialogHint" xml:space="preserve"><value>When off, only the sidebar reminder is shown.</value></data>
   <data name="SettingsAutoUpdate" xml:space="preserve"><value>Update as soon as a new update is found (without user confirmation)</value></data>
   <data name="SettingsCheckUpdates" xml:space="preserve"><value>Check for updates</value></data>
   <data name="SettingsCheckUpdatesButton" xml:space="preserve"><value>Check now</value></data>
@@ -123,6 +125,8 @@
   <data name="UpdateChecking" xml:space="preserve"><value>Checking GitHub releases…</value></data>
   <data name="UpdateNoneAvailable" xml:space="preserve"><value>You are up to date.</value></data>
   <data name="UpdateAvailableFormat" xml:space="preserve"><value>Update {0} available (current {1}).</value></data>
+  <data name="UpdateHintLabelFormat" xml:space="preserve"><value>Update {0}</value></data>
+  <data name="UpdateHintSubtitle" xml:space="preserve"><value>Update available</value></data>
   <data name="UpdateConfirmFormat" xml:space="preserve"><value>Version {0} is available (you have {1}). Download and install now?</value></data>
   <data name="UpdateDownloading" xml:space="preserve"><value>Downloading update…</value></data>
   <data name="UpdateCheckFailed" xml:space="preserve"><value>Could not read the latest release.</value></data>

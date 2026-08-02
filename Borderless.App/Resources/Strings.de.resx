@@ -113,6 +113,10 @@
   <data name="SettingsCloseToTray" xml:space="preserve"><value>In den Infobereich schließen</value></data>
   <data name="SettingsUpdaterGroup" xml:space="preserve"><value>Updater</value></data>
   <data name="SettingsEnableUpdater" xml:space="preserve"><value>Updater aktivieren</value></data>
+  <data name="SettingsShowUpdateDialog" xml:space="preserve"><value>Update-Dialog anzeigen, wenn neue Version gefunden</value></data>
+  <data name="SettingsShowUpdateDialogHint" xml:space="preserve"><value>Wenn aus: nur die Sidebar-Erinnerung wird gezeigt.</value></data>
+  <data name="UpdateHintLabelFormat" xml:space="preserve"><value>Update {0}</value></data>
+  <data name="UpdateHintSubtitle" xml:space="preserve"><value>Update verfügbar</value></data>
   <data name="SettingsAutoUpdate" xml:space="preserve"><value>Update sofort installieren, sobald eines gefunden wird (ohne Nachfrage)</value></data>
   <data name="SettingsCheckUpdates" xml:space="preserve"><value>Nach Updates suchen</value></data>
   <data name="SettingsCheckUpdatesButton" xml:space="preserve"><value>Jetzt prüfen</value></data>
