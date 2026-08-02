@@ -8,7 +8,7 @@
 
 Windows utility that forces apps into borderless windowed mode. Match by window title and/or executable name, then keep the styles applied.
 
-<img width="1024" height="680" alt="image" src="https://github.com/user-attachments/assets/372676ed-3948-4474-b16a-c28e97c67d8d" />
+<img width="1024" height="680" alt="image" src="https://github.com/user-attachments/assets/f8e2bbff-0719-4fe7-838a-553e028f429a" />
 
 
 ## Features
