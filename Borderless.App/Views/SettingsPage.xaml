@@ -40,9 +40,9 @@
 
             <Border Style="{StaticResource OutlinedGroupCard}">
                 <StackPanel>
-                    <controls:ToggleOptionRow Label="{loc:Loc SettingsStartOnStartup}"
+                    <controls:SwitchOptionRow Title="{loc:Loc SettingsStartOnStartup}"
                                               IsChecked="{Binding Settings.StartOnStartup}" />
-                    <controls:ToggleOptionRow Label="{loc:Loc SettingsCloseToTray}"
+                    <controls:SwitchOptionRow Title="{loc:Loc SettingsCloseToTray}"
                                               IsChecked="{Binding Settings.CloseToTray}"
                                               Margin="0" />
                 </StackPanel>
@@ -81,13 +81,14 @@
 
             <Border Style="{StaticResource OutlinedGroupCard}">
                 <StackPanel>
-                    <controls:ToggleOptionRow Label="{loc:Loc SettingsEnableUpdater}"
+                    <controls:SwitchOptionRow Title="{loc:Loc SettingsEnableUpdater}"
                                               IsChecked="{Binding Settings.UpdaterEnabled}" />
-                    <controls:ToggleOptionRow Label="{loc:Loc SettingsShowUpdateDialog}"
-                                              Description="{loc:Loc SettingsShowUpdateDialogHint}"
+                    <controls:SwitchOptionRow Title="{loc:Loc SettingsShowUpdateDialog}"
+                                              InfoTooltipEnabled="True"
+                                              InfoTooltipContent="{loc:Loc SettingsShowUpdateDialogHint}"
                                               IsChecked="{Binding Settings.ShowUpdateDialog}"
                                               IsEnabled="{Binding Settings.UpdaterEnabled}" />
-                    <controls:ToggleOptionRow Label="{loc:Loc SettingsAutoUpdate}"
+                    <controls:SwitchOptionRow Title="{loc:Loc SettingsAutoUpdate}"
                                               IsChecked="{Binding Settings.AutoUpdateWithoutConfirmation}"
                                               IsEnabled="{Binding Settings.UpdaterEnabled}"
                                               Margin="0" />

@@ -1,0 +1,85 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                    xmlns:controls="clr-namespace:Borderless.App.Controls"
+                    xmlns:converters="clr-namespace:Borderless.App.Converters">
+
+    <BooleanToVisibilityConverter x:Key="SwitchOptionBoolToVis" />
+    <converters:NullOrEmptyToVisibilityConverter x:Key="SwitchOptionEmptyToVis" />
+
+    <Style TargetType="{x:Type controls:SwitchOptionRow}">
+        <Setter Property="Margin" Value="0,0,0,12" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:SwitchOptionRow}">
+                    <Border x:Name="PART_Root"
+                            Background="{TemplateBinding Background}"
+                            Padding="0"
+                            SnapsToDevicePixels="True">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0"
+                                        VerticalAlignment="Center"
+                                        Margin="0,0,12,0">
+                                <ui:TextBlock Text="{TemplateBinding Title}"
+                                              FontTypography="Body"
+                                              Appearance="Primary"
+                                              TextWrapping="Wrap" />
+                                <ui:TextBlock Text="{TemplateBinding Description}"
+                                              FontTypography="Caption"
+                                              Appearance="Secondary"
+                                              TextWrapping="Wrap"
+                                              Margin="0,2,0,0"
+                                              Visibility="{TemplateBinding Description, Converter={StaticResource SwitchOptionEmptyToVis}}" />
+                            </StackPanel>
+
+                            <Border x:Name="PART_InfoHit"
+                                    Grid.Column="1"
+                                    Width="28"
+                                    Height="28"
+                                    Margin="0,0,4,0"
+                                    VerticalAlignment="Center"
+                                    Background="Transparent"
+                                    Cursor="Help"
+                                    Visibility="{TemplateBinding InfoTooltipEnabled, Converter={StaticResource SwitchOptionBoolToVis}}">
+                                <Border.ToolTip>
+                                    <ToolTip Content="{TemplateBinding InfoTooltipContent}"
+                                             MaxWidth="320" />
+                                </Border.ToolTip>
+                                <ui:SymbolIcon Symbol="Info16"
+                                               FontSize="14"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center" />
+                            </Border>
+
+                            <ui:ToggleSwitch Grid.Column="2"
+                                             VerticalAlignment="Center"
+                                             IsChecked="{Binding IsChecked, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                             IsEnabled="{TemplateBinding IsEnabled}" />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Cursor" Value="Arrow" />
+                            <Setter Property="Opacity" Value="0.55" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="PART_Root" Property="Opacity" Value="0.92" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

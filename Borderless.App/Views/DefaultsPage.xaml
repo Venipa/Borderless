@@ -52,11 +52,11 @@
 
             <Border Style="{StaticResource OutlinedGroupCard}">
                 <StackPanel>
-                    <controls:ToggleOptionRow Label="{loc:Loc ToggleBorderless}"
+                    <controls:SwitchOptionRow Title="{loc:Loc ToggleBorderless}"
                                               IsChecked="{Binding Settings.DefaultIsBorderless}" />
-                    <controls:ToggleOptionRow Label="{loc:Loc ToggleAlwaysOnTop}"
+                    <controls:SwitchOptionRow Title="{loc:Loc ToggleAlwaysOnTop}"
                                               IsChecked="{Binding Settings.DefaultIsAlwaysOnTop}" />
-                    <controls:ToggleOptionRow Label="{loc:Loc ToggleExpandToScreen}"
+                    <controls:SwitchOptionRow Title="{loc:Loc ToggleExpandToScreen}"
                                               IsChecked="{Binding Settings.DefaultIsExpandToScreen}"
                                               Margin="0" />
                 </StackPanel>
@@ -69,13 +69,13 @@
 
             <Border Style="{StaticResource OutlinedGroupCard}">
                 <StackPanel>
-                    <controls:ToggleOptionRow Label="{loc:Loc ToggleLockCursor}"
+                    <controls:SwitchOptionRow Title="{loc:Loc ToggleLockCursor}"
                                               Description="{loc:Loc ToggleLockCursorHint}"
                                               IsChecked="{Binding Settings.DefaultLockCursor}" />
-                    <controls:ToggleOptionRow Label="{loc:Loc ToggleHideCursor}"
+                    <controls:SwitchOptionRow Title="{loc:Loc ToggleHideCursor}"
                                               Description="{loc:Loc ToggleHideCursorHint}"
                                               IsChecked="{Binding Settings.DefaultHideCursor}" />
-                    <controls:ToggleOptionRow Label="{loc:Loc ToggleRemoveGameMenus}"
+                    <controls:SwitchOptionRow Title="{loc:Loc ToggleRemoveGameMenus}"
                                               Description="{loc:Loc ToggleRemoveGameMenusHint}"
                                               IsChecked="{Binding Settings.DefaultRemoveGameMenus}"
                                               Margin="0" />
@@ -88,7 +88,7 @@
                           Margin="0,10,0,10" />
 
             <Border Style="{StaticResource OutlinedGroupCard}">
-                <controls:ToggleOptionRow Label="{loc:Loc ToggleMuteBackground}"
+                <controls:SwitchOptionRow Title="{loc:Loc ToggleMuteBackground}"
                                           IsChecked="{Binding Settings.DefaultMuteInBackground}"
                                           Margin="0" />
             </Border>
@@ -99,7 +99,7 @@
                           Margin="0,10,0,10" />
 
             <Border Style="{StaticResource OutlinedGroupCard}" Margin="0">
-                <controls:ToggleOptionRow Label="{loc:Loc ToggleRuleEnabled}"
+                <controls:SwitchOptionRow Title="{loc:Loc ToggleRuleEnabled}"
                                           IsChecked="{Binding Settings.DefaultIsEnabled}"
                                           Margin="0" />
             </Border>

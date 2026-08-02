@@ -161,14 +161,14 @@
                                           Margin="0,0,0,8" />
                             <Border Style="{StaticResource OutlinedGroupCard}" Margin="0,0,0,0">
                                 <StackPanel>
-                                    <controls:ToggleOptionRow Label="{loc:Loc ToggleBorderless}"
+                                    <controls:SwitchOptionRow Title="{loc:Loc ToggleBorderless}"
                                                               IsChecked="{Binding IsBorderless}" />
-                                    <controls:ToggleOptionRow Label="{loc:Loc ToggleAlwaysOnTop}"
+                                    <controls:SwitchOptionRow Title="{loc:Loc ToggleAlwaysOnTop}"
                                                               IsChecked="{Binding IsAlwaysOnTop}" />
-                                    <controls:ToggleOptionRow Label="{loc:Loc ToggleExpandToScreen}"
+                                    <controls:SwitchOptionRow Title="{loc:Loc ToggleExpandToScreen}"
                                                               IsChecked="{Binding IsExpandToScreen}"
                                                               IsEnabled="{Binding UseCustomDimension, Converter={StaticResource InverseBooleanConverter}}" />
-                                    <controls:ToggleOptionRow Label="{loc:Loc ToggleCustomDimension}"
+                                    <controls:SwitchOptionRow Title="{loc:Loc ToggleCustomDimension}"
                                                               IsChecked="{Binding UseCustomDimension}"
                                                               IsEnabled="{Binding IsExpandToScreen, Converter={StaticResource InverseBooleanConverter}}"
                                                               Margin="0" />
@@ -200,13 +200,13 @@
                                           Margin="0,0,0,8" />
                             <Border Style="{StaticResource OutlinedGroupCard}" Margin="0">
                                 <StackPanel>
-                                    <controls:ToggleOptionRow Label="{loc:Loc ToggleLockCursor}"
+                                    <controls:SwitchOptionRow Title="{loc:Loc ToggleLockCursor}"
                                                               Description="{loc:Loc ToggleLockCursorHint}"
                                                               IsChecked="{Binding LockCursor}" />
-                                    <controls:ToggleOptionRow Label="{loc:Loc ToggleHideCursor}"
+                                    <controls:SwitchOptionRow Title="{loc:Loc ToggleHideCursor}"
                                                               Description="{loc:Loc ToggleHideCursorHint}"
                                                               IsChecked="{Binding HideCursor}" />
-                                    <controls:ToggleOptionRow Label="{loc:Loc ToggleRemoveGameMenus}"
+                                    <controls:SwitchOptionRow Title="{loc:Loc ToggleRemoveGameMenus}"
                                                               Description="{loc:Loc ToggleRemoveGameMenusHint}"
                                                               IsChecked="{Binding RemoveGameMenus}"
                                                               Margin="0" />
@@ -222,7 +222,7 @@
                                           Appearance="Primary"
                                           Margin="0,0,0,8" />
                             <Border Style="{StaticResource OutlinedGroupCard}" Margin="0">
-                                <controls:ToggleOptionRow Label="{loc:Loc ToggleMuteBackground}"
+                                <controls:SwitchOptionRow Title="{loc:Loc ToggleMuteBackground}"
                                                           IsChecked="{Binding MuteInBackground}"
                                                           Margin="0" />
                             </Border>
