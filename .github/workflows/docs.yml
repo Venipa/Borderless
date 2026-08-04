@@ -40,7 +40,7 @@ jobs:
         run: bun run build:pages
         env:
           GITHUB_PAGES: "true"
-          NEXT_PUBLIC_BASE_PATH: "/Borderless"
+          NEXT_PUBLIC_BASE_PATH: "/"
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
