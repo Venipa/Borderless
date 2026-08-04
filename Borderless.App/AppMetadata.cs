@@ -31,6 +31,12 @@ public static class AppMetadata
 
     public static Version GetLocalVersion()
     {
+        var packageVersion = PackagedApp.TryGetPackageVersion();
+        if (packageVersion is not null)
+        {
+            return packageVersion;
+        }
+
         var fromFile = TryReadVersionFile();
         if (fromFile is not null)
         {

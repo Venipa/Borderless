@@ -89,8 +89,9 @@
                                               IsChecked="{Binding Settings.ShowUpdateDialog}"
                                               IsEnabled="{Binding Settings.UpdaterEnabled}" />
                     <controls:SwitchOptionRow Title="{loc:Loc SettingsAutoUpdate}"
+                                              Description="{Binding Settings.AutoUpdateDisabledHint}"
                                               IsChecked="{Binding Settings.AutoUpdateWithoutConfirmation}"
-                                              IsEnabled="{Binding Settings.UpdaterEnabled}"
+                                              IsEnabled="{Binding Settings.IsAutoUpdateSettingEnabled}"
                                               Margin="0" />
                 </StackPanel>
             </Border>

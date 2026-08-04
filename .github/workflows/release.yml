@@ -48,6 +48,7 @@ jobs:
           $common = @(
             "-c", "Release",
             "-r", "win-x64",
+            "-p:Distribution=GitHub",
             "-p:Version=$v",
             "-p:AssemblyVersion=$v",
             "-p:FileVersion=$v",
@@ -86,6 +87,7 @@ jobs:
             releasesApiUrl = $releasesApi
             releasesPageUrl = $releasesPage
             repositoryUrl = $repoUrl
+            distribution = "GitHub"
           } | ConvertTo-Json -Compress
 
           foreach ($dir in @("publish", "publish-bundled")) {
@@ -140,6 +142,50 @@ jobs:
           if (-not (Test-Path $setup)) { throw "Missing setup: $setup" }
           Get-Item $setup | Format-List Name, Length
 
+      - name: Build MSIX package
+        shell: pwsh
+        env:
+          MSIX_PFX_BASE64: ${{ secrets.MSIX_PFX_BASE64 }}
+          MSIX_PFX_PASSWORD: ${{ secrets.MSIX_PFX_PASSWORD }}
+          MSIX_PUBLISHER: ${{ secrets.MSIX_PUBLISHER }}
+          MSIX_PACKAGE_IDENTITY_NAME: ${{ secrets.MSIX_PACKAGE_IDENTITY_NAME }}
+          MSIX_PUBLISHER_DISPLAY_NAME: ${{ secrets.MSIX_PUBLISHER_DISPLAY_NAME }}
+        run: |
+          $v = "${{ steps.version.outputs.version }}"
+          $msix = "Borderless-$v-win-x64.msix"
+          $pfx = ""
+
+          foreach ($required in @("MSIX_PUBLISHER", "MSIX_PACKAGE_IDENTITY_NAME", "MSIX_PUBLISHER_DISPLAY_NAME")) {
+            if ([string]::IsNullOrWhiteSpace([Environment]::GetEnvironmentVariable($required))) {
+              throw "Missing GitHub Actions secret: $required"
+            }
+          }
+
+          if (-not [string]::IsNullOrWhiteSpace($env:MSIX_PFX_BASE64)) {
+            $pfx = Join-Path $env:RUNNER_TEMP "borderless-msix.pfx"
+            [IO.File]::WriteAllBytes($pfx, [Convert]::FromBase64String($env:MSIX_PFX_BASE64))
+          }
+
+          $args = @{
+            SourceDir            = "publish-bundled"
+            Version              = $v
+            OutFile              = $msix
+            PackageIdentityName  = $env:MSIX_PACKAGE_IDENTITY_NAME
+            Publisher            = $env:MSIX_PUBLISHER
+            PublisherDisplayName = $env:MSIX_PUBLISHER_DISPLAY_NAME
+          }
+          if ($pfx) {
+            $args.PfxPath = $pfx
+            $args.PfxPassword = $env:MSIX_PFX_PASSWORD
+          }
+
+          & .\installer\msix\Build-Msix.ps1 @args
+          if (-not (Test-Path $msix)) { throw "Missing MSIX: $msix" }
+
+          if ($pfx -and (Test-Path $pfx)) {
+            Remove-Item $pfx -Force
+          }
+
       - name: Build release notes from commits
         shell: pwsh
         run: |
@@ -179,6 +225,7 @@ jobs:
           $zip = "Borderless-$version-win-x64.zip"
           $zipBundled = "Borderless-$version-win-x64-bundled.zip"
           $setup = "Borderless-$version-win-x64-setup.exe"
+          $msix = "Borderless-$version-win-x64.msix"
 
           gh release create $tag `
             --draft `
@@ -187,5 +234,6 @@ jobs:
             $zip `
             $zipBundled `
             $setup `
+            $msix `
             VERSION `
             update.json

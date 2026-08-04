@@ -117,6 +117,7 @@
   <data name="SettingsShowUpdateDialog" xml:space="preserve"><value>Show update dialog when a new version is found</value></data>
   <data name="SettingsShowUpdateDialogHint" xml:space="preserve"><value>When off, only the sidebar reminder is shown.</value></data>
   <data name="SettingsAutoUpdate" xml:space="preserve"><value>Update as soon as a new update is found (without user confirmation)</value></data>
+  <data name="SettingsAutoUpdateStoreDisabledHint" xml:space="preserve"><value>Not available for Store builds. The Microsoft Store always confirms installs.</value></data>
   <data name="SettingsCheckUpdates" xml:space="preserve"><value>Check for updates</value></data>
   <data name="SettingsCheckUpdatesButton" xml:space="preserve"><value>Check now</value></data>
   <data name="SettingsAboutGroup" xml:space="preserve"><value>About</value></data>
@@ -133,7 +134,9 @@
   <data name="UpdateCheckFailed" xml:space="preserve"><value>Could not read the latest release.</value></data>
   <data name="UpdateCheckErrorFormat" xml:space="preserve"><value>Update check failed: {0}</value></data>
   <data name="UpdateApplyErrorFormat" xml:space="preserve"><value>Update install failed: {0}</value></data>
-  <data name="UpdateNoAsset" xml:space="preserve"><value>No downloadable setup/zip asset found on the release.</value></data>
+  <data name="UpdateNoAsset" xml:space="preserve"><value>No downloadable setup/zip/MSIX asset found on the release.</value></data>
+  <data name="UpdateStoreAvailable" xml:space="preserve"><value>A Store update is available.</value></data>
+  <data name="UpdateStoreNoDownload" xml:space="preserve"><value>Store builds update through the Microsoft Store, not a file download.</value></data>
   <data name="UpdateWindowTitle" xml:space="preserve"><value>Update available</value></data>
   <data name="UpdateWindowHeadline" xml:space="preserve"><value>A new version is ready</value></data>
   <data name="UpdateWindowVersionFormat" xml:space="preserve"><value>Version {0} · you have {1}</value></data>

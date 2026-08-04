@@ -130,7 +130,9 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
         CloseToTray = settings.CloseToTray;
         SelectedLanguage = LanguageManager.FindOption(settings.UiLanguage);
         UpdaterEnabled = settings.UpdaterEnabled;
-        AutoUpdateWithoutConfirmation = settings.AutoUpdateWithoutConfirmation;
+        // Store installs always go through Store UI — silent auto-update is GitHub/Inno only.
+        AutoUpdateWithoutConfirmation = AppDistribution.UsesGitHubUpdates
+            && settings.AutoUpdateWithoutConfirmation;
         ShowUpdateDialog = settings.ShowUpdateDialog ?? true;
         _suppressSave = false;
 
@@ -138,6 +140,16 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
         UpdateStatusMessage = Loc.Get("UpdateStatusIdle");
         Loc.Source.PropertyChanged += OnLocChanged;
     }
+
+    /// <summary>Silent auto-install without confirmation (GitHub/Inno only).</summary>
+    public bool IsAutoUpdateSettingEnabled =>
+        UpdaterEnabled && AppDistribution.UsesGitHubUpdates;
+
+    /// <summary>Muted hint under auto-update when Store channel disables it.</summary>
+    public string AutoUpdateDisabledHint =>
+        AppDistribution.UsesStoreUpdates
+            ? Loc.Get("SettingsAutoUpdateStoreDisabledHint")
+            : string.Empty;
 
     public RuleDefaults CreateRuleDefaults() => new()
     {
@@ -175,6 +187,7 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
         OnPropertyChanged(nameof(DefaultMatchConditionToolTip));
         OnPropertyChanged(nameof(AppVersionText));
         OnPropertyChanged(nameof(AppAuthorText));
+        OnPropertyChanged(nameof(AutoUpdateDisabledHint));
         RefreshUpdateHintTexts();
         if (!IsCheckingForUpdates)
         {
@@ -352,6 +365,13 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
             await UiDispatch.InvokeAsync(() =>
                 UpdateStatusMessage = Loc.Get("UpdateDownloading")).ConfigureAwait(false);
 
+            if (AppDistribution.UsesStoreUpdates)
+            {
+                await UiDispatch.InvokeAsync(ClearPendingUpdate).ConfigureAwait(false);
+                await _updater.ApplyUpdateAsync(result, token).ConfigureAwait(false);
+                return;
+            }
+
             if (promptResult == UpdatePromptResult.DownloadNow)
             {
                 await UiDispatch.InvokeAsync(ClearPendingUpdate).ConfigureAwait(false);
@@ -457,11 +477,22 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
             ClearPendingUpdate();
         }
 
+        OnPropertyChanged(nameof(IsAutoUpdateSettingEnabled));
         ScheduleSave();
     }
 
-    partial void OnAutoUpdateWithoutConfirmationChanged(bool value) => ScheduleSave();
+    partial void OnAutoUpdateWithoutConfirmationChanged(bool value)
+    {
+        if (value && AppDistribution.UsesStoreUpdates)
+        {
+            _suppressSave = true;
+            AutoUpdateWithoutConfirmation = false;
+            _suppressSave = false;
+            return;
+        }
 
+        ScheduleSave();
+    }
     partial void OnShowUpdateDialogChanged(bool value) => ScheduleSave();
 
     private void ScheduleSave()

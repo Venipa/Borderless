@@ -55,6 +55,7 @@ Source lives in [`docs/`](docs/) (Fumadocs + static GitHub Pages).
 | `*-win-x64-setup.exe` | Installer (needs Desktop Runtime) |
 | `*-win-x64.zip` | Portable, needs Desktop Runtime |
 | `*-win-x64-bundled.zip` | Portable, self-contained |
+| `*-win-x64.msix` | MSIX (self-contained). Unsigned unless CI signing secrets are set; sideload / trust publisher cert. |
 
 Run as admin so other windows can be restyled.
 
@@ -74,10 +75,16 @@ dotnet build Borderless.App/Borderless.App.csproj -c Release
 dotnet run --project Borderless.App/Borderless.App.csproj -c Release
 ```
 
-Publish (framework-dependent):
+Publish (framework-dependent, GitHub channel):
 
 ```bash
-dotnet publish Borderless.App/Borderless.App.csproj -c Release -r win-x64 --self-contained false -o publish
+dotnet publish Borderless.App/Borderless.App.csproj -c Release -r win-x64 --self-contained false -p:Distribution=GitHub -o publish
+```
+
+Store channel (Microsoft Store updates, no GitHub asset download):
+
+```bash
+dotnet publish Borderless.App/Borderless.App.csproj -c Release -r win-x64 --self-contained true -p:Distribution=Store -o publish-store
 ```
 
 Inno Setup:
@@ -86,13 +93,32 @@ Inno Setup:
 ISCC.exe /DMyAppVersion=1.0.0.0 /DMyAppSourceDir=publish installer\Borderless.iss
 ```
 
+MSIX (from self-contained publish; needs Windows SDK `makeappx`):
+
+```powershell
+dotnet publish Borderless.App/Borderless.App.csproj -c Release -r win-x64 --self-contained true -o publish-bundled
+.\installer\msix\Build-Msix.ps1 -SourceDir publish-bundled -Version 1.0.0.0 -OutFile Borderless-1.0.0.0-win-x64.msix
+```
+
+Optional CI MSIX secrets (repo Settings → Secrets):
+
+| Secret | Purpose |
+| --- | --- |
+| `MSIX_PACKAGE_IDENTITY_NAME` | Package/Identity/Name from Partner Center |
+| `MSIX_PUBLISHER` | Package/Identity/Publisher (`CN=…`) — must match signing cert |
+| `MSIX_PUBLISHER_DISPLAY_NAME` | Package/Properties/PublisherDisplayName |
+| `MSIX_PFX_BASE64` | Optional signing cert (base64 PFX) |
+| `MSIX_PFX_PASSWORD` | Optional PFX password |
+
+Release MSIX step fails if the three identity secrets are missing. Local unsigned packs use inert `Borderless.Dev` placeholders.
+
 Release tags: `vMAJOR.MINOR.PATCH.BUILD` (e.g. `v1.0.0.3`). CI builds them in GitHub Actions.
 
 ## Stack
 
 - C# / .NET 9 WPF + Windows Forms (tray)
 - [WPF-UI](https://github.com/lepoco/wpfui), CommunityToolkit.Mvvm
-- Inno Setup
+- Inno Setup + MSIX packaging
 
 ## License
 
