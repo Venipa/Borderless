@@ -1,12 +1,16 @@
 name: Deploy docs
 
 on:
+  # Only: docs/workflow changes on default branch, or a published GitHub Release.
+  # branches: required so tag pushes (which ignore path filters) do not run this job.
   push:
+    branches:
+      - master
+      - main
     paths:
       - "docs/**"
       - ".github/workflows/docs.yml"
-  workflow_dispatch:
-  release: # Trigger deployment when a release is published
+  release:
     types: [published]
 
 permissions:

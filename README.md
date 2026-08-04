@@ -107,10 +107,11 @@ Optional CI MSIX secrets (repo Settings → Secrets):
 | `MSIX_PACKAGE_IDENTITY_NAME` | Package/Identity/Name from Partner Center |
 | `MSIX_PUBLISHER` | Package/Identity/Publisher (`CN=…`) — must match signing cert |
 | `MSIX_PUBLISHER_DISPLAY_NAME` | Package/Properties/PublisherDisplayName |
+| `MSIX_DISPLAY_NAME` | Package/Properties/DisplayName (+ VisualElements) — reserved Store name |
 | `MSIX_PFX_BASE64` | Optional signing cert (base64 PFX) |
 | `MSIX_PFX_PASSWORD` | Optional PFX password |
 
-Release MSIX step fails if the three identity secrets are missing. Local unsigned packs use inert `Borderless.Dev` placeholders.
+Release MSIX step fails if the identity / display-name secrets are missing. Local unsigned packs use inert `Borderless.Dev` placeholders.
 
 Release tags: `vMAJOR.MINOR.PATCH.BUILD` (e.g. `v1.0.0.3`). CI builds them in GitHub Actions.
 

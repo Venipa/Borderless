@@ -150,12 +150,18 @@ jobs:
           MSIX_PUBLISHER: ${{ secrets.MSIX_PUBLISHER }}
           MSIX_PACKAGE_IDENTITY_NAME: ${{ secrets.MSIX_PACKAGE_IDENTITY_NAME }}
           MSIX_PUBLISHER_DISPLAY_NAME: ${{ secrets.MSIX_PUBLISHER_DISPLAY_NAME }}
+          MSIX_DISPLAY_NAME: ${{ secrets.MSIX_DISPLAY_NAME }}
         run: |
           $v = "${{ steps.version.outputs.version }}"
           $msix = "Borderless-$v-win-x64.msix"
           $pfx = ""
 
-          foreach ($required in @("MSIX_PUBLISHER", "MSIX_PACKAGE_IDENTITY_NAME", "MSIX_PUBLISHER_DISPLAY_NAME")) {
+          foreach ($required in @(
+            "MSIX_PUBLISHER",
+            "MSIX_PACKAGE_IDENTITY_NAME",
+            "MSIX_PUBLISHER_DISPLAY_NAME",
+            "MSIX_DISPLAY_NAME"
+          )) {
             if ([string]::IsNullOrWhiteSpace([Environment]::GetEnvironmentVariable($required))) {
               throw "Missing GitHub Actions secret: $required"
             }
@@ -173,6 +179,7 @@ jobs:
             PackageIdentityName  = $env:MSIX_PACKAGE_IDENTITY_NAME
             Publisher            = $env:MSIX_PUBLISHER
             PublisherDisplayName = $env:MSIX_PUBLISHER_DISPLAY_NAME
+            DisplayName          = $env:MSIX_DISPLAY_NAME
           }
           if ($pfx) {
             $args.PfxPath = $pfx

@@ -28,6 +28,8 @@ param(
 
     [string] $PublisherDisplayName = "",
 
+    [string] $DisplayName = "",
+
     [string] $PfxPath = "",
 
     [string] $PfxPassword = ""
@@ -45,6 +47,9 @@ if ([string]::IsNullOrWhiteSpace($Publisher)) {
 if ([string]::IsNullOrWhiteSpace($PublisherDisplayName)) {
     $PublisherDisplayName = $env:MSIX_PUBLISHER_DISPLAY_NAME
 }
+if ([string]::IsNullOrWhiteSpace($DisplayName)) {
+    $DisplayName = $env:MSIX_DISPLAY_NAME
+}
 
 if ([string]::IsNullOrWhiteSpace($PackageIdentityName)) {
     $PackageIdentityName = "Borderless.Dev"
@@ -54,6 +59,9 @@ if ([string]::IsNullOrWhiteSpace($Publisher)) {
 }
 if ([string]::IsNullOrWhiteSpace($PublisherDisplayName)) {
     $PublisherDisplayName = "Borderless"
+}
+if ([string]::IsNullOrWhiteSpace($DisplayName)) {
+    $DisplayName = "Borderless"
 }
 
 function Find-SdkTool([string] $Name) {
@@ -143,10 +151,20 @@ try {
     $manifest.Package.Identity.Name = $PackageIdentityName
     $manifest.Package.Identity.Version = $Version
     $manifest.Package.Identity.Publisher = $Publisher
+    $manifest.Package.Properties.DisplayName = $DisplayName
     $manifest.Package.Properties.PublisherDisplayName = $PublisherDisplayName
+
+    $ns = New-Object System.Xml.XmlNamespaceManager($manifest.NameTable)
+    $ns.AddNamespace("default", "http://schemas.microsoft.com/appx/manifest/foundation/windows10")
+    $ns.AddNamespace("uap", "http://schemas.microsoft.com/appx/manifest/uap/windows10")
+    $visual = $manifest.SelectSingleNode("//uap:VisualElements", $ns)
+    if ($visual) {
+        $visual.SetAttribute("DisplayName", $DisplayName)
+    }
+
     $manifestPath = Join-Path $stage "AppxManifest.xml"
     $manifest.Save($manifestPath)
-    Write-Host "AppxManifest Identity.Name=$PackageIdentityName Version=$Version PublisherDisplayName=$PublisherDisplayName"
+    Write-Host "AppxManifest Identity.Name=$PackageIdentityName Version=$Version DisplayName=$DisplayName PublisherDisplayName=$PublisherDisplayName"
     Write-Host "AppxManifest Identity.Publisher set (value redacted)."
 
     if (Test-Path $OutFile) {
