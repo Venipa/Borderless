@@ -1,0 +1,28 @@
+---
+title: Compatibility
+description: Known issues with games that ship their own borderless mode
+---
+
+Borderless works with **any** Windows desktop window that can be styled — games, launchers, tools, browsers, and so on. Match by title and/or executable, then keep styles applied while Borderless runs.
+
+## Default expectation
+
+If a title uses a normal windowed (or borderable) mode, Borderless can force borderless chrome, expand to the monitor, always-on-top, input locks, and audio muting as configured in the rule.
+
+## Known friction: built-in borderless
+
+Some games implement their **own** borderless / borderless-windowed mode. Those paths often fight external style changes: the game re-applies its chrome, client size, or presentation mode every frame or on focus.
+
+| Title | Notes |
+| --- | --- |
+| **Marvel Rivals** | Prefer the game’s own borderless option when available. Forcing Borderless on top of the in-game borderless mode can fight or undo styles. |
+
+The same class of issue can appear in **any** title with a custom borderless implementation — not only Marvel Rivals. If a rule looks unstable (borders flash back, size resets, or status errors), try:
+
+1. Switch the game to **windowed** (not its built-in borderless), then let Borderless handle chrome.
+2. Or rely on the game’s borderless option and use Borderless only for extras that still work (e.g. mute, cursor rules) if needed.
+3. Narrow matching (exact exe / title) so the rule only hits the real game window.
+
+## Reporting
+
+If you hit a title that consistently resists Borderless, open an issue on [GitHub](https://github.com/Venipa/Borderless/issues) with the game name, executable, and whether it has a built-in borderless mode.
