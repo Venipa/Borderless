@@ -1,0 +1,43 @@
+# Privacy policy
+
+**Last updated:** August 4, 2026
+
+Venipa's Borderless (“the app”) is a local Windows utility. It does **not** collect, sell, or share personal data.
+
+## What the app stores
+
+Rules and settings are saved only on your device (typically under your Windows user profile, such as `%LocalAppData%\Borderless\`). That data stays on your PC unless you copy or back it up yourself.
+
+## What the app does not do
+
+- No accounts or sign-in
+- No advertising or tracking SDKs
+- No analytics or crash-reporting services that upload personal information
+- No access to your documents, photos, or contacts for product features
+
+## Network use
+
+Depending on how you installed the app:
+
+- **Microsoft Store builds** may check for updates through the Microsoft Store.
+- **Other builds** may check GitHub Releases for updates if you enable the updater.
+
+Those requests only support update checks (and related Store/GitHub infrastructure). The app does not send your rules or settings to Venipa.
+
+## Window and process access
+
+To apply borderless and related options, the app reads window titles, process/executable names, and related window state for matching rules. That information is processed on your device and is not uploaded by the app.
+
+## Children
+
+The app is not directed at children and does not knowingly collect personal information from anyone.
+
+## Changes
+
+If this policy changes, the updated text will be posted in this file with a new “Last updated” date.
+
+## Contact
+
+Questions about this policy: use the contact options on the [GitHub repository](https://github.com/Venipa/Borderless) or the Microsoft Store listing for Venipa's Borderless.
+
+Online copy: https://venipa.github.io/Borderless/docs/privacy
