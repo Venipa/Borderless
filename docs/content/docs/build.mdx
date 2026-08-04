@@ -1,0 +1,25 @@
+---
+title: Build
+description: Build and publish Borderless from source
+---
+
+```bash
+dotnet build Borderless.App/Borderless.App.csproj -c Release
+dotnet run --project Borderless.App/Borderless.App.csproj -c Release
+```
+
+## Publish (framework-dependent)
+
+```bash
+dotnet publish Borderless.App/Borderless.App.csproj -c Release -r win-x64 --self-contained false -o publish
+```
+
+## Inno Setup
+
+```bash
+ISCC.exe /DMyAppVersion=1.0.0.0 /DMyAppSourceDir=publish installer\Borderless.iss
+```
+
+## Releases
+
+Release tags: `vMAJOR.MINOR.PATCH.BUILD` (e.g. `v1.0.0.3`). CI builds them in GitHub Actions.

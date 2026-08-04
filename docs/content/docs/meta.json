@@ -1,0 +1,11 @@
+{
+  "title": "Documentation",
+  "pages": [
+    "index",
+    "install",
+    "usage",
+    "features",
+    "build",
+    "wpf-ui-reference"
+  ]
+}

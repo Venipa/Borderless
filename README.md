@@ -39,6 +39,12 @@ Windows desktop app that keeps games and other windows in borderless (and relate
 - Portable zip, bundled zip, and installer builds
 - UI languages: English, German, Spanish, French, Italian, Portuguese, Japanese, Korean, Polish, Ukrainian, Simplified Chinese, Traditional Chinese
 
+## Docs
+
+User docs: https://venipa.github.io/Borderless/
+
+Source lives in [`docs/`](docs/) (Fumadocs + static GitHub Pages).
+
 ## Install
 
 1. Install [.NET 9 Desktop Runtime (x64)](https://aka.ms/dotnet/9.0/windowsdesktop-runtime-win-x64.exe). The plain ".NET Runtime" package is not enough (WPF).
