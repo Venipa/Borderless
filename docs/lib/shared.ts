@@ -8,3 +8,14 @@ export const gitConfig = {
   repo: 'Borderless',
   branch: 'master',
 };
+
+export const socials = {
+  x: {
+    handle: '@Venipa',
+    url: 'https://x.com/Venipa',
+  },
+  github: {
+    handle: 'Venipa',
+    url: 'https://github.com/Venipa',
+  },
+} as const;
