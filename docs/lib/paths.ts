@@ -1,5 +1,5 @@
 /** Site root when deployed under a subdirectory (e.g. GitHub Pages `/Borderless`). */
-export const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
+export const basePath = basePathFromSiteUrl(process.env.NEXT_PUBLIC_URL);
 
 /**
  * Prefix a public/static asset path with the site base path.
@@ -8,4 +8,13 @@ export const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
 export function assetPath(path: string): string {
   const normalized = path.startsWith('/') ? path : `/${path}`;
   return `${basePath}${normalized}`;
+}
+
+function basePathFromSiteUrl(url: string | undefined): string {
+  if (!url) return '';
+  try {
+    return new URL(url).pathname.replace(/\/+$/, '');
+  } catch {
+    return '';
+  }
 }

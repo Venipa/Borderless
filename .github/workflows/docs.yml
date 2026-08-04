@@ -36,11 +36,16 @@ jobs:
       - name: Install
         run: bun install --frozen-lockfile
 
+      # page_url from deploy-pages only exists after deploy; configure-pages base_url is the same URL at build time
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
       - name: Build static site
         run: bun run build:pages
         env:
           GITHUB_PAGES: "true"
-          NEXT_PUBLIC_BASE_PATH: "/"
+          NEXT_PUBLIC_URL: ${{ steps.pages.outputs.base_url }}
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

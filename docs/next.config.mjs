@@ -2,13 +2,27 @@ import { createMDX } from 'fumadocs-mdx/next';
 
 const withMDX = createMDX();
 
-const isGithubPages = process.env.GITHUB_PAGES === 'true';
-const basePath =
-  process.env.NEXT_PUBLIC_BASE_PATH ?? (isGithubPages ? '/Borderless' : '');
-
-if (basePath && !process.env.NEXT_PUBLIC_BASE_PATH) {
-  process.env.NEXT_PUBLIC_BASE_PATH = basePath;
+/**
+ * Derive Next.js basePath from a site URL (e.g. GitHub Pages page_url / base_url).
+ * https://owner.github.io/Borderless/ → /Borderless
+ * https://owner.github.io/ → ""
+ */
+function basePathFromSiteUrl(url) {
+  if (!url) return '';
+  try {
+    return new URL(url).pathname.replace(/\/+$/, '');
+  } catch {
+    return '';
+  }
 }
+
+const isGithubPages = process.env.GITHUB_PAGES === 'true';
+if (isGithubPages && !process.env.NEXT_PUBLIC_URL) {
+  process.env.NEXT_PUBLIC_URL = 'https://local.pages/Borderless';
+}
+
+const siteUrl = process.env.NEXT_PUBLIC_URL ?? '';
+const basePath = basePathFromSiteUrl(siteUrl);
 
 /** @type {import('next').NextConfig} */
 const config = {
@@ -25,7 +39,7 @@ const config = {
       }
     : {}),
   env: {
-    NEXT_PUBLIC_BASE_PATH: basePath,
+    NEXT_PUBLIC_URL: siteUrl,
   },
 };
 
