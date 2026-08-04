@@ -23,7 +23,7 @@ import {
   pickPrimaryDownload,
 } from '@/lib/github';
 import { assetPath } from '@/lib/paths';
-import { appName, docsRoute } from '@/lib/shared';
+import { appDescription, appName, appTagline, docsRoute } from '@/lib/shared';
 
 const highlights = [
   {
@@ -95,11 +95,10 @@ export default async function HomePage() {
               </span>
             </div>
             <h1 className="max-w-2xl text-4xl font-semibold tracking-tight text-balance md:text-5xl">
-              Keep Windows games and apps borderless
+              {appTagline}
             </h1>
             <p className="mt-4 max-w-xl text-base text-fd-muted-foreground text-pretty md:text-lg">
-              Match by title and executable, then re-apply window styles while {appName} runs —
-              tray-friendly, rule-based, built for Windows.
+              {appDescription}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link

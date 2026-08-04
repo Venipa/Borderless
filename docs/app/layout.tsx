@@ -1,6 +1,7 @@
 import { Inter } from 'next/font/google';
 import { Provider } from '@/components/provider';
 import type { Metadata } from 'next';
+import { appDescription, appName, appTagline, siteUrl } from '@/lib/shared';
 import './global.css';
 
 const inter = Inter({
@@ -8,13 +9,26 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://venipa.github.io/Borderless'),
+  metadataBase: new URL(siteUrl),
   title: {
-    default: 'Borderless Docs',
-    template: '%s | Borderless',
+    default: `${appName} — ${appTagline}`,
+    template: `%s | ${appName}`,
   },
-  description:
-    'Documentation for Borderless — keep Windows games and apps in borderless layouts.',
+  description: appDescription,
+  applicationName: appName,
+  openGraph: {
+    type: 'website',
+    url: siteUrl,
+    siteName: appName,
+    title: `${appName} — ${appTagline}`,
+    description: appDescription,
+    locale: 'en_US',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `${appName} — ${appTagline}`,
+    description: appDescription,
+  },
 };
 
 export default function Layout({ children }: LayoutProps<'/'>) {
