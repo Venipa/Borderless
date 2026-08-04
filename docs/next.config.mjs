@@ -2,8 +2,13 @@ import { createMDX } from 'fumadocs-mdx/next';
 
 const withMDX = createMDX();
 
-const repo = 'Borderless';
 const isGithubPages = process.env.GITHUB_PAGES === 'true';
+const basePath =
+  process.env.NEXT_PUBLIC_BASE_PATH ?? (isGithubPages ? '/Borderless' : '');
+
+if (basePath && !process.env.NEXT_PUBLIC_BASE_PATH) {
+  process.env.NEXT_PUBLIC_BASE_PATH = basePath;
+}
 
 /** @type {import('next').NextConfig} */
 const config = {
@@ -13,12 +18,15 @@ const config = {
   images: {
     unoptimized: true,
   },
-  ...(isGithubPages
+  ...(basePath
     ? {
-        basePath: `/${repo}`,
-        assetPrefix: `/${repo}/`,
+        basePath,
+        assetPrefix: `${basePath}/`,
       }
     : {}),
+  env: {
+    NEXT_PUBLIC_BASE_PATH: basePath,
+  },
 };
 
 export default withMDX(config);

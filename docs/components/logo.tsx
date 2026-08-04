@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { cn } from '@/lib/cn';
+import { assetPath } from '@/lib/paths';
 import { appName } from '@/lib/shared';
 
 interface LogoProps {
@@ -12,7 +13,7 @@ export function Logo({ className, size = 24, showText = true }: LogoProps) {
   return (
     <span className={cn('inline-flex items-center gap-2 font-medium', className)}>
       <Image
-        src="/logo.png"
+        src={assetPath('/logo.png')}
         alt=""
         width={size}
         height={size}

@@ -17,11 +17,12 @@ import {
   getDownloadLabel,
   getLatestRelease,
   getLatestReleaseUrl,
-  getReleaseSummary,
+  getReleaseNotes,
   getReleasesUrl,
   listUserDownloads,
   pickPrimaryDownload,
 } from '@/lib/github';
+import { assetPath } from '@/lib/paths';
 import { appName, docsRoute } from '@/lib/shared';
 
 const highlights = [
@@ -54,7 +55,7 @@ const highlights = [
 export default async function HomePage() {
   const release = await getLatestRelease();
   const primaryAsset = release ? pickPrimaryDownload(release.assets) : undefined;
-  const summary = release ? getReleaseSummary(release.body) : null;
+  const notes = release ? getReleaseNotes(release.body) : [];
   const downloadUrl = primaryAsset?.browser_download_url ?? getLatestReleaseUrl();
 
   return (
@@ -64,7 +65,7 @@ export default async function HomePage() {
           <div className="absolute -bottom-[8%] -left-[10%] w-[85%] max-w-3xl [perspective:1600px] md:-bottom-[6%] md:-left-[4%] md:w-[72%]">
             <div className="origin-center opacity-55 shadow-2xl shadow-black/30 [transform:rotateX(14deg)_rotateY(22deg)_rotateZ(-3deg)_scale(1.08)] [transform-style:preserve-3d] dark:opacity-50">
               <Image
-                src="/app-screenshot-1.png"
+                src={assetPath('/app-screenshot-1.png')}
                 alt=""
                 width={1018}
                 height={673}
@@ -82,7 +83,7 @@ export default async function HomePage() {
           <div className="flex flex-col items-start text-left">
             <div className="mb-6 inline-flex items-center gap-3">
               <Image
-                src="/logo.png"
+                src={assetPath('/logo.png')}
                 alt=""
                 width={56}
                 height={56}
@@ -135,8 +136,14 @@ export default async function HomePage() {
                 <p className="mt-1 text-sm text-fd-muted-foreground">
                   Published {formatReleaseDate(release.published_at)}
                 </p>
-                {summary ? (
-                  <p className="mt-4 text-sm text-fd-muted-foreground text-pretty">{summary}</p>
+                {notes.length > 0 ? (
+                  <ul className="mt-4 list-disc space-y-1.5 pl-4 text-sm text-fd-muted-foreground">
+                    {notes.map((note) => (
+                      <li key={note} className="text-pretty">
+                        {note}
+                      </li>
+                    ))}
+                  </ul>
                 ) : null}
 
                 <ul className="mt-5 space-y-2">

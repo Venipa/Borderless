@@ -165,31 +165,23 @@ export function formatReleaseDate(isoDate: string): string {
   }).format(new Date(isoDate));
 }
 
-export function getReleaseSummary(body: string | null, maxLength = 220): string | null {
+export function getReleaseNotes(body: string | null, maxItems = 6): string[] {
   if (!body) {
-    return null;
+    return [];
   }
 
-  const cleaned = body
+  return body
     .replace(/```[\s\S]*?```/g, '')
-    .replace(/^#+\s*/gm, '')
-    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
-    .replace(/[*_`~]/g, '')
     .replace(/\r\n/g, '\n')
     .split('\n')
-    .map((line) => line.trim())
+    .map((line) =>
+      line
+        .replace(/^#+\s*/, '')
+        .replace(/^[-*+]\s+/, '')
+        .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+        .replace(/[*_`~]/g, '')
+        .trim(),
+    )
     .filter((line) => line.length > 0 && !/^changes$/i.test(line))
-    .join(' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-
-  if (!cleaned) {
-    return null;
-  }
-
-  if (cleaned.length <= maxLength) {
-    return cleaned;
-  }
-
-  return `${cleaned.slice(0, maxLength - 1).trimEnd()}…`;
+    .slice(0, maxItems);
 }
