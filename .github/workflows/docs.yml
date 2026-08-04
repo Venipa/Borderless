@@ -7,6 +7,8 @@ on:
       - "docs/**"
       - ".github/workflows/docs.yml"
   workflow_dispatch:
+  release: # Trigger deployment when a release is published
+    types: [published]
 
 permissions:
   contents: read
