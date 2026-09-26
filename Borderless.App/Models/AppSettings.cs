@@ -38,6 +38,8 @@ public sealed class AppSettings
 
     public bool StartOnStartup { get; set; }
 
+    public bool StartMinimizedToTray { get; set; }
+
     public bool CloseToTray { get; set; }
 
     /// <summary>

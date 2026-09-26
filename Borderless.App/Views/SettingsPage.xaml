@@ -42,6 +42,8 @@
                 <StackPanel>
                     <controls:SwitchOptionRow Title="{loc:Loc SettingsStartOnStartup}"
                                               IsChecked="{Binding Settings.StartOnStartup}" />
+                    <controls:SwitchOptionRow Title="Start minimized"
+                                              IsChecked="{Binding Settings.StartMinimizedToTray}" />
                     <controls:SwitchOptionRow Title="{loc:Loc SettingsCloseToTray}"
                                               IsChecked="{Binding Settings.CloseToTray}"
                                               Margin="0" />

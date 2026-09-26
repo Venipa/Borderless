@@ -58,6 +58,9 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
     private bool _startOnStartup;
 
     [ObservableProperty]
+    private bool _startMinimizedToTray;
+
+    [ObservableProperty]
     private bool _closeToTray;
 
     [ObservableProperty]
@@ -127,6 +130,7 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
         DefaultIsEnabled = settings.Defaults.IsEnabled;
         DefaultMatchCondition = settings.Defaults.MatchCondition;
         StartOnStartup = settings.StartOnStartup;
+        StartMinimizedToTray = settings.StartMinimizedToTray;
         CloseToTray = settings.CloseToTray;
         SelectedLanguage = LanguageManager.FindOption(settings.UiLanguage);
         UpdaterEnabled = settings.UpdaterEnabled;
@@ -450,6 +454,8 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
         _ = Task.Run(() => _startup.Apply(value));
     }
 
+    partial void OnStartMinimizedToTrayChanged(bool value) => ScheduleSave();
+
     partial void OnCloseToTrayChanged(bool value) => ScheduleSave();
 
     partial void OnSelectedLanguageChanged(LanguageOption value)
@@ -558,6 +564,7 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
     {
         Defaults = CreateRuleDefaults(),
         StartOnStartup = StartOnStartup,
+        StartMinimizedToTray = StartMinimizedToTray,
         CloseToTray = CloseToTray,
         UiLanguage = SelectedLanguage?.Code ?? LanguageManager.SystemCode,
         UpdaterEnabled = UpdaterEnabled,

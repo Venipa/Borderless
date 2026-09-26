@@ -25,12 +25,26 @@ public partial class MainWindow : FluentWindow
     private static readonly Uri AppIconUri = new("pack://application:,,,/Resources/Iconx24.png");
 
     private bool _forceClose;
+    private readonly bool _startHiddenToTray;
     private BitmapImage? _toggleBrandIcon;
 
     public MainWindow()
     {
         DataContext = App.MainViewModel;
         InitializeComponent();
+
+        _startHiddenToTray =
+            App.IsWindowsStartupLaunch && ViewModel.Settings.StartMinimizedToTray;
+
+        if (_startHiddenToTray)
+        {
+            // Let WPF perform its first render so NotifyIcon can register,
+            // but do not flash, activate, or create a taskbar button.
+            ShowActivated = false;
+            ShowInTaskbar = false;
+            Opacity = 0;
+        }
+
         ViewModel.PropertyChanged += OnViewModelPropertyChanged;
         Loaded += OnLoaded;
         Closed += OnClosed;
@@ -46,6 +60,31 @@ public partial class MainWindow : FluentWindow
         RefreshTrayToggleHeader();
         Dispatcher.BeginInvoke(ApplyToggleBrandContent, System.Windows.Threading.DispatcherPriority.Loaded);
         _ = ViewModel.Settings.CheckForUpdatesOnStartupAsync();
+
+        if (_startHiddenToTray)
+        {
+            Dispatcher.BeginInvoke(() =>
+            {
+                // Never leave the app inaccessible if tray registration failed.
+                if (!AppTrayIcon.IsRegistered)
+                {
+                    Opacity = 1;
+                    ShowInTaskbar = true;
+                    ShowActivated = true;
+                    Activate();
+                    return;
+                }
+
+                Hide();
+
+                // Restore normal presentation for a later tray-icon restore.
+                Opacity = 1;
+                ShowInTaskbar = true;
+                ShowActivated = true;
+
+                RefreshTrayToggleHeader();
+            }, System.Windows.Threading.DispatcherPriority.ApplicationIdle);
+        }
     }
 
     private void OnNavigationLoaded(object sender, RoutedEventArgs e)
@@ -150,6 +189,7 @@ public partial class MainWindow : FluentWindow
             toggle.SetCurrentValue(FrameworkElement.HorizontalAlignmentProperty, System.Windows.HorizontalAlignment.Left);
         }
     }
+
 
     private void OnClosed(object? sender, EventArgs e)
     {
@@ -290,6 +330,40 @@ public partial class MainWindow : FluentWindow
         Application.Current.Shutdown();
     }
 
+    internal void RestoreFromExternalActivation()
+    {
+        // A second Borderless launch requested the existing instance.
+        // Restore the existing window instead of creating another process.
+        Opacity = 1;
+        ShowInTaskbar = true;
+        ShowActivated = true;
+
+        if (!IsVisible)
+        {
+            Show();
+        }
+
+        if (WindowState == WindowState.Minimized)
+        {
+            WindowState = WindowState.Normal;
+        }
+
+        Activate();
+        Focus();
+
+        // WPF can occasionally fail to move a previously hidden window
+        // to the foreground. A temporary Topmost pulse reliably raises it
+        // without leaving the application permanently topmost.
+        if (!IsActive)
+        {
+            var wasTopmost = Topmost;
+            Topmost = true;
+            Topmost = wasTopmost;
+            Activate();
+        }
+
+        RefreshTrayToggleHeader();
+    }
     private void ToggleWindowVisibility()
     {
         if (IsVisible)

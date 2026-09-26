@@ -11,6 +11,7 @@ namespace Borderless.App.Services;
 public sealed class StartupRegistrationService
 {
     private const string TaskName = "Borderless";
+    internal const string StartupArgument = "--startup";
     private const string LegacyRunKeyPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
     private const string LegacyRunValueName = "Borderless";
 
@@ -65,9 +66,10 @@ public sealed class StartupRegistrationService
         definition.Settings.MultipleInstances = TaskInstancesPolicy.IgnoreNew;
         definition.Triggers.Add(new LogonTrigger
         {
-            UserId = WindowsIdentity.GetCurrent().Name
+            UserId = WindowsIdentity.GetCurrent().Name,
+            Delay = TimeSpan.FromSeconds(5)
         });
-        definition.Actions.Add(new ExecAction(exe));
+        definition.Actions.Add(new ExecAction(exe, StartupArgument, null));
 
         service.RootFolder.RegisterTaskDefinition(
             TaskName,
