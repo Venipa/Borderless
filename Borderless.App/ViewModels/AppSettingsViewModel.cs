@@ -145,9 +145,11 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
         Loc.Source.PropertyChanged += OnLocChanged;
     }
 
+    public bool AllowsUpdates => AppDistribution.AllowsUpdates;
+
     /// <summary>Silent auto-install without confirmation (GitHub/Inno only).</summary>
     public bool IsAutoUpdateSettingEnabled =>
-        UpdaterEnabled && AppDistribution.UsesGitHubUpdates;
+        AllowsUpdates && UpdaterEnabled && AppDistribution.UsesGitHubUpdates;
 
     /// <summary>Muted hint under auto-update when Store channel disables it.</summary>
     public string AutoUpdateDisabledHint =>
@@ -216,7 +218,7 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
 
     public void LaunchPendingUpdateInstaller()
     {
-        if (_disposed)
+        if (_disposed || !AllowsUpdates)
         {
             return;
         }
@@ -226,7 +228,7 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
 
     public Task CheckForUpdatesOnStartupAsync()
     {
-        if (!UpdaterEnabled)
+        if (!AllowsUpdates || !UpdaterEnabled)
         {
             return Task.CompletedTask;
         }
@@ -240,7 +242,7 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
     /// <summary>Opens the update dialog for a previously detected pending update.</summary>
     public Task ShowPendingUpdateDialogAsync()
     {
-        if (_pendingUpdate is null || !_pendingUpdate.IsUpdateAvailable)
+        if (!AllowsUpdates || _pendingUpdate is null || !_pendingUpdate.IsUpdateAvailable)
         {
             return Task.CompletedTask;
         }
@@ -263,7 +265,7 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
 
     private async Task RunUpdateCheckAsync(bool interactive)
     {
-        if (_disposed || IsCheckingForUpdates)
+        if (_disposed || !AllowsUpdates || IsCheckingForUpdates)
         {
             return;
         }

@@ -8,6 +8,12 @@ namespace Borderless.App;
 /// </summary>
 public static class AppDistribution
 {
+#if DEBUG
+    public static bool AllowsUpdates => false;
+#else
+    public static bool AllowsUpdates => true;
+#endif
+
 #if DISTRIBUTION_STORE
     public const string Channel = "Store";
 

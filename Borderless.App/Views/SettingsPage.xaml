@@ -81,7 +81,8 @@
                           Appearance="Primary"
                           Margin="0,0,0,10" />
 
-            <Border Style="{StaticResource OutlinedGroupCard}">
+            <Border Style="{StaticResource OutlinedGroupCard}"
+                    IsEnabled="{Binding Settings.AllowsUpdates}">
                 <StackPanel>
                     <controls:SwitchOptionRow Title="{loc:Loc SettingsEnableUpdater}"
                                               IsChecked="{Binding Settings.UpdaterEnabled}" />
@@ -98,7 +99,9 @@
                 </StackPanel>
             </Border>
 
-            <Border Style="{StaticResource OutlinedGroupCard}" Margin="0,0,0,20">
+            <Border Style="{StaticResource OutlinedGroupCard}"
+                    Margin="0,0,0,20"
+                    IsEnabled="{Binding Settings.AllowsUpdates}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
