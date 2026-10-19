@@ -18,6 +18,39 @@ public partial class RuleEditorSidebar : UserControl
 
     private RuleEditorViewModel? ViewModel => DataContext as RuleEditorViewModel;
 
+    private void OnEditorPreviewKeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.Key != Key.Escape || ViewModel is null)
+        {
+            return;
+        }
+
+        if (ViewModel.IsProcessPickerOpen)
+        {
+            ViewModel.CloseProcessPicker();
+            e.Handled = true;
+            return;
+        }
+
+        if (ViewModel.IsDimensionDialogOpen)
+        {
+            ViewModel.CancelDimensionDialogCommand.Execute(null);
+            e.Handled = true;
+            return;
+        }
+
+        e.Handled = true;
+        if (ViewModel.IsDirty)
+        {
+            return;
+        }
+
+        if (Window.GetWindow(this)?.DataContext is MainViewModel main)
+        {
+            main.CloseEditorCommand.Execute(null);
+        }
+    }
+
     private async void OnExecutableGotFocus(object sender, KeyboardFocusChangedEventArgs e)
     {
         await OpenProcessPickerAsync(refreshSnapshot: true);

@@ -13,6 +13,7 @@ namespace Borderless.App.ViewModels;
 public sealed partial class RuleEditorViewModel : ObservableObject
 {
     private readonly ProcessCatalogService _processCatalog;
+    private readonly RuleEditState _baseline;
     private CancellationTokenSource? _refreshCts;
     private int _refreshVersion;
     private bool _dimensionDialogFromToggle;
@@ -141,6 +142,7 @@ public sealed partial class RuleEditorViewModel : ObservableObject
         CustomWidth = defaults.CustomWidth;
         CustomHeight = defaults.CustomHeight;
         ApplyExclusiveSizeMode(defaults.UseCustomDimension, defaults.IsExpandToScreen);
+        _baseline = CaptureState();
     }
 
     public RuleEditorViewModel(ProcessCatalogService processCatalog, ProcessRule rule)
@@ -164,6 +166,7 @@ public sealed partial class RuleEditorViewModel : ObservableObject
         CustomHeight = rule.CustomHeight;
         DialogTitle = Loc.Get("EditRuleTitle");
         ApplyExclusiveSizeMode(rule.UseCustomDimension, rule.IsExpandToScreen);
+        _baseline = CaptureState();
     }
 
     private void ApplyExclusiveSizeMode(bool useCustom, bool expandToScreen)
@@ -209,6 +212,46 @@ public sealed partial class RuleEditorViewModel : ObservableObject
     {
         IsProcessPickerOpen = false;
     }
+
+    public bool IsDirty => CaptureState() != _baseline;
+
+    private RuleEditState CaptureState() => new(
+        WindowTitle,
+        UseTitleRegex,
+        ExecutableName,
+        MatchCondition,
+        IsBorderless,
+        IsAlwaysOnTop,
+        IsExpandToScreen,
+        UseCustomDimension,
+        CustomX,
+        CustomY,
+        CustomWidth,
+        CustomHeight,
+        MuteInBackground,
+        LockCursor,
+        HideCursor,
+        RemoveGameMenus,
+        IsEnabled);
+
+    private readonly record struct RuleEditState(
+        string WindowTitle,
+        bool UseTitleRegex,
+        string ExecutableName,
+        MatchCondition MatchCondition,
+        bool IsBorderless,
+        bool IsAlwaysOnTop,
+        bool IsExpandToScreen,
+        bool UseCustomDimension,
+        int CustomX,
+        int CustomY,
+        int CustomWidth,
+        int CustomHeight,
+        bool MuteInBackground,
+        bool LockCursor,
+        bool HideCursor,
+        bool RemoveGameMenus,
+        bool IsEnabled);
 
     partial void OnExecutableNameChanged(string value) => RefreshFilteredProcesses();
 
