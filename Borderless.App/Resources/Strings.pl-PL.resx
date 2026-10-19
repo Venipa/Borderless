@@ -112,6 +112,7 @@
   <data name="SettingsLanguageSystem" xml:space="preserve"><value>System</value></data>
   <data name="SettingsStartOnStartup" xml:space="preserve"><value>Uruchom przy starcie</value></data>
   <data name="SettingsCloseToTray" xml:space="preserve"><value>Zamknij do zasobnika</value></data>
+  <data name="SettingsStartInTray" xml:space="preserve"><value>Uruchom w zasobniku</value></data>
   <data name="SettingsUpdaterGroup" xml:space="preserve"><value>Aktualizacje</value></data>
   <data name="SettingsEnableUpdater" xml:space="preserve"><value>Włącz updater</value></data>
   <data name="SettingsShowUpdateDialog" xml:space="preserve"><value>Pokaż okno update, gdy znajdzie nową wersję</value></data>

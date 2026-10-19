@@ -40,6 +40,8 @@ public sealed class AppSettings
 
     public bool CloseToTray { get; set; }
 
+    public bool StartInTray { get; set; }
+
     /// <summary>
     /// UI language culture name (e.g. de, es-ES). Empty = system / OS default.
     /// </summary>

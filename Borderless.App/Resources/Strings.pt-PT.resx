@@ -112,6 +112,7 @@
   <data name="SettingsLanguageSystem" xml:space="preserve"><value>Sistema</value></data>
   <data name="SettingsStartOnStartup" xml:space="preserve"><value>Iniciar com o Windows</value></data>
   <data name="SettingsCloseToTray" xml:space="preserve"><value>Fechar para o tabuleiro</value></data>
+  <data name="SettingsStartInTray" xml:space="preserve"><value>Iniciar no tabuleiro</value></data>
   <data name="SettingsUpdaterGroup" xml:space="preserve"><value>Atualizador</value></data>
   <data name="SettingsEnableUpdater" xml:space="preserve"><value>Ativar atualizador</value></data>
   <data name="SettingsShowUpdateDialog" xml:space="preserve"><value>Mostrar diálogo de update ao encontrar nova versão</value></data>

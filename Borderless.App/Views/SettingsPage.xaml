@@ -43,7 +43,9 @@
                     <controls:SwitchOptionRow Title="{loc:Loc SettingsStartOnStartup}"
                                               IsChecked="{Binding Settings.StartOnStartup}" />
                     <controls:SwitchOptionRow Title="{loc:Loc SettingsCloseToTray}"
-                                              IsChecked="{Binding Settings.CloseToTray}"
+                                              IsChecked="{Binding Settings.CloseToTray}" />
+                    <controls:SwitchOptionRow Title="{loc:Loc SettingsStartInTray}"
+                                              IsChecked="{Binding Settings.StartInTray}"
                                               Margin="0" />
                 </StackPanel>
             </Border>

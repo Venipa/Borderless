@@ -112,6 +112,7 @@
   <data name="SettingsLanguageSystem" xml:space="preserve"><value>시스템</value></data>
   <data name="SettingsStartOnStartup" xml:space="preserve"><value>시작 시 실행</value></data>
   <data name="SettingsCloseToTray" xml:space="preserve"><value>트레이로 닫기</value></data>
+  <data name="SettingsStartInTray" xml:space="preserve"><value>트레이에서 시작</value></data>
   <data name="SettingsUpdaterGroup" xml:space="preserve"><value>업데이터</value></data>
   <data name="SettingsEnableUpdater" xml:space="preserve"><value>업데이터 사용</value></data>
   <data name="SettingsShowUpdateDialog" xml:space="preserve"><value>새 버전 발견 시 업데이트 대화상자 표시</value></data>

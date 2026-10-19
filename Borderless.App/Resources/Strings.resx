@@ -112,6 +112,7 @@
   <data name="SettingsLanguageSystem" xml:space="preserve"><value>System</value></data>
   <data name="SettingsStartOnStartup" xml:space="preserve"><value>Start on startup</value></data>
   <data name="SettingsCloseToTray" xml:space="preserve"><value>Close to tray</value></data>
+  <data name="SettingsStartInTray" xml:space="preserve"><value>Start in tray</value></data>
   <data name="SettingsUpdaterGroup" xml:space="preserve"><value>Updater</value></data>
   <data name="SettingsEnableUpdater" xml:space="preserve"><value>Enable updater</value></data>
   <data name="SettingsShowUpdateDialog" xml:space="preserve"><value>Show update dialog when a new version is found</value></data>

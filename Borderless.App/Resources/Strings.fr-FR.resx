@@ -112,6 +112,7 @@
   <data name="SettingsLanguageSystem" xml:space="preserve"><value>Système</value></data>
   <data name="SettingsStartOnStartup" xml:space="preserve"><value>Lancer au démarrage</value></data>
   <data name="SettingsCloseToTray" xml:space="preserve"><value>Réduire dans la zone</value></data>
+  <data name="SettingsStartInTray" xml:space="preserve"><value>Démarrer dans la zone</value></data>
   <data name="SettingsUpdaterGroup" xml:space="preserve"><value>Mises à jour</value></data>
   <data name="SettingsEnableUpdater" xml:space="preserve"><value>Activer l'updater</value></data>
   <data name="SettingsShowUpdateDialog" xml:space="preserve"><value>Afficher la boîte de dialogue de mise à jour</value></data>

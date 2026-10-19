@@ -62,10 +62,15 @@ public partial class App : Application
 
         var window = new MainWindow();
         MainWindow = window;
+        window.ShowActivated = _restoreWhenWindowReady || !MainViewModel.Settings.StartInTray;
         window.Show();
         if (_restoreWhenWindowReady)
         {
             window.RestoreFromHidden();
+        }
+        else if (MainViewModel.Settings.StartInTray)
+        {
+            window.Hide();
         }
     }
 

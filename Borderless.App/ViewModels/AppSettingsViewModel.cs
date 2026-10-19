@@ -61,6 +61,9 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
     private bool _closeToTray;
 
     [ObservableProperty]
+    private bool _startInTray;
+
+    [ObservableProperty]
     private LanguageOption _selectedLanguage = LanguageManager.Options[0];
 
     [ObservableProperty]
@@ -128,6 +131,7 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
         DefaultMatchCondition = settings.Defaults.MatchCondition;
         StartOnStartup = settings.StartOnStartup;
         CloseToTray = settings.CloseToTray;
+        StartInTray = settings.StartInTray;
         SelectedLanguage = LanguageManager.FindOption(settings.UiLanguage);
         UpdaterEnabled = settings.UpdaterEnabled;
         // Store installs always go through Store UI — silent auto-update is GitHub/Inno only.
@@ -452,6 +456,8 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
 
     partial void OnCloseToTrayChanged(bool value) => ScheduleSave();
 
+    partial void OnStartInTrayChanged(bool value) => ScheduleSave();
+
     partial void OnSelectedLanguageChanged(LanguageOption value)
     {
         if (value is null)
@@ -559,6 +565,7 @@ public sealed partial class AppSettingsViewModel : ObservableObject, IDisposable
         Defaults = CreateRuleDefaults(),
         StartOnStartup = StartOnStartup,
         CloseToTray = CloseToTray,
+        StartInTray = StartInTray,
         UiLanguage = SelectedLanguage?.Code ?? LanguageManager.SystemCode,
         UpdaterEnabled = UpdaterEnabled,
         AutoUpdateWithoutConfirmation = AutoUpdateWithoutConfirmation,
