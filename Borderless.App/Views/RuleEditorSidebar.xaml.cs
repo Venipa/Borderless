@@ -14,6 +14,19 @@ public partial class RuleEditorSidebar : UserControl
     public RuleEditorSidebar()
     {
         InitializeComponent();
+        DataContextChanged += OnEditorDataContextChanged;
+    }
+
+    private void OnEditorDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+    {
+        if (e.NewValue is not RuleEditorViewModel)
+        {
+            return;
+        }
+
+        Dispatcher.BeginInvoke(
+            () => WindowTitleBox.Focus(),
+            System.Windows.Threading.DispatcherPriority.Loaded);
     }
 
     private RuleEditorViewModel? ViewModel => DataContext as RuleEditorViewModel;

@@ -56,7 +56,8 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <ui:TextBox Text="{Binding WindowTitle, UpdateSourceTrigger=PropertyChanged}"
+                        <ui:TextBox x:Name="WindowTitleBox"
+                                    Text="{Binding WindowTitle, UpdateSourceTrigger=PropertyChanged}"
                                     PlaceholderText="{Binding WindowTitlePlaceholder}"
                                     ClearButtonEnabled="True" />
                         <controls:PillToggleButton Grid.Column="1"
