@@ -14,9 +14,18 @@ public partial class App : Application
     public static ProcessCatalogService ProcessCatalog { get; private set; } = null!;
 
     private RuleEngineService? _ruleEngine;
+    private SingleInstanceGuard? _singleInstance;
+    private bool _restoreWhenWindowReady;
 
     protected override void OnStartup(StartupEventArgs e)
     {
+        _singleInstance = SingleInstanceGuard.ClaimPrimary(OnExistingInstanceRequested);
+        if (_singleInstance is null)
+        {
+            Shutdown();
+            return;
+        }
+
         var settingsStore = new SettingsStore();
         var appSettings = settingsStore.Load();
         LanguageManager.Apply(appSettings.UiLanguage);
@@ -50,22 +59,46 @@ public partial class App : Application
         ApplicationThemeManager.Apply(ApplicationTheme.Dark);
 
         base.OnStartup(e);
+
+        var window = new MainWindow();
+        MainWindow = window;
+        window.Show();
+        if (_restoreWhenWindowReady)
+        {
+            window.RestoreFromHidden();
+        }
     }
 
     protected override void OnExit(ExitEventArgs e)
     {
-        MainViewModel.Settings.FlushSave();
-        try
+        _singleInstance?.Dispose();
+        if (MainViewModel is not null)
         {
-            MainViewModel.Settings.LaunchPendingUpdateInstaller();
-        }
-        catch
-        {
-            // Never block process exit on installer launch failure.
+            MainViewModel.Settings.FlushSave();
+            try
+            {
+                MainViewModel.Settings.LaunchPendingUpdateInstaller();
+            }
+            catch
+            {
+                // Never block process exit on installer launch failure.
+            }
+
+            MainViewModel.Settings.Dispose();
         }
 
-        MainViewModel.Settings.Dispose();
         _ruleEngine?.Dispose();
         base.OnExit(e);
+    }
+
+    private void OnExistingInstanceRequested()
+    {
+        if (MainWindow is MainWindow window)
+        {
+            window.RestoreFromHidden();
+            return;
+        }
+
+        _restoreWhenWindowReady = true;
     }
 }

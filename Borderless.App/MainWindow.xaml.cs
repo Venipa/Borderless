@@ -2,8 +2,10 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
+using Borderless.App.Native;
 using Borderless.App.Localization;
 using Borderless.App.Models;
 using Borderless.App.ViewModels;
@@ -298,9 +300,15 @@ public partial class MainWindow : FluentWindow
             return;
         }
 
+        RestoreFromHidden();
+    }
+
+    internal void RestoreFromHidden()
+    {
         Show();
         WindowState = WindowState.Normal;
         Activate();
+        NativeMethods.SetForegroundWindow(new WindowInteropHelper(this).EnsureHandle());
     }
 
     private void RefreshTrayToggleHeader()
