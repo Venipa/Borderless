@@ -6,6 +6,15 @@
 [![Latest release](https://img.shields.io/github/v/release/Venipa/Borderless?label=latest&logo=github)](https://github.com/Venipa/Borderless/releases/latest)
 [![License](https://img.shields.io/github/license/Venipa/Borderless)](LICENSE)
 
+<a href="https://alternativeto.net/software/borderless/about/?utm_source=badge&utm_medium=referral" target="_blank">
+  <img src="https://alternativeto.net/static/badges/badge-wide-color.svg"
+       alt="Borderless | AlternativeTo"
+       width="284" height="51"
+       style="width: 284px; height: 51px;" />
+</a>
+
+---
+
 Windows desktop app that keeps games and other windows in borderless (and related) layouts. Match by window title and/or executable, then re-apply styles while Borderless is running — useful when a title already runs borderless, fights chrome, or needs extra input/audio rules.
 
 <img width="1018" height="673" alt="Borderless_fVfFZMhH9T" src="https://github.com/user-attachments/assets/c993d5ec-d224-494e-89eb-507ef445d2ff" />
